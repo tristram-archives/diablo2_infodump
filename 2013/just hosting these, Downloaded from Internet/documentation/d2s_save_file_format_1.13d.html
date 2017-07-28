@@ -1,0 +1,1278 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Diablo II v1.13d Save File Format</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<h1 align="center">Diablo II Save Game File Format</h1>
+<h3 align="center">for Diablo II Expansion Set v1.13d</h3>
+<div align="center">Updated July 1, 2012</div>
+<p>This page was originally written by Trevin Beattie, whose site is no more (his latest version of this page is available
+<a href="http://web.archive.org/web/20070831101200/http://www.xmission.com/~trevin/DiabloIIv1.09_File_Format.shtml">here</a> though).<br />
+Now this page is maintained by me, Yuri Sakhno (George1).</p>
+
+<h2>Introduction</h2>
+<p>This page describes the format of saved game files for the game Diablo II Expansion Set v1.13d.
+While the information presented here is mostly aplicable to earlier versions of the game, there were some drastic
+changes in version 1.10 (particularly, in how character stats are saved), so if you intend to read files of the versions
+of the game erlier than that, you would probably be better off opening that save in some recent version of the game and
+then saving it again (upgrading the saved game file).</p>
+<p><i>(Note: all values larger than a byte are stored in x86 little-endian order &#x2014;
+i.e., least significant byte first. A &quot;<tt>short</tt>&quot; is 2 bytes long,
+and a &quot;<tt>long</tt>&quot; is 4 bytes long. Values starting with &quot;0x&quot; are given
+in hexadecimal notation; otherwise they are decimal.)</i></p>
+
+<h2>File Header</h2>
+<p>Each save file starts with a file header. Depending on the circumstances, this may be the only section present in saved game file.</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="8%">Byte Position</th>
+    <th width="8%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">0</td>
+    <td align="middle"><tt>long</tt></td>
+    <td>File identifier. This must be the value <tt>0xAA55AA55</tt>.</td>
+  </tr>
+  <tr>
+    <td align="middle">4</td>
+    <td align="middle"><tt>long</tt></td>
+    <td>File version. The following values are known:<br />
+      &#xA0;&#xA0;&#xA0; <tt>0x47</tt>&#xA0; v1.00 through v1.06<br />
+      &#xA0;&#xA0;&#xA0; <tt>0x57</tt>&#xA0; v1.07 or Expansion Set v1.08<br />
+      &#xA0;&#xA0;&#xA0; <tt>0x59</tt>&#xA0; standard game v1.08<br />
+      &#xA0;&#xA0;&#xA0; <tt>0x5C</tt>&#xA0; v1.09 (both the standard game and the Expansion Set.)<br />
+      &#xA0;&#xA0;&#xA0; <tt>0x60</tt>&#xA0; v1.10 and above<br />
+      As it was outlined above, this document only covers version <tt>0x60</tt> of the file format.</td>
+  </tr>
+  <tr>
+    <td align="middle">8</td>
+    <td align="middle"><tt>long</tt></td>
+    <td>Size of the file, in bytes.</td>
+  </tr>
+  <tr>
+    <td align="middle">12</td>
+    <td align="middle"><tt>long</tt></td>
+    <td>Checksum of the netire save file. If you attempt to hack the file without storing the
+      correct checksum afterwards, your game will fail to load.
+      Fortunately, the checksum algorithm is very simple.
+      After clearing the checksum field, you add up the values of all the bytes
+      in the file, rotating the running total one bit to the left before adding
+      each byte. Then store the result in this field.</td>
+  </tr>
+  <tr>
+    <td align="middle">16</td>
+    <td align="middle"><tt>long</tt></td>
+    <td>Active arms. Determines which weapon set is currently active.</td>
+  </tr>
+  <tr>
+    <td align="middle">20</td>
+    <td align="middle">16 <tt>char</tt>s</td>
+    <td><a href="Random_Character_Names.html">Character name</a>. The name may be up to 15 characters long;
+      the rest of the field must be padded with null-characters. <i>Remember the rules for
+      Diablo II character names: 2-15 characters, containing only upper and
+      lower case letters (A-Z), with the possible addition of one dash ( - ) or
+      underscore ( _ ) as long as it is not the first or last character of the
+      name.</i></td>
+  </tr>
+  <tr>
+    <td align="middle">36</td>
+    <td align="middle">byte</td>
+    <td>
+      <div>Character status. This is a bit field:</div>
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <th width="10%">7</th>
+          <th width="10%">6</th>
+          <th width="10%">5</th>
+          <th width="10%">4</th>
+          <th width="10%">3</th>
+          <th width="10%">2</th>
+          <th width="10%">1</th>
+          <th width="10%">0</th>
+        </tr>
+        <tr>
+          <td align="middle" colspan="2"><i>unknown</i></td>
+          <td align="middle">Expansion<br />Character</td>
+          <td align="middle"><i>unknown</i></td>
+          <td align="middle">Died</td>
+          <td align="middle">Hardcore</td>
+          <td align="middle" colspan="2"><i>unknown</i></td>
+        </tr>
+      </tbody>
+      </table>
+      <div><i>Note: the &quot;died&quot; bit indicates that your character
+      has died at some point in the past. It is never cleared when you resume the game.
+      To find out whether your character is currently dead, you need to look
+      in the <a href="#item_list">item list</a> below to see if there is some corpse data.
+      Obviously, if you have a hardcore character and this bit is set, you won't be able
+      to play the game with that charcter anymore.</i></div></td>
+  </tr>
+  <tr>
+    <td align="middle">37</td>
+    <td align="middle">byte</td>
+    <td>
+      Character progression. This number tells (sort of) how many acts
+      you have completed from all difficulty levels. It appears to be
+      incremented when you kill the final demon in an act &#x2014; i.e., Andarial,
+      Duriel, Mephisto, and Diablo / Baal. There's a catch to that last
+      one: in an Expansion game, the value is <em>not</em> incremented after
+      killing Diablo, but is incremented by 2 after killing Baal. (The
+      reason is unknown.) So it skips the values 4, 9, and 14.
+      <p>I believe this value is used in determining your character's
+      title. The title is one of the following values (depending on the
+      character class' gender):</p>
+      <table border="0" align="center">
+      <tbody>
+        <tr>
+          <th width="6%">Value</th>
+          <th width="20%">Standard</th>
+          <th width="20%">Hardcore</th>
+          <th width="6%">Value</th>
+          <th width="20%">Expansion</th>
+          <th width="20%">Hardcode Expansion</th>
+          <td width="8%" colspan="5"><!-- @ --></td>
+        </tr>
+        <tr>
+          <td align="middle"><tt>0</tt>-<tt>3</tt></td>
+          <td align="middle" colspan="2"><i>(no title)</i></td>
+          <td align="middle"><tt>0</tt>-<tt>3</tt></td>
+          <td align="middle" colspan="2"><i>(no title)</i></td>
+        </tr>
+        <tr>
+          <td align="middle"><tt>4</tt>-<tt>7</tt></td>
+          <td align="middle">Sir / Dame</td>
+          <td align="middle">Count / Countess</td>
+          <td align="middle"><tt>5</tt>-<tt>8</tt></td>
+          <td align="middle">Slayer</td>
+          <td align="middle">Destroyer</td>
+        </tr>
+        <tr>
+          <td align="middle"><tt>8</tt>-<tt>11</tt></td>
+          <td align="middle">Lord / Lady</td>
+          <td align="middle">Duke / Duchess</td>
+          <td align="middle"><tt>10</tt>-<tt>13</tt></td>
+          <td align="middle">Champion</td>
+          <td align="middle">Conqueror</td>
+        </tr>
+        <tr>
+          <td align="middle"><tt>12</tt></td>
+          <td align="middle">Baron / Baroness</td>
+          <td align="middle">King / Queen</td>
+          <td align="middle"><tt>15</tt></td>
+          <td align="middle">Patriarch / Matriarch</td>
+          <td align="middle">Guardian</td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">38</td>
+    <td align="middle">2 bytes</td>
+    <td><i>unknown; probably some kind of padding</i></td>
+  </tr>
+  <tr>
+    <td align="middle">40</td>
+    <td align="middle">byte</td>
+    <td>Character class. The defined classes are:<br />
+      &#xA0;&#xA0;&#xA0;&#xA0; <tt>0x00</tt>&#xA0; Amazon<br />
+      &#xA0;&#xA0;&#xA0;&#xA0; <tt>0x01</tt>&#xA0; Sorceress<br />
+      &#xA0;&#xA0;&#xA0;&#xA0; <tt>0x02</tt>&#xA0; Necromancer<br />
+      &#xA0;&#xA0;&#xA0;&#xA0; <tt>0x03</tt>&#xA0; Paladin<br />
+      &#xA0;&#xA0;&#xA0;&#xA0; <tt>0x04</tt>&#xA0; Barbarian<br />
+      &#xA0;&#xA0;&#xA0;&#xA0; <tt>0x05</tt>&#xA0; Druid (Expansion character only)<br />
+      &#xA0;&#xA0;&#xA0;&#xA0; <tt>0x06</tt>&#xA0; Assassin (Expansion character only)</td>
+  </tr>
+  <tr>
+    <td align="middle">41</td>
+    <td align="middle">2 bytes</td>
+    <td><i>unknown; I've only seen the values { 16, 30 } here.</i></td>
+  </tr>
+  <tr>
+    <td align="middle"><a name="header_level">43</a></td>
+    <td align="middle">byte</td>
+    <td>Character's level. This is the level shown on the character selection screen, but it
+      should equal the level given in the <a href="#stats_level">character statistics</a> section.</td>
+  </tr>
+  <tr>
+    <td align="middle">44</td>
+    <td align="middle"><tt>long</tt></td>
+    <td><i>unknown</i></td>
+  </tr>
+  <tr>
+    <td align="middle">48</td>
+    <td align="middle"><tt>long</tt></td>
+    <td>Time stamp. This is in the standard <tt>time()</tt> format of the number
+      of seconds which have elapsed since midnight, January 1, 1970 (UTC).</td>
+  </tr>
+  <tr>
+    <td align="middle">52</td>
+    <td align="middle"><tt>long</tt></td>
+    <td><i>unknown</i></td>
+  </tr>
+  <tr>
+    <td align="middle">56</td>
+    <td align="middle">16 <tt>long</tt>s</td>
+    <td>These are the <a href="Skills.html">skill Ids</a> assigned to the hotkeys for Skill&#xA0;1
+      through Skill&#xA0;16. If a skill hotkey is not assigned to a skill, the value is <tt>0xFFFF</tt>.
+      <p><!-- @ --></p>
+      <div>Hotkey definitions are stored in the <tt><i>character</i>.key</tt>
+      file. The structure of that file is not covered by this document.</div></td>
+  </tr>
+  <tr>
+    <td align="middle"><a name="120">120</a></td>
+    <td align="middle"><tt>long</tt></td>
+    <td>The action assigned to the left mouse button. The value of this field is a <a href="Skills.html">skill Id</a>.</td>
+  </tr>
+  <tr>
+    <td align="middle">124</td>
+    <td align="middle"><tt>long</tt></td>
+    <td>The action assigned to the right mouse button. The value of this field is also a <b>skill Id</b>.</td>
+  </tr>
+  <tr>
+    <td align="middle">128</td>
+    <td align="middle"><tt>long</tt></td>
+    <td>In an Expansion character, the action assigned to the alternate left
+      mouse button. (The button assignments are swapped when you swap weapons.)</td>
+  </tr>
+  <tr>
+    <td align="middle">132</td>
+    <td align="middle"><tt>long</tt></td>
+    <td>In an Expansion character, the action assigned to the alternate right mouse button.</td>
+  </tr>
+  <tr>
+    <td align="middle">136</td>
+    <td align="middle">32 bytes</td>
+    <td><i>unknown</i></td>
+  </tr>
+  <tr>
+    <td align="middle">168</td>
+    <td align="middle">3 bytes</td>
+    <td>These bytes indicate which difficulty the character is playing.
+      The first byte corresponds to Normal, the second Nightmare, and the third
+      Hell. If the value is zero, the character is not playing at that
+      level. Otherwise, the value looks like this:
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <th width="10%">7</th>
+          <th width="10%">6</th>
+          <th width="10%">5</th>
+          <th width="10%">4</th>
+          <th width="10%">3</th>
+          <th width="10%">2</th>
+          <th width="10%">1</th>
+          <th width="10%">0</th>
+        </tr>
+        <tr>
+          <td align="middle">Active</td>
+          <td align="middle" colspan="4"><i>unknown</i></td>
+          <td align="middle" colspan="3">Which Act the<br />character is in (<tt>0</tt>-<tt>4</tt>)</td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">171</td>
+    <td align="middle"><tt>long</tt></td>
+    <td>Map Id. This value looks like a random number, but it corresponds with one of the <tt>long</tt>s
+      found in the <tt><i>character</i>.map</tt> file, according to the difficulty being played.</td>
+  </tr>
+  <tr>
+    <td align="middle">175</td>
+    <td align="middle"><tt>short</tt></td>
+    <td><i>unknown</i></td>
+  </tr>
+  <tr>
+    <td align="middle">177</td>
+    <td align="middle"><tt>short</tt></td>
+    <td>If your Expansion character has a mercenary who is currently dead, this field is non-zero.</td>
+  </tr>
+  <tr>
+    <td align="middle">179</td>
+    <td align="middle"><tt>long</tt></td>
+    <td>This looks like a random Id for your mercenary. It is <tt>0</tt> if you have never had a mercenary.
+      If your mercenary has died or (in the standard game) been left behind when you move on to the next act,
+      this field is still set to the last mercenary you had.</td>
+  </tr>
+  <tr>
+    <td align="middle"><a name="183">183</a></td>
+    <td align="middle"><tt>short</tt></td>
+    <td>This is a numerical index into the game's language-dependent string table for mercenary names.
+      There is a separate list for each type of mercenary (Rogue Scout, Desert Mercenary, Eastern Sorceror,
+      and Barbarian). Trevin wrote a <a href="Mercenaries.html">list of mercenary names</a> for the English 1.09 patch.</td>
+  </tr>
+  <tr>
+    <td align="middle">185</td>
+    <td align="middle"><tt>short</tt></td>
+    <td>This code determines the difficulty level and act where your mercenary was found, as well as the attribute
+      of your mercenary (i.e. Cold, Fire, Lightning). Trevin wrote a
+      <a href="Mercenaries.html#code">list of the mercenary codes</a> appended to the end of the mercenary name.</td>
+  </tr>
+  <tr>
+    <td align="middle">187</td>
+    <td align="middle"><tt>long</tt></td>
+    <td>Your mercenary's experience points.</td>
+  </tr>
+  <tr>
+    <td align="middle">191</td>
+    <td align="middle">144 bytes</td>
+    <td><i>unknown</i></td>
+  </tr>
+</tbody>
+</table>
+
+<a name="new_character_small_file"><p>For the newly-created character, this is the only information present in the file (i.e. the file consists of just the header).
+The save file is extended (all other sections added) when you exit the game (even if you haven't done anything in it),
+but the very first save created by the game (i.e. right after you click the OK button on the character-creation screen)
+will be the save with just the header present. Such a save is still a legitimate save, which the game can successfully load.</p></a>
+
+<h2>Quest Completion Data</h2>
+<p>The quest data begins with the following header:</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="10%">Byte Position</th>
+    <th width="10%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">335</td>
+    <td align="middle">4 <tt>char</tt>s</td>
+    <td>The string identifier &quot;<tt>Woo!</tt>&quot;.</td>
+  </tr>
+  <tr>
+    <td align="middle">339</td>
+    <td align="middle">6 bytes</td>
+    <td><i>unknown; there are values { <tt>0x06</tt>, <tt>0x00</tt>, <tt>0x00</tt>, <tt>0x00</tt>, <tt>0x2A</tt>, <tt>0x01</tt> } always present here.</i></td>
+  </tr>
+</tbody>
+</table>
+<p>The header is followed by three structures, one for each difficulty level. Note that the byte
+offsets given here are offsets into the structure; the first structure is at offset 345 in the file,
+the second one is at offset 441, and the third one at 537. You have to add the offsets from the table
+to these values to get the actual offset in the file for the corresponding field for the specific difficulty level.</p>
+<p>Although there is some variation in the meaning of the bits per quest, some of the bits appear to have constant meaning.</p>
+<p>Bit 0 indicates the quest is complete. If bit 0 is not set but the rest of the field is non-zero,
+then the quest has been started, but not finished.</p>
+<p>Bit 1 generally means you have completed the requirements for the quest
+(i.e., killed the boss demon), and all that's left is to collect the reward &#x2014;
+for example, &quot;Charsi will imbue an item with magical power.&quot; Not all
+quests have this option. If this bit is set, bit 0 must be cleared.</p>
+<p>Bit 2 is often set when an NPC gives you a quest.</p>
+<p>Bit 12 is set when you have seen the swirling fire animation that closes a quest icon.</p>
+<p>Bit 13 indicates the quest was completed in the current game; when you save
+the game and then reload it, all bit 13's are cleared.</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="10%">Byte Position</th>
+    <th width="10%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">0</td>
+    <td align="middle"><tt>short</tt></td>
+    <td>This field contains a 1 if you have been introduced (by Warriv) to Act I.</td>
+  </tr>
+  <tr>
+    <td align="middle">2</td>
+    <td align="middle">6 <tt>short</tt>s</td>
+    <td>
+      <div>These fields contain quest completion data for each quest in Act I.</div>
+      <table cellspacing="0" width="100%" align="center" border="1">
+      <tbody>
+        <tr>
+          <th width="10%"><tt>short</tt>&#xA0;#</th>
+          <th width="35%">Quest</th>
+          <th width="55%">Notes</th>
+        </tr>
+        <tr>
+          <td align="middle">0</td>
+          <td>Den of Evil</td>
+          <td>Bit 4 is set when you enter the Den.</td>
+        </tr>
+        <tr>
+          <td align="middle">1</td>
+          <td>Sisters' Burial Grounds</td>
+          <td>Bit 4 is set when you enter the Burial Grounds.</td>
+        </tr>
+        <tr>
+          <td align="middle">2</td>
+          <td>Tools of the Trade</td>
+          <td>Bit 6 is set when you pick up the Horadric Malus.</td>
+        </tr>
+        <tr>
+          <td align="middle">3</td>
+          <td>The Search for Cain</td>
+          <td>Bit 4 is set when you enter Tristram.<br />Bit 10 indicates
+            whether you have completed the secret Cow Level (&quot;Moo&quot;). If
+            you want to fight the Cow King again, just clear this bit!<br />If you
+            enter Act II without rescuing Deckard Cain, bit 14 will get
+            set. You will not be able to rescue Cain yourself; the Rogues
+            will have done it instead, and as a consequence, you will be charged
+            a fee if you want Cain to identify items for you.</td>
+        </tr>
+        <tr>
+          <td align="middle">4</td>
+          <td>The Forgotten Tower</td>
+          <td>Bit 2 is set when you read the Moldy Tome.<br />Bit 6 is set when
+            you enter the Forgotten Tower.</td>
+        </tr>
+        <tr>
+          <td align="middle">5</td>
+          <td>Sisters to the Slaughter</td>
+          <td><!-- @ --></td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">14</td>
+    <td align="middle"><tt>short</tt></td>
+    <td><i>uncertain; perhaps this gets set to a non-zero value after you travel from Act I to Act II.</i></td>
+  </tr>
+  <tr>
+    <td align="middle">16</td>
+    <td align="middle"><tt>short</tt></td>
+    <td>This field contains a 1 if you have been introduced (by Jerhyn) to Act II.</td>
+  </tr>
+  <tr>
+    <td align="middle">18</td>
+    <td align="middle">6 <tt>short</tt>s</td>
+    <td>
+      <div>These fields contain quest completion data for each quest in Act II.</div>
+      <table cellspacing="0" width="100%" align="center" border="1">
+      <tbody>
+        <tr>
+          <th width="10%"><tt>short</tt>&#xA0;#</th>
+          <th width="35%">Quest</th>
+          <th width="55%">Notes</th>
+        </tr>
+        <tr>
+          <td align="middle">0</td>
+          <td>Radament's Lair</td>
+          <td>Bit 4 is set when you find Radament.</td>
+        </tr>
+        <tr>
+          <td align="middle">1</td>
+          <td>The Horadric Staff</td>
+          <td>Bit 4 is set when Cain tells you about the Viper Amulet.<br />
+            Bit 5 is set when Cain tells you about the Staff of Kings.<br />
+            Bit 10 is set when Cain tells you about the Horadric Staff.<br />
+            Bit 11 is set when you make the Horadric Staff.</td>
+        </tr>
+        <tr>
+          <td align="middle">2</td>
+          <td>Tainted Sun</td>
+          <td>Bit 2 is set when the sun goes out.<br />
+            Bit 3 is set when Drognan tells you why.</td>
+        </tr>
+        <tr>
+          <td align="middle">3</td>
+          <td>Arcane Sanctuary</td>
+          <td rowspan="2"><!-- @ --></td>
+        </tr>
+        <tr>
+          <td align="middle">4</td>
+          <td>The Summoner</td>
+        </tr>
+        <tr>
+          <td align="middle">5</td>
+          <td>The Seven Tombs</td>
+          <td>Bit 3 is set when you talk to Tyrael.<br />
+            Bit 4 is set when you talk to Jerhyn (after killing Duriel).<br />
+            Bit 5 is set when you kill Duriel.<br />
+            Bit 6 is set when Atma congratulates you.<br />
+            Bit 7 is set when Warriv congratulates you.<br />
+            Bit 8 is set by Drognan.<br />
+            Bit 9 is set by Lysander.<br />
+            Bit 10 is set by Cain.<br />
+            Bit 11 is set by Fara.</td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">30</td>
+    <td align="middle"><tt>short</tt></td>
+    <td><i>uncertain; perhaps this gets set to a non-zero value after you travel from Act II to Act III.</i></td>
+  </tr>
+  <tr>
+    <td align="middle">32</td>
+    <td align="middle"><tt>short</tt></td>
+    <td>This field contains a 1 if you have been introduced (by Hratli) to Act III.</td>
+  </tr>
+  <tr>
+    <td align="middle">34</td>
+    <td align="middle">6 <tt>short</tt>s</td>
+    <td>
+      <div>These fields contain quest completion data for each quest in Act III.</div>
+      <table cellspacing="0" width="100%" align="center" border="1">
+      <tbody>
+        <tr>
+          <th width="10%"><tt>short</tt>&#xA0;#</th>
+          <th width="35%">Quest</th>
+          <th width="55%">Notes</th>
+        </tr>
+        <tr>
+          <td align="middle">0</td>
+          <td>Lam Esen's Tome</td>
+          <td rowspan="2"><!-- @ --></td>
+        </tr>
+        <tr>
+          <td align="middle">1</td>
+          <td>Khalim's Will</td>
+        </tr>
+        <tr>
+          <td align="middle">2</td>
+          <td>Blade of the Old Religion</td>
+          <td>Bit 2 is set when you pick up the Gidbinn.<br />
+            Bit 3 is set when Hratli asks you to find the Gidbinn.</td>
+        </tr>
+        <tr>
+          <td align="middle">3</td>
+          <td>The Golden Bird</td>
+          <td>Bit 2 is set when Cain tells you about the Jade Figurine.<br />
+            Bit 4 is set when Cain tells you about the Golden Bird.<br />
+            Bit 5 is set when you are given the Potion of Life, and cleared again when you
+            drink the Potion. (This prevents you from drinking more than one in a game.)<br />
+            Bit 6 is set when you find the Jade Figurine.</td>
+        </tr>
+        <tr>
+          <td align="middle">4</td>
+          <td>The Blackened Temple</td>
+          <td rowspan="2"><!-- @ --></td>
+        </tr>
+        <tr>
+          <td align="middle">5</td>
+          <td>The Guardian</td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">46</td>
+    <td align="middle"><tt>short</tt></td>
+    <td><i>uncertain; perhaps this gets set to a non-zero value after you travel from Act III to Act IV.</i></td>
+  </tr>
+  <tr>
+    <td align="middle">48</td>
+    <td align="middle"><tt>short</tt></td>
+    <td>This field contains a 1 if you have been introduced to Act IV.</td>
+  </tr>
+  <tr>
+    <td align="middle">50</td>
+    <td align="middle">6 <tt>short</tt>s</td>
+    <td>
+      <div>These fields contain quest completion data for each quest in Act
+      IV. Note that there are only three quests here, as opposed to 6 for
+      the first three Acts.</div>
+      <table cellspacing="0" width="100%" align="center" border="1">
+      <tbody>
+        <tr>
+          <th width="10%"><tt>short</tt>&#xA0;#</th>
+          <th width="35%">Quest</th>
+          <th width="55%">Notes</th>
+        </tr>
+        <tr>
+          <td align="middle">0</td>
+          <td>The Fallen Angel</td>
+          <td rowspan="3"><!-- @ --></td>
+        </tr>
+        <tr>
+          <td align="middle">1</td>
+          <td>Terror's End</td>
+        </tr>
+        <tr>
+          <td align="middle">2</td>
+          <td>Hell's Forge</td>
+        </tr>
+        <tr>
+          <td align="middle">3-5</td>
+          <td><i>unused</i></td>
+          <td>It looks like quest data for Act IV still has place for 6 quests, despite the fact that this act only has 3.</td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">62</td>
+    <td align="middle"><tt>short</tt></td>
+    <td><i>uncertain; perhaps this gets set to a non-zero value after you travel from Act IV to Act V in an Expansion game,
+      <b>but this assumption has not been verified yet</b>.</i></td>
+  </tr>
+  <tr>
+    <td align="middle">64</td>
+    <td align="middle"><tt>short</tt></td>
+    <td><i>unknown; in an Expansion character, this was set to 1 after
+      completing Terror's End and talking to Cain in act IV</i>.</td>
+  </tr>
+  <tr>
+    <td align="middle">66</td>
+    <td align="middle">2 <tt>short</tt>s</td>
+    <td><i>unknown</i></td>
+  </tr>
+  <tr>
+    <td align="middle">70</td>
+    <td align="middle">6 <tt>short</tt>s</td>
+    <td>
+      <div>These fields contain quest completion data for each quest in Act V.</div>
+      <table cellspacing="0" width="100%" align="center" border="1">
+      <tbody>
+        <tr>
+          <th width="10%"><tt>short</tt>&#xA0;#</th>
+          <th width="35%">Quest</th>
+          <th width="55%">Notes</th>
+        </tr>
+        <tr>
+          <td align="middle">0</td>
+          <td>Siege on Harrogath</td>
+          <td>Bit 3 is set when you find Shenk.<br />
+            Bit 5 is set when Larzuk offers to socket an item for you.</td>
+        </tr>
+        <tr>
+          <td align="middle">1</td>
+          <td>Rescue on Mount Arreat</td>
+          <td><!-- @ --></td>
+        </tr>
+        <tr>
+          <td align="middle">2</td>
+          <td>Prison of Ice</td>
+          <td>Bit 7 is set when you read the Scroll of Resistance.<br />
+            Bit 8 is set after you rescue Anya and talk to Malah.</td>
+        </tr>
+        <tr>
+          <td align="middle">3</td>
+          <td>Betrayal of Harrogath</td>
+          <td>Bit 4 is set when Anya offers to personalize an item for you.</td>
+        </tr>
+        <tr>
+          <td align="middle">4</td>
+          <td>Rite of Passage</td>
+          <td><!-- @ --></td>
+        </tr>
+        <tr>
+          <td align="middle">5</td>
+          <td>Eve of Destruction</td>
+          <td>Bit 4 is set when Larzuk congratulates you.<br />
+            Bit 5 is set when Cain congratulates you.<br />
+            Bit 6 is set when Malah congratulates you.<br />
+            Bit 7 is set by Tyrael.<br />
+            Bit 8 is set by Qual-Kehk.<br />
+            Bit 9 is set by Anya.</td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">82</td>
+    <td align="middle">7 <tt>short</tt>s</td>
+    <td><i>unknown</i></td>
+  </tr>
+</tbody>
+</table>
+
+<h2>Waypoints Data</h2>
+<p>The waypoints data begins with the following header:</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="10%">Byte Position</th>
+    <th width="10%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">633</td>
+    <td align="middle">2 <tt>char</tt>s</td>
+    <td>The string identifier &quot;<tt>WS</tt>&quot;.</td>
+  </tr>
+  <tr>
+    <td align="middle">635</td>
+    <td align="middle">6 bytes</td>
+    <td><i>unknown; there are values { <tt>0x01</tt>, <tt>0x00</tt>, <tt>0x00</tt>, <tt>0x00</tt>, <tt>0x50</tt>, <tt>0x00</tt> } always present here.</i></td>
+  </tr>
+</tbody>
+</table>
+<p>The header is followed by three structures, one per each difficulty level.
+Note that the byte offsets given here are offsets into the structure; the first structure is at offset 641 in the file,
+the second one is at offset 665, and the third at 689. You have to add the offsets from the table
+to these values to get the actual offset in the file for the corresponding field for the specific difficulty level.</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="10%">Byte Position</th>
+    <th width="10%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">0</td>
+    <td align="middle">2 bytes</td>
+    <td><i>unknown; there are values { <tt>0x02</tt>, <tt>0x01</tt> } always present here.</i></td>
+  </tr>
+  <tr>
+    <td align="middle">2</td>
+    <td align="middle">5 bytes</td>
+    <td>Waypoints. This is a bitfield, with one bit assigned to each
+      waypoint in LSB order &#x2014; so bit 0 in the Rogue Encampment waypoint for Act
+      I. The first waypoint in every Act is activated as soon as you enter
+      that Act. There are 9 waypoints (bits) in each of Acts I, II, and
+      III, and 3 waypoints (bits) in Act IV, so the last waypoint before Diablo
+      (River of Flame) is bit 29 (since we start counting from 0). The
+      first waypoint for Act V follows at bit 30, and continues to the last
+      (ninth) waypoint in Act V at bit 38.
+      <p><!-- @ --></p>
+      <div>The first waypoint in each of the difficulty levels is always activated,
+      even if you have never been to that difficulty level.</div></td>
+  </tr>
+  <tr>
+    <td align="middle">7</td>
+    <td align="middle">17 bytes</td>
+    <td><i>unknown</i></td>
+  </tr>
+</tbody>
+</table>
+
+<p>There is an additional byte value at file offset 713 after the three waypoints structures.
+This byte always has value <tt>0x01</tt> and probably serves as some kind of trailer.</p>
+
+<h2>NPC Introductions</h2>
+<p>Trevin's data on the next section was very sketchy, and hasn't improved since at all.</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="10%">Byte Position</th>
+    <th width="10%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">714</td>
+    <td align="middle">2 <tt>char</tt>s</td>
+    <td>The string identifier &quot;<tt>w4</tt>&quot;.</td>
+  </tr>
+  <tr>
+    <td align="middle">716</td>
+    <td align="middle">1 byte</td>
+    <td><i>unknown</i></td>
+  </tr>
+  <tr>
+    <td align="middle">717</td>
+    <td align="middle">1 byte</td>
+    <td>
+      <div>You have been introduced to:</div>
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <th width="10%">7</th>
+          <th width="10%">6</th>
+          <th width="10%">5</th>
+          <th width="10%">4</th>
+          <th width="10%">3</th>
+          <th width="10%">2</th>
+          <th width="10%">1</th>
+          <th width="10%">0</th>
+        </tr>
+        <tr>
+          <td align="middle">Warriv</td>
+          <td><!-- @ --></td>
+          <td align="middle">Charsi</td>
+          <td><!-- @ --></td>
+          <td align="middle">Kashya</td>
+          <td align="middle">Akara</td>
+          <td align="middle">Gheed</td>
+          <td><!-- @ --></td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">718</td>
+    <td align="middle">1 byte</td>
+    <td>
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <th width="10%">7</th>
+          <th width="10%">6</th>
+          <th width="10%">5</th>
+          <th width="10%">4</th>
+          <th width="10%">3</th>
+          <th width="10%">2</th>
+          <th width="10%">1</th>
+          <th width="10%">0</th>
+        </tr>
+        <tr>
+          <td align="middle">Greiz</td>
+          <td><!-- @ --></td>
+          <td align="middle">Meshif</td>
+          <td align="middle">Geglash</td>
+          <td align="middle">Lysander</td>
+          <td align="middle">Fara</td>
+          <td align="middle">Drognan</td>
+          <td><!-- @ --></td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">719</td>
+    <td align="middle">1 byte</td>
+    <td>
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <th width="10%">7</th>
+          <th width="10%">6</th>
+          <th width="10%">5</th>
+          <th width="10%">4</th>
+          <th width="10%">3</th>
+          <th width="10%">2</th>
+          <th width="10%">1</th>
+          <th width="10%">0</th>
+        </tr>
+        <tr>
+          <td align="middle">Alkor</td>
+          <td><!-- @ --></td>
+          <td align="middle">Asheara</td>
+          <td colspan="2"><!-- @ --></td>
+          <td align="middle">Cain</td>
+          <td><!-- @ --></td>
+          <td align="middle">Elzix</td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">720</td>
+    <td align="middle">1 byte</td>
+    <td>
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <th width="10%">7</th>
+          <th width="10%">6</th>
+          <th width="10%">5</th>
+          <th width="10%">4</th>
+          <th width="10%">3</th>
+          <th width="10%">2</th>
+          <th width="10%">1</th>
+          <th width="10%">0</th>
+        </tr>
+        <tr>
+          <td align="middle">Malah</td>
+          <td align="middle">Anya</td>
+          <td><!-- @ --></td>
+          <td align="middle">Natalya</td>
+          <td align="middle">Meshif</td>
+          <td colspan="2"><!-- @ --></td>
+          <td align="middle">Ormus</td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">721</td>
+    <td align="middle">1 byte</td>
+    <td>
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <th width="10%">7</th>
+          <th width="10%">6</th>
+          <th width="10%">5</th>
+          <th width="10%">4</th>
+          <th width="10%">3</th>
+          <th width="10%">2</th>
+          <th width="10%">1</th>
+          <th width="10%">0</th>
+        </tr>
+        <tr>
+          <td colspan="5"><!-- @ --></td>
+          <td align="middle">Cain</td>
+          <td align="middle">Qual-Kehk</td>
+          <td align="middle">Nihlathak</td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">722</td>
+    <td align="middle">3 bytes</td>
+    <td><i>unknown</i></td>
+  </tr>
+  <tr>
+    <td align="middle">725</td>
+    <td align="middle">8 bytes</td>
+    <td>Introductions repeated for Nightmare difficulty.</td>
+  </tr>
+  <tr>
+    <td align="middle">733</td>
+    <td align="middle">8 bytes</td>
+    <td>Introductions repeated for Hell difficulty.</td>
+  </tr>
+  <tr>
+    <td align="middle">741</td>
+    <td align="middle">1 byte</td>
+    <td>
+      <p>It would appear that bits 1-6 of byte 741 get set after you take the
+      caravan to Act II in Normal difficulty. Bit 7 of byte 741 through
+      bit 1 of byte 743 get set after you sail to Act III. On entering Act
+      IV, bits 2, 5, 6, &amp; 7 of byte 743 and bits 0, 3, &amp; 4 of byte 744
+      get set.</p>
+      <p>When you return to a previous act and talk to the NPC's, these bits are
+      cleared.</p>
+      <div>You have yet to be welcomed back by:</div>
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <th width="10%">7</th>
+          <th width="10%">6</th>
+          <th width="10%">5</th>
+          <th width="10%">4</th>
+          <th width="10%">3</th>
+          <th width="10%">2</th>
+          <th width="10%">1</th>
+          <th width="10%">0</th>
+        </tr>
+        <tr>
+          <td align="middle">Warriv</td>
+          <td align="middle">?</td>
+          <td align="middle">Charsi</td>
+          <td align="middle">Warriv</td>
+          <td align="middle">Kashya</td>
+          <td align="middle">Akara</td>
+          <td align="middle">Gheed</td>
+          <td><!-- @ --></td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">742</td>
+    <td align="middle">1 byte</td>
+    <td>
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <th width="10%">7</th>
+          <th width="10%">6</th>
+          <th width="10%">5</th>
+          <th width="10%">4</th>
+          <th width="10%">3</th>
+          <th width="10%">2</th>
+          <th width="10%">1</th>
+          <th width="10%">0</th>
+        </tr>
+        <tr>
+          <td align="middle">Greiz</td>
+          <td align="middle">Jerhyn</td>
+          <td align="middle">Meshif</td>
+          <td align="middle">Geglash</td>
+          <td align="middle">?</td>
+          <td align="middle">Fara</td>
+          <td align="middle">Drognan</td>
+          <td align="middle">?</td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">743</td>
+    <td align="middle">1 byte</td>
+    <td>
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <th width="10%">7</th>
+          <th width="10%">6</th>
+          <th width="10%">5</th>
+          <th width="10%">4</th>
+          <th width="10%">3</th>
+          <th width="10%">2</th>
+          <th width="10%">1</th>
+          <th width="10%">0</th>
+        </tr>
+        <tr>
+          <td align="middle">Alkor</td>
+          <td align="middle">Hratli</td>
+          <td align="middle">Asheara</td>
+          <td colspan="2"><!-- @ --></td>
+          <td align="middle">?</td>
+          <td align="middle">?</td>
+          <td align="middle">Elzix</td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">744</td>
+    <td align="middle">1 byte</td>
+    <td>
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <th width="10%">7</th>
+          <th width="10%">6</th>
+          <th width="10%">5</th>
+          <th width="10%">4</th>
+          <th width="10%">3</th>
+          <th width="10%">2</th>
+          <th width="10%">1</th>
+          <th width="10%">0</th>
+        </tr>
+        <tr>
+          <td colspan="3"><!-- @ --></td>
+          <td align="middle">?</td>
+          <td align="middle">?</td>
+          <td colspan="2"><!-- @ --></td>
+          <td align="middle">Ormus</td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">745</td>
+    <td align="middle">4 bytes</td>
+    <td><i>unknown</i></td>
+  </tr>
+  <tr>
+    <td align="middle">749</td>
+    <td align="middle">8 bytes</td>
+    <td>Greetings repeated for Nightmare difficulty.</td>
+  </tr>
+  <tr>
+    <td align="middle">757</td>
+    <td align="middle">8 bytes</td>
+    <td>Greetings repeated for Hell difficulty.</td>
+  </tr>
+</tbody>
+</table>
+
+<h2>Character Statistics</h2>
+<p>The character statistics begin with 2-character identifier:</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="10%">Byte Position</th>
+    <th width="10%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">765</td>
+    <td align="middle">2 <tt>char</tt>s</td>
+    <td>The string identifier &quot;<tt>gf</tt>&quot;.</td>
+  </tr>
+</tbody>
+</table>
+<p>From this point on, the contents of the file are variable, because character stats are stored in packed format
+and certain stats may be absent (if the stat is absent in the save file, its value is 0.</p>
+<p>Starting from patch version 1.10 Diablo II stores stats differently than it used to be in previous game version.
+Every character stat is stored as a two-value pair. These pairs (and even the values inside them are not
+byte-aligned. They may start in the middle of one byte, and continue to the second.
+Here is the basic structure of the pair (note that field sizes are given in bits):</p>
+<table width="100%" border="1">
+<thead>
+  <tr>
+    <th align="middle" width="10%">Field Size</th>
+    <th align="middle" width="90%">Description</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td align="middle">9</td>
+    <td>Stat Id. This field determines the stat whose value is stored in the value-pair and, more importantly,
+      the size of the next field in the pair.</td>
+  </tr>
+  <tr>
+    <td align="middle"><i>variable</i></td>
+    <td>The value that is to be assigned to the corresponding stat. The size of the field, in bits,
+      is determined by the stat itself. Read on to find out where this information can be obtained.</td>
+  </tr>
+</tbody>
+</table>
+<p>The stats list is terminated by the 9-bit value of <tt>0x1FF</tt> (all 9 bits are set),
+i.e. the entire list is read in a loop, where you read the Id first and, if that Id is <tt>0x1FF</tt>,
+you exit the loop, otherwise you read the next <i>n</i> bits as a stat value and repeat the loop.</p>
+<p>The Ids of stats (and sizes of values) are determined by the data-tables normally stored inside
+the game archive (the MPQ files). The file for this specific purpose is named <tt>ItemStatCost.txt</tt>,
+which is a kind of CSV file, but with tabulation characters used as separators instead of commas.
+The game actually uses the <tt>ItemStatCost.bin</tt> one, which is sort of a compiled version
+of the corresponding text file.</p>
+<p>Here is an Excel-formatted <a href="ItemStatCost.xlsx">ItemStatCost.xlsx</a> file that contains
+the data for 1.13d patch with some nice formatting and extra comments. This file actually contains
+data from two tables, the one needed for the purpose of reading character stats is given on the <b>ItemStatCost</b> sheet.</p>
+<p>The column <b>ID</b> specifies the Id of the stat, as stored in the 9-bit field of the two-value pair.
+The row containing that Id describes the stat. There is a textual name of the stat in the <b>Stat</b> column,
+as well as the size of the value, in bits, that follows the Id in the two-value pair. This size is specified
+by the <b>CSvBits</b> column. Only values that have value <b>1</b> in the <b>Saved</b> column (first 16 stats)
+are actually saved in the character stats section of the save file.</p>
+<p>The stats described by the <b>ItemStatCost</b> table are as follows (in table below Stat Name corresponds
+to the value in the <b>Stat</b> column from the data table):</p>
+
+<table width="100%" border="1">
+<thead>
+  <tr>
+    <th width="10%">Stat Name</th>
+    <th width="90%">Details</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td align="middle">strength</td>
+    <td rowspan="4">These stats are self-explanatory. They are always present.</td>
+  </tr>
+  <tr><td align="middle">energy</td></tr>
+  <tr><td align="middle">dexterity</td></tr>
+  <tr><td align="middle">vitality</td></tr>
+  <tr>
+    <td align="middle">statpts</td>
+    <td>The number of Stat Points earned but not distributed.
+      This stat may be absent from the save file if you have distibuted all stat points.</td>
+  </tr>
+  <tr>
+    <td align="middle">newskills</td>
+    <td>The number of Skill Choices earned but not distributed.
+      This stat may be absent from the save file if you have distibuted all skill points.</td>
+  </tr>
+  <tr>
+    <td align="middle">hitpoints</td>
+    <td>Current amount of Life points.
+      <p><!-- @ --></p>
+      <div>These 6 stats are (usually) always present. (There is
+      an exception: if your character is dead, the current Life stat will be
+      gone!) <u>They are also <i>not</i> plain integer values!</u>
+      Instead, each field is a fixed-point binary number, with a 24-bit integer
+      part and an 8-bit fraction part. For example, if the Current Life
+      stat contains the value 0x020AC0, then to get the amount of life
+      remaining you take that value and divide by 256.0 to get 522.75
+      (rounding the number to an integer for display. Note that the
+      current amount of Life, Mana or Stamina may be more than the base amount,
+      because the base does not take into account any blessings bestowed by
+      magical items you are carrying.</div></td>
+  </tr>
+  <tr>
+    <td align="middle">maxhp</td>
+    <td>Base amount of Life points.</td>
+  </tr>
+  <tr>
+    <td align="middle">mana</td>
+    <td>Current amount of Mana points.</td>
+  </tr>
+  <tr>
+    <td align="middle">maxmana</td>
+    <td>Base amount of Mana points.</td>
+  </tr>
+  <tr>
+    <td align="middle">stamina</td>
+    <td>Current amount of Stamina points.</td>
+  </tr>
+  <tr>
+    <td align="middle">maxstamina</td>
+    <td>Base amount of Stamina points.</td>
+  </tr>
+  <tr>
+    <td align="middle"><a name="stats_level">level</a></td>
+    <td>Your character's level. This value must be in the range 1-99
+      (and is therefore always present, even on a new character, with
+      a <a href="#new_character_small_file">minor exception</a>) and should be
+      the same as <a href="#header_level">byte 43</a> in the file header.</td>
+  </tr>
+  <tr>
+    <td align="middle">experience</td>
+    <td>The amount of experience your character has. If you haven't
+      killed a single monster in the game, your experience will be 0, and this
+      field is not stored. Otherwise, this field is always present.</td>
+  </tr>
+  <tr>
+    <td align="middle">gold</td>
+    <td>The amount of gold you are carrying with you (in your inventory or backpack).
+      Just as a helpful reminder, the maximum amount of gold you may carry is directly
+      proportional to your level, at 10,000 gold per level. Thus, a new character can only
+      carry 10,000 gold pieces, but a level 99 character (the maximum) can carry nearly
+      a million in gold (990,000).</td>
+  </tr>
+  <tr>
+    <td align="middle">goldbank</td>
+    <td>The amount of gold you have stowed away (in stash). Just as a helpful
+      reminder, starting from the 1.13c patch onwards, the maximum amount of gold
+      in your stash does not depend on your character's level, and is now a flat
+      cap of 2,500,000 instead.</td>
+  </tr>
+</tbody>
+</table>
+<p>As it was specified above, the stats list is terminated with a stat Id with a special meaning
+(the Id has value <tt>0x1FF</tt> in this case), and the stat value for this stat Id is not stored
+(you may view it as a stat whose stat value is 0 bits in size). After that the remaining bits are
+padded with 0-bits to the nearest byte-boundary so that the next section is byte-aligned.</p>
+
+<h2><a name="skills">Character Skills</a></h2>
+<p>The character skills section begins with the 2-character header,
+&quot;<tt>if</tt>&quot;. This is followed by 30 bytes, each byte corresponding to
+one of the character's special skills. To save space, Trevin listed the skills
+in a <a href="Skills.html">separate table</a>.</p>
+
+<h2><a name="item_list">Item List</a></h2>
+<p>The next major section of the save file is the item list. It begins with the following header:</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">2 <tt>char</tt>s</td>
+    <td>The string identifier &quot;<tt>JM</tt>&quot;.</td>
+  </tr>
+  <tr>
+    <td align="middle"><tt>short</tt></td>
+    <td>The number of items your character has. This includes items
+      equipped, tucked in your belt, stored in your inventory, stored in your
+      stash, and hidden in the Horadric Cube. It does <em>not</em>,
+      however, include gems, runes, or jewels which have been inserted into a
+      socketed item. (Those are counted as part of the item.)</td>
+  </tr>
+</tbody>
+</table>
+<p>This header is followed by a list of items. The format of the items is described
+on the <a href="Item_Format.xhtml">Item Format</a> page.</p>
+<p>After the list of items, you will find another item list header similar to
+the one shown above; only this time the item count will be either 0 or 1. The value 0
+means that your character is currently alive. If the value is 1, then that means
+your character is dead (if you load this save, a corpse will be lying at your feet in town),
+in which case 12 bytes of <i>(unknown)</i> data will follow, after which there will be
+another items list header (the one with the identifier &quot;<tt>JM</tt>&quot; and item count)
+and item list for items on your corpse. Sadly, the meaning of the 12 bytes is unknown.</p>
+<p>If you have an Expansion character, then the corpse item list (if there is one) will be
+followed by the 2-character identifier &quot;<tt>jf</tt>&quot;. If <em>and only
+if</em> you have a mercenary (alive or dead), this header is followed by an item
+list header and (possibly empty) item list containing items equipped on the
+mercenary. This item list is followed by the 2-character trailer &quot;<tt>kf</tt>&quot;.</p>
+<p>If you have a necromancer, it is possible for you to have an Iron Golem that
+is preserved when your game is saved and restored. The Iron Golem is based on an
+item. Following the mercenary item list, there will be a single byte that is <tt>0x00</tt>
+if there is no golem, or <tt>0x01</tt> if there is. If there is a golem, this byte is
+followed by a single item.</p>
+</body>
+</html>

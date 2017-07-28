@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head><title>Diablo 2 LoD 1.14d Single-player Mod and Editing D2S Files</title>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+<meta name="keywords" content="Diablo 2, Diablo 2 modding, Diablo 2 1.14d">
+<meta name="description" content="Welcome to a Diablo 2 1.14d websection.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="miscellaneous-files/main.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+i{color:#883d00}
+p.patch-paragraph{margin-top:10px;margin-bottom:15px}
+.mysection{ /*basically more-readable with space at the bottom*/
+  margin-bottom:20px;
+  line-height:1.5em
+}
+</style>
+</head>
+<body>
+<br><br>
+
+<h1>Diablo 2 LoD 1.14d Single-player Mod and Editing [<u style="cursor:help" title="And you can play Single-player characters on Open Battle.net and LAN xD -- basically everywhere except Closed Battle.net">Single-player</u>] D2S Files</h1>
+
+<div class="mysection">
+Welcome! This is the portion of my website that I use to try my best to
+contribute to the Diablo II LoD 1.14d community. Here you will find
+my mod + source code to edit D2s character save files + source code to observe
+changes in D2S files so that you can edit as you will. Although this isn't a
+full-fledged Editor, you can do some cool stuff like copy/paste items between
+d2s files (especially if they're located in the horadric cube), edit skills
+(between levels 0-99), edit stats (strength [1-1024], dexterity [1-1024],
+vitality, energy, &amp; free stat points [1-1024]), and insert any pgems/runes
+into the horadric cube.<br>
+<br>
+- News - 
+<span class="a-date">May 31 (2017) 12:34AM PDT</span><br>
+Added the OGG filesize (111KB/111,119-bytes) information to the audio-player at the top of this page (I know important stuff).<br><br>
+<span class="a-date">May 19 (2017) 10:08PM PDT</span><br>
+You can <a href="d2-character-GeneralQor.html">download and view a Diablo II character</a> named GeneralQor that uses CMod on Diablo II 1.14d. He's level 58 Necromancer and in Act 1 difficulty #3.<br>
+Here are a couple sample (OK, 90% sample, 10% example) screenshots of what would drop in Act 4 difficulty #1 with CMod on 1.14d: <a href="diablo-2-images/CMod-drop-example1.jpg">CMod-drop-example1.jpg</a> &amp; <a href="diablo-2-images/CMod-drop-example2.jpg">CMod-drop-example2.jpg</a>.<br>
+CMod has not changed within the last 6 months.
+</div>
+
+<hr style="margin-bottom:13px">
+<div class="mysection"><b>&Delta;</b> <a href="diablo-2-downloads/">View all diablo 2 LoD 1.14d downloads</a></div>
+
+<div class="mysection"><b>&Delta;</b> Diablo II mod: CMod (aka Lord of the Rings -- because it's fun to collect rare rings)<br>
+<a href="diablo-2-downloads/CMod.zip">Download CMod.zip</a> (77kb) (this is the one and only, and was built for patch 1.14d in mind)
+<ul>
+<li> x5 ring attributes. (MagicPrefix.txt, MagicSuffix.txt)</li>
+<li> no potions (or scrolls or keys) drop except rejuvs. no gold drops. improved drops. (TreasureClassEx.txt)</li>
+<li> Elite and Exceptional armor/weapons have no level requirement. (armor.txt, weapons.txt)</li>
+<li> Gems and Runes have no level requirement. (misc.txt)</li>
+<li> nine improved runewords (the ones with + in front of their name are enabled ladder-only runewords): (Runes.txt)
+</ul>
+<ol style="margin-bottom:13px">
+<li> +<a href="diablo-2-images/runeword-images/Dragon.jpg">Dragon</a>; 3os body-armor/shield; Sur+Lo+Sol; lvl 31 holy fire aura (originally lvl 14); replaced +3-5 to all attributes with +155% MF</li>
+<li> +<a href="diablo-2-images/runeword-images/Dream.jpg">Dream</a>; 3os shield; Io+Jah+Pul; lvl 31 holy shock aura (originally lvl 15), +155% MF</li>
+<li> +<a href="diablo-2-images/runeword-images/Edge.jpg">Edge</a>; 3os missile; Tir+Tal+Amn; lvl 31 thorns aura (originally lvl 15), replaced +5-10 to all attributes with +155% MF, reduce vendor prices 80%</li>
+<li> <a href="diablo-2-images/runeword-images/Enigma.jpg">Enigma</a>; 3os body-armor; Jah+Ith+Ber; +260% to defense (originally +750 defense), +155% to magic find (originally +8%MF/lvl), +60 to Teleport (originally +1), +60 to Find Item, removed +2 to all skills, removed +str/lvl, removed +45% movement speed, removed heal-kill, required level 24</li>
+<li> +<a href="diablo-2-images/runeword-images/Insight.jpg">Insight</a>; 4os polearm/staff; Ral+Tir+Tal+Sol; lvl 31 meditation aura (originally lvl 12-17), +155% MF (originally 23%), required level 7</li>
+<li> +<a href="diablo-2-images/runeword-images/Lawbringer.jpg">Lawbringer</a>; 3os hammer/sceptor/sword; Amn+Lem+Ko; lvl 31 sanctuary aura (originally 16-18), replaced cold dmg with +155% MF</li>
+<li> <a href="diablo-2-images/runeword-images/Lore.jpg">Lore</a>; 2os helm; Ort+Sol; +3 to all skills (originally +1), +155% magic find</li>
+<li> <a href="diablo-2-images/runeword-images/Malice.jpg">Malice</a>; 3os melee weapon; Hel+Amn+Ith (originally Ith+El+Eth); +40% faster attack speed, +50 max damage, +10% mana steal, +190% damage, +13% life steal, -5 life regen, removed +100% chance of open wounds</li>
+<li> <a href="diablo-2-images/runeword-images/Rhyme.jpg">Rhyme</a>; 2os shield; Shael+Eth; +155% magic find</li>
+</ol>
+(take note: in vanilla/non-modded Diablo II, the items with the most MF [Magic Find] gain is Wealth, Cow King complete set, M'avina's complete set, and the Gull dagger -- all of which give +100% MF each. source: <a href="http://fabd.github.io/diablo2/wiki/itemswith.html#mag%25">http://fabd.github.io/diablo2/wiki/itemswith.html#mag%</a>)<br><br>
+Installation instructions:<br>
+<ol style="margin-bottom:13px">
+  <li> Once you have the ZIP file downloaded, extract the files. In Windows it's right-click and click "Extract All..."</li>
+  <li> You should have a <i>CMod\</i> folder in the directory of your CMod.zip file. Go into that folder. You should see a <i>data\</i> folder.</li>
+  <li> Move the "data" folder to <i>C:\Program Files (x86)\Diablo II\</i> You can do this by right-clicking the "data" folder and selecting "Cut" and then cruising to <i>C:\Program Files (x86)\Diablo II\</i> with Windows-Explorer/File-browser and right-clicking a blank spot and clicking "Paste" What is in this "data" folder is the mod. Now we need to create a way to execute Diablo II in a way that uses these files, that is, this mod:</li>
+  <li> Warning: If you are using Windows 8.0 your Screenshots you take in game and sometimes old mod outputs get put into 
+<i>C:\Users\<u title="Change this to what your Windows 8 Username is." style="cursor:help"><font color="red">y</font><font color="green">o</font><font color="blue">u</font><font color="purple">r</font><font color="red">W</font><font color="green">i</font><font color="blue">n</font><font color="purple">8</font><font color="red">U</font><font color="green">s</font><font color="blue">e</font><font color="purple">r</font><font color="red">n</font><font color="green">a</font><font color="blue">m</font><font color="purple">e</font></u>\AppData\Local\VirtualStore\Program Files (x86)\Diablo II\</i> in that directory and in the data folder in that directory, respectively. If you have used another mod in the past, continue to install this mod in <i>C:\Program Files (x86)\Diablo II\</i> However, delete the data folder in
+<i>C:\Users\<u title="Change this to what your Windows 8 Username is." style="cursor:help"><font color="green">y</font><font color="blue">o</font><font color="purple">u</font><font color="red">r</font><font color="green">W</font><font color="blue">i</font><font color="purple">n</font><font color="red">8</font><font color="green">U</font><font color="blue">s</font><font color="purple">e</font><font color="red">r</font><font color="green">n</font><font color="blue">a</font><font color="purple">m</font><font color="red">e</font></u>\AppData\Local\VirtualStore\Program Files (x86)\Diablo II\</i> The reason Windows 8.0 has this directory is because Windows 8.0 doesn't allow a typical user to have write access to anything in <i>C:\Program Files (x86)\</i>, so if you want your Diablo II.exe to have updated files only for your user in <i>C:\Program Files (x86)\Diablo II\</i> you put them in
+<i>C:\Users\<u title="Change this to what your Windows 8 Username is." style="cursor:help"><font color="blue">y</font><font color="purple">o</font><font color="red">u</font><font color="green">r</font><font color="blue">W</font><font color="purple">i</font><font color="red">n</font><font color="green">8</font><font color="blue">U</font><font color="purple">s</font><font color="red">e</font><font color="green">r</font><font color="blue">n</font><font color="purple">a</font><font color="red">m</font><font color="green">e</font></u>\AppData\Local\VirtualStore\Program Files (x86)\Diablo II\</i>. Take note that 
+<i>C:\Users\<u title="Change this to what your Windows 8 Username is." style="cursor:help"><font color="purple">y</font><font color="red">o</font><font color="green">u</font><font color="blue">r</font><font color="purple">W</font><font color="red">i</font><font color="green">n</font><font color="blue">8</font><font color="purple">U</font><font color="red">s</font><font color="green">e</font><font color="blue">r</font><font color="purple">n</font><font color="red">a</font><font color="green">m</font><font color="blue">e</font></u>\AppData\</i> is Hidden so you'll need to go into the menu at the top of your File Explorer window and look for the option to be able to View Hidden Files.</li>
+  <li> Inside of <i>C:\Program Files (x86)\Diablo II\</i> right-click Diablo II.exe and create shortcut, which is automatically put onto the Desktop on Windows 8.0. On Windows 10 you'll want to cut and paste that shortcut file (its name will be <i>Diablo II.exe - Shortcut</i>) to the Desktop. I'd recommend renaming your shortcut to something like <i>Diablo II CMod</i>.</li>
+  <li> Go your Desktop and right-click your shortcut and select "Properties" at the bottom of the context menu that pops up.</li>
+  <li> Put " -direct -txt" in front of the text in the Target: textfield so that it says something like: "C:\Program Files (x86)\Diablo II\Diablo II.exe" -direct -txt</li>
+  <li> Click "Apply" button at the bottom-right of the Properties window.</li>
+  <li> Click "OK" button at the bottom-left of the Properties window. The window will close.</li>
+</ol>
+Now when you want to start Diablo II with this mod double-left-click this shortcut and it'll run Diablo II with the mod! All other ways you ran Diablo II will run Diablo II like normal without this mod because by default Diablo II does not process the <i>C:\Program Files (x86)\Diablo II\data\</i> Folder unless 'Diablo II.exe' is executed with the -direct -txt command-line options. You will know you're playing this mod when you go to Charsi and some items <a href="#will-have-much-higher-nums">will have much higher numbers than vanilla/normal's Diablo 2</a> to certain magic attributes (like +5 Light Radius than +1 Light Radius). (Be sure to use this shortcut for SINGLE PLAYER ONLY...do not try to enter battle.net with it..I really do not know what happens when you try to xd)
+<br><br>
+Notice: after running Diablo II with this mod around 20 .bin files are gonna show up in <i>C:\Program Files (x86)\Diablo II\data\global\excel\</i> on Windows 10 and around 20 .bin files are gonna show up in 
+<i>C:\Users\<u title="Change this to what your Windows 8 Username is." style="cursor:help"><font color="red">y</font><font color="green">o</font><font color="blue">u</font><font color="purple">r</font><font color="red">W</font><font color="green">i</font><font color="blue">n</font><font color="purple">8</font><font color="red">U</font><font color="green">s</font><font color="blue">e</font><font color="purple">r</font><font color="red">n</font><font color="green">a</font><font color="blue">m</font><font color="purple">e</font></u>\AppData\Local\VirtualStore\Program Files (x86)\Diablo II\data\global\excel\</i> on Windows 8.0. Diablo II.exe creates these bin files with the -txt command-line option that you executed through your CMod shortcut to Diablo II.exe. The reason there are more bin files than the 7 txt files that CMod originally came with is because Diablo II.exe pre-compiles (ie. make them faster to read for itself due to the smaller filesize) all of the txt files that are in its MPQ files (basically Blizzard's compression file format and filetype: <a href="https://en.wikipedia.org/wiki/MPQ">https://en.wikipedia.org/wiki/MPQ</a>) in-memory, and Diablo II.exe sees your -txt flag passed through your Diablo II.exe CMod shortcut and immediately says: "You need the txts in the data/ folder in Diablo II's installation root directory (ie. on Windows 10 is exclusively at <i>C:\Program Files (x86)\Diablo II\</i> and in Windows 8.0 you can replace stuff in that [ie. <i>C:\Program Files (x86)\Diablo II\</i>] with the stuff in 
+<i>C:\Users\<u title="Change this to what your Windows 8 Username is." style="cursor:help"><font color="green">y</font><font color="blue">o</font><font color="purple">u</font><font color="red">r</font><font color="green">W</font><font color="blue">i</font><font color="purple">n</font><font color="red">8</font><font color="green">U</font><font color="blue">s</font><font color="purple">e</font><font color="red">r</font><font color="green">n</font><font color="blue">a</font><font color="purple">m</font><font color="red">e</font></u>\AppData\Local\VirtualStore\Program Files (x86)\Diablo II\</i>) to be converted from txt to bin so that it can be read by Diablo II with your -direct option. So I'm just gonna dump all of the MPQ txts in the global MPQ collection at address /data/global/excel/" and walla! There you have .bin files in those directories I described above. I'm 39% sure they should never be a problem. In my mod 90% of those .bin generated files are actually originals generated from the vanilla game configuration/engine/settings/internal-data extracted from its MPQ files (primarily d2data.mpq, d2exp.mpq, &amp; Patch_D2.mpq, I'm 20% sure).
+<br><br>
+<h3>My Diablo II ChangeLog:</h3>
+
+<p class="patch-paragraph">Patch 1.14d (7th of June, 2016): implemented Blizzard Error &amp; System Survey to aid troubleshoot
+Diablo II.exe assertions/crashes.</p>
+
+<p class="patch-paragraph">Patch 1.14c (18th of May, 2016): nGlide wrapper now work?</p>
+
+<p class="patch-paragraph">Patch 1.14b (7th of April, 2016): -3dfx glide wrapper works?
+Capped frame rate at 200 (although single-player is still capped at 25)
+Minor gameplay fix: mercs can't become "An Evil Force"</p>
+
+<p class="patch-paragraph">Patch 1.14a (10th of March, 2016): Windows 7/8.0/8.1/10 now work without XP mode<br>
+Characters now saved in C:\Users\<u title="Change this to what your Windows Username is." style="cursor:help"><font color="blue">y</font><font color="purple">o</font><font color="red">u</font><font color="green">r</font><font color="blue">W</font><font color="purple">i</font><font color="red">n</font><font color="green">d</font><font color="blue">o</font><font color="purple">w</font><font color="red">s</font><font color="blue">XP</font><font color="green">7</font><font color="blue">8</font><font color="purple">10</font><font color="green">U</font><font color="blue">s</font><font color="purple">e</font><font color="red">r</font><font color="green">n</font><font color="blue">a</font><font color="purple">m</font><font color="red">e</font></u>\Saved Games\Diablo II\<br>
+instead of C:\whateverIdon'tCareanymoreContactMeAndIWillTellYou</p>
+
+<p class="patch-paragraph">Patch 1.13d (27th of October, 2011): Ignoring players in battle.net functionality has implemented a
+filtering file mechanism.<br>
+2 Major gameplay bugs fixed (duping &amp; unintended aura stacking)<br>
+4 Minor gameplay bugs fixed (merc aura stacking, color coded game names,
+disconnection when watching cinematics, &amp; game crash in windowed mode with
+sound disabled and playing a cinematic)</p>
+
+<p class="patch-paragraph">Patch 1.13c (23rd of March, 2010): Special bosses for the top 3% players.<br>
+4 major gameplay bugs fixed (duping, tppking, remote player disconnect,
+unintended aura stacking)<br>
+20+ other things have changed. However here are the highlights:<br>
+- game music doesn't stop when the Diablo II.exe window gains/loses focus.<br>
+- Barb's leap would lock if hit just before leaping.<br>
+- Den of Evil quest now gives Respecialization capabilities: that is, you get
+  all of your stat/skill points back to completely redistribute!<br>
+- when Diablo II.exe is in windowed mode the window can now be maximized --
+  stretched.<br>
+- gold bank limit not bound by level.<br>
+- hardcore character creation has no requirements. It used to be that you had
+  to defeat Normal difficulty with another character on your system to create a
+  hardcore character (I'm 19-47% sure).<br>
+- Oblivion Knight's Iron Maiden curse, which was prominent in Act 4 normal if
+  you're at all any type of melee strategist at any level, has been removed.<br>
+- added (?) -nosound Diablo II.exe option<br>
+- WW on Barb mana cost cut in half. Masteries with Barb critical strike
+  increased by 10%. Werebear for druid's health increased by 25%, &amp; 12
+  other skills (these being virtually meaningless) were changed aross Assassin,
+  Paladin, Druid, Necro, &amp; Sorc.</p>
+
+<p class="patch-paragraph">Patch 1.12 (17th of June, 2008)</p>
+
+<p class="patch-paragraph">Patch 1.10 (28th of October, 2003) implemented Synergy bonuses.<br>
+Implemented the World Event (which is virtually reserved for the top 2% best players on Battle.net)</p>
+
+<p class="patch-paragraph">Patch 1.0 (29th of June, 2000)</p>
+
+<p class="patch-paragraph">Refer to Blizzard Entertainment's <a href="miscellaneous-files/Patch.txt">Patch.txt</a> (Diablo II's
+ChangeLog/Revision-History/Patch-Change-Information) that gets installed when
+you install Diablo II on your computer and update Diablo II with the latest
+patch (in this case, 1.14d). This Patch.txt is located and called:<br>
+C:\Program Files (x86)\Diablo II\Patch.txt</p>
+
+<br><br>
+<a name="will-have-much-higher-nums" style="font-size:1.2em;text-decoration:underline">will have much higher numbers than vanilla/normal's Diablo 2</a>:
+OK so 90% of the time there will be at least one magical item in Charsi's shop items that has attributes that are much (like x5+) more than in normal/vanilla Diablo 2. If Charsi doesn't, then go into the Blood Moor for 1 second and come back to Charsi and relook at what she has. Here are some screenshots that I took installing this mod with the current CMod.zip and given installation instructions with a fresh/pure/legit level 1:<br>
+<ol>
+<li><a href="diablo-2-images/d2-screenshot-win10_1.jpg">diablo-2-images/d2-screenshot-win10_1.jpg</a></li>
+<li><a href="diablo-2-images/d2-screenshot-win10_2.jpg">diablo-2-images/d2-screenshot-win10_2.jpg</a></li>
+<li><a href="diablo-2-images/d2-screenshot-win10_3.jpg">diablo-2-images/d2-screenshot-win10_3.jpg</a></li>
+<li><a href="diablo-2-images/d2-screenshot-win10_4.jpg">diablo-2-images/d2-screenshot-win10_4.jpg</a></li>
+<li><a href="diablo-2-images/d2-screenshot-win10_5.jpg">diablo-2-images/d2-screenshot-win10_5.jpg</a></li>
+<li><a href="diablo-2-images/d2-screenshot-win10_6.jpg">diablo-2-images/d2-screenshot-win10_6.jpg</a></li>
+<li><a href="diablo-2-images/d2-screenshot-win8_1_1.jpg">diablo-2-images/d2-screenshot-win8_1_1.jpg</a></li>
+<li><a href="diablo-2-images/d2-screenshot-win8_1_2.jpg">diablo-2-images/d2-screenshot-win8_1_2.jpg</a></li>
+<li><a href="diablo-2-images/d2-screenshot-win8_1_3.jpg">diablo-2-images/d2-screenshot-win8_1_3.jpg</a></li>
+<li><a href="diablo-2-images/d2-screenshot-win8_1_4.jpg">diablo-2-images/d2-screenshot-win8_1_4.jpg</a></li>
+<li><a href="diablo-2-images/d2-screenshot-win8_1_5.jpg">diablo-2-images/d2-screenshot-win8_1_5.jpg</a></li>
+<li><a href="diablo-2-images/d2-screenshot-win8_2_1.jpg">diablo-2-images/d2-screenshot-win8_2_1.jpg</a></li>
+</ol>
+I did these in Windowed mode (instead of fullscreen-mode). To enable that mode, in your Diablo II.exe shortcut on your Desktop:
+<div style="padding-left:30px">
+Put " -w" in front of the text in the Target: textfield of your Diablo II.exe Shortcut so that it says something like: "C:\Program Files (x86)\Diablo II\Diablo II.exe" -direct -txt -w
+</div>
+</div>
+
+<h3 style="color:#770000">Hacking Diablo 2 below</h3>
+<hr style="border:1px solid red">
+
+<div class="mysection"><a name="pre-install"><b>&Delta;</b></a> What are the system requirements for using my scripts?:<br>
+The perl scripts require perl5 to run. You have two options for getting perl on Windows:<br>
+1) Strawberry Perl (google it).<br>
+2) Cygwin (google it) and select to install perl when you get the list of installable software.<br>
+The go program/script runner/interpreter/compiler can be downloaded from the Go Language (google it) website.<br>
+Both with go1.7 and perl5 you run <a href="#using-cmd-exe-on-windows">via cmd.exe</a> on Windows:<br>
+perl my-perl-script.pl<br>
+go run my-go-script-code.go
+</div>
+
+<div class="mysection"><a name="change-pl"><b>&Delta;</b></a> How can I edit/change the hex code of my d2s file while loading properly in Diablo II?<br>
+Use my perl script <a href="diablo-2-downloads/change.txt">change.pl</a> (this can edit/overwrite, but does not add-to or insert.)<br>
+Simply call it like so with your perl interpreter <a href="#using-cmd-exe-on-windows">via cmd.exe</a>:<br>
+perl change.pl "@5make00000000"<br>
+This will make at address 5 (that is, byte offset/address 0x05/0x5/5) in your targeted d2s file to binary value 00000000.<br>
+With this script not only is the value at address 5 changed (which it never is in this case) but the checksum in the file is fixed.
+<a href="diablo-2-downloads/change.txt">change.pl</a> targets the D2s file at <a href="#d2s-env-variable">environmental variable %DIABLO_II_CHAR%</a>.<br>
+Here is another example of changing a d2s file (notice: this only alters, not adds to):<br>
+perl change.pl "@37make00001111" "@643make11111111" "@644make11111111" "@645make11111111"<br>
+This at address 37 makes the character/toon able to go to nightmare and hell difficulties.<br>
+The others partially makes all waypoints for the character/toon, which apparently is at d2s file byte offset 643, 644, and 645. NOTICE: these are bytes we are dealing with, which is composed of 8 binary values: from 00000000 to 11111111 which could also be hexically called 0x00 and 0xff or from 0 to 255.
+</div>
+
+<div class="mysection"><a name="d2s-env-variable"><b>&Delta;</b></a> How do I add environmental variable %DIABLO_II_CHAR% on windows?<br>
+right-click My Computer, select Properties, select Environmental Variables, add "DIABLO_II_CHAR" without the quotes and give a value to something like:<br>
+C:\Users\<u title="Change this to what your Windows Username is." style="cursor:help"><font color="blue">y</font><font color="purple">o</font><font color="red">u</font><font color="green">r</font><font color="blue">W</font><font color="purple">i</font><font color="red">n</font><font color="green">d</font><font color="blue">o</font><font color="purple">w</font><font color="red">s</font><font color="green">U</font><font color="blue">s</font><font color="purple">e</font><font color="red">r</font><font color="green">n</font><font color="blue">a</font><font color="purple">m</font><font color="red">e</font></u>\Saved Games\Diablo II\<u title="Change this to what you named your Character to in Diablo II." style="cursor:help"><font color="blue">y</font><font color="black">o</font><font color="orange">u</font><font color="blue">r</font><font color="black">D</font><font color="orange">i</font><font color="blue">a</font><font color="black">b</font><font color="orange">l</font><font color="blue">o</font><font color="black">I</font><font color="orange">I</font><font color="blue">C</font><font color="black">h</font><font color="orange">a</font><font color="blue">r</font><font color="black">a</font><font color="orange">c</font><font color="blue">t</font><font color="black">e</font><font color="orange">r</font><font color="blue">N</font><font color="black">a</font><font color="orange">m</font><font color="blue">e</font></u>.d2s<br>
+close/restart all instances of cmd.exe to make sure it is updated. Type "echo %DIABLO_II_CHAR%" without the quotes into <a href="#using-cmd-exe-on-windows">your cmd.exe</a> terminal to see if the terminal has updated with the system-wide environmental variables.
+</div>
+
+<div class="mysection"><a name="using-cmd-exe-on-windows"><b>&Delta;</b></a> How do I use cmd.exe on windows?<br>
+Hold windows key and press r. Type in cmd.exe and press ENTER.
+This is your Windows DOS shell/terminal that you use to execute Perl and Go code/scripts/files.
+If you want to open your cmd.exe in a particular directory, in the windows explorer hold shift and right-click on a blank space and select "open command window here" without the quotes..this works with Windows 8 and Windows 10 for sure.
+</div>
+
+<div class="mysection"><a name="running-bat-on-windows"><b>&Delta;</b></a> How do I create/use .bat files on Windows?<br>
+Fire up notepad and type this in:<br>
+<a href="#d2s-env-variable">echo %DIABLO_II_CHAR%</a><br>
+perl -e "print('This is perl')"<br>
+Save the file as "whatever.bat" (without the quotes) to your Desktop.<br>
+Hold shift and right-click an empty space on your desktop.<br>
+Select the "Open command window here" option.<br>
+Now type: .\whatever.bat<br>
+Great!<br>
+Now you can use this text-file/batch-file/.bat-file to call <a href="#change-pl">the change.pl</a> and <a href="#jm-inserter">the JM-inserter.go</a>, for example:<br>
+go run JM-inserter.go runes_zod<br>
+perl change.pl "@5make00000000"<br>
+Assuming you also have change.pl and JM-inserter.go in the CWD (current work directory) (that is, in this case, on the desktop) and you have <a href="#pre-install">the Go Language and Perl5 installed</a>.
+</div>
+
+<div class="mysection"><b>&Delta;</b> How can I edit my player stats including free stat points?<br>
+Note: boosting Vitality and Energy does not increase health points or mana points. You must put points (from free stat points) in the game to vitality/energy to increase your health/mana. So even if you have 1000 health points you can set vitality to 25 and your health points will not suffer.<br>
+Assuming you have free stat &amp; free skill points you can use this perl script to write it into the d2s file:<br>
+<a href="diablo-2-downloads/give-stats.txt">View give-stats.pl</a><br>
+This tool outputs what you use with <a href="#change-pl">see about change.pl</a>.<br>
+You can <a href="#running-bat-on-windows">use a batch/.bat file</a> to make this easier.
+</div>
+
+<div class="mysection"><a name="jm-inserter"><b>&Delta;</b></a> How do I insert/add items into my d2s file?:<br>
+<a href="diablo-2-downloads/JM-inserter.txt">View JM-inserter.go</a><br>
+This is a Go1.7 script/program that you call with Go like:<br>
+(When you have Go installed.. from <a href="#using-cmd-exe-on-windows">within a cmd.exe</a> terminal.)<br>
+go run JM-inserter.go 1000800065000022f6860782251813be86e03f<br>
+go run JM-inserter.go runes_shael<br>
+go run JM-inserter.go runes_zod<br>
+go run JM-inserter.go gems_skull<br>
+go run JM-inserter.go gems_sapphire<br>
+The first command inserts a horadric cube into the top-left of the inventory...be sure the space is available before inserting. And be sure to backup your .d2s file before doing this.<br>
+The other commands insert a shael rune, a zod rune, a perfect skull, and a perfect sapphire respectively into the top-left part of the cube space..be sure the space is available for doing this, so only call one of these commands at a time while physically moving the item out of the cube &amp; Save and Exit &amp; insert the next item.<br>
+This edits the d2s file that is in the system's environmental variable DIABLO_II_CHAR which in windows is Right-click My Computer, advanced settings, environmental variables and then have DIABLO_II_CHAR set to something like:<br>
+C:\Users\Nile7\Saved Games\Diablo II\YetAnotherToon.d2s<br>ie.
+C:\Users\<u title="Change this to what your Windows Username is." style="cursor:help"><font color="blue">y</font><font color="purple">o</font><font color="red">u</font><font color="green">r</font><font color="blue">W</font><font color="purple">i</font><font color="red">n</font><font color="green">d</font><font color="blue">o</font><font color="purple">w</font><font color="red">s</font><font color="green">U</font><font color="blue">s</font><font color="purple">e</font><font color="red">r</font><font color="green">n</font><font color="blue">a</font><font color="purple">m</font><font color="red">e</font></u>\Saved Games\Diablo II\<u title="Change this to what you named your Character to in Diablo II." style="cursor:help"><font color="blue">y</font><font color="black">o</font><font color="orange">u</font><font color="blue">r</font><font color="black">D</font><font color="orange">i</font><font color="blue">a</font><font color="black">b</font><font color="orange">l</font><font color="blue">o</font><font color="black">I</font><font color="orange">I</font><font color="blue">C</font><font color="black">h</font><font color="orange">a</font><font color="blue">r</font><font color="black">a</font><font color="orange">c</font><font color="blue">t</font><font color="black">e</font><font color="orange">r</font><font color="blue">N</font><font color="black">a</font><font color="orange">m</font><font color="blue">e</font></u>.d2s<br>
+That is, the character save file you wish to insert an/the item into.<br>
+This adds the item to your d2s file..however you'll need to fix the checksum because your d2s file has been altered (if you try loading the d2s file now in Diablo II you'll get the error: "Generic bad file"), so...a solution is to call <a href="#change-pl">see about change.pl</a>:<br>
+perl change.pl "@5make00000000"<br>
+Which virtually makes no change to the file other than fix its checksum.<br>
+See also <a href="#running-bat-on-windows">using a batch/.bat file</a> to make this easier to edit your commands.
+</div>
+
+<div class="mysection"><b>&Delta;</b> How do I get the JM/item codes to insert using the Go script/code <a href="#jm-inserter">JM-inserter.go</a>?<br>
+Here are the two perl scripts to get the JM/item codes (If you look at a D2s character save file in hex format every item you have starts with 'JM') and where they are (belt/cube/inventory/stash).<br>
+<a href="diablo-2-downloads/JM-find-codes.txt">View JM-find-codes.pl</a><br>
+<a href="diablo-2-downloads/print-item-location.txt">View print-item-location.pl</a> (this is called from JM-find-codes.pl)
+</div>
+
+<div class="mysection"><b>&Delta;</b> How can I edit my skill tree?<br>
+So depending on the stats you have -- free stat points, free skill points, gold in inventory, gold in stash, the location of your skills is going to change.<br>
+I created a perl script to create output that you can copy and paste into an HTML5 program (that you open with your web browser):<br>
+<a href="diablo-2-downloads/get-skill-data.txt">View get-skill-data.pl</a><br>
+<a href="diablo-2-downloads/change-skill-data/view.html">Goto change-skill-data/view.html</a> (I use sorceress images but the tool can be used for any class.)<br>
+<a href="diablo-2-downloads/change-skill-data.zip">Download offline version of the change-skill-data HTML5 program</a> (353kb)<br> 
+The above gives-you/outputs that use <a href="#change-pl">see about change.pl</a><br>
+See also <a href="#running-bat-on-windows">using a batch/.bat file</a> to make this easier to edit your commands.
+</div>
+
+<div class="mysection"><b>&Delta;</b> How can I make my d2s toon/character free to go into any difficulty and have all waypoints?<br>
+I've got some good news and bad news..<br>
+good news: we can do virtually all of this.<br>
+bad news: you have to start in act 1 in all difficulties.<br>
+<a href="diablo-2-downloads/make-free.txt">View make-free.pl</a><br>
+The output of this perl script can edit your character to give them complete freedom using <a href="#change-pl">see about change.pl</a><br>
+Which can be accomplished like so <a href="#using-cmd-exe-on-windows">via cmd.exe</a>:<br>
+perl make-free.pl &gt; mychanges.bat<br>
+Then edit mychanges.bat to something like:<br>
+perl change.pl "Whatever is already there in changes.bat"<br>
+And in cmd.exe/your-command-line you type in to execute the .bat/batch-file:<br>
+.\mychanges.bat<br>
+See also <a href="#running-bat-on-windows">using a batch/.bat file</a> to make this easier to edit your commands.
+</div>
+
+<div class="mysection"><b>&Delta;</b> How do I observe changes to my d2s file?<br>
+I know what you mean. Figuring out what has changed between files using a hex editor is a pain.<br>
+To know the changes of the d2s file after playing a session of Diablo 2 I created these handy perl scripts:<br>
+<a href="diablo-2-downloads/load_d2s.txt">View load_d2s.pl</a><br>
+<a href="diablo-2-downloads/myconfig.txt">View myconfig.pm</a><br>
+<a href="diablo-2-downloads/changes.txt">View changes.pl</a><br>
+So basically what you do is is you go:<br>
+perl load_d2s.pl #this copies your D2S character save file to loaded.d2s<br>
+#Play some Diablo II and Save and Exit<br>
+perl changes.pl #observe the changes!<br>
+But wait, there's more! These scripts make it easy to prevent catastrophe and clean up the CWD (that is, current working directory):<br>
+<a href="diablo-2-downloads/revert.txt">View revert.pl</a> (replace your current d2s file with the one provided in the CWD created by load_d2s.pl)<br>
+<a href="diablo-2-downloads/make-perma.txt">View make-perma.pl</a> (make your current d2s file permanent by removing the loaded d2s file in the CWD)<br>
+Aaaaand...this is pretty important..to actually make changes to your d2s file (&amp; to fix its checksum to-boot) <a href="#change-pl">see about change.pl</a>
+</div>
+
+<div class="mysection"><b>&Delta;</b> What are the checksum algorithms for various programming languages?:<br>
+// C, C++, C#, Java8, Perl5, Python3<br>
+// They all do the same thing: calculate/generate/compute the checksum of a given d2s file and output it into the console/screen/cout/stdout/terminal/shell.<br>
+// Actually the perl not only computes the checksum, but also gives the checksum already in the file.<br>
+<a href="diablo-2-downloads/Checksums.zip">Download Checksums.zip</a> (4.6kb)<br>
+<a href="diablo-2-downloads/Checksums/">View Checksums code</a> (contained in the ZIP file)<br>
+To actually compile/run these programs google as follows:<br>
+Visual Studio Express Desktop Edition (this will allow you to compile C/C++/C#; Open developer prompt: cl chksum.c; cl /EHsc chksum.cpp; csc chksum.cs)<br>
+JDK download (this will allow you to compile/run java8 code/class-files; javac chksum.java &amp;&amp; java chksum)<br>
+Strawberry Perl<br>
+Python 3 download
+</div>
+
+<hr>
+<br><br>
+
+<h4 style="color:#000077">A funny Diablo 2 meshed/created 17 second audio OGG I created with official Diablo 2 sound effects and Audacity</h4>
+<div class="mysection" style="border:4px solid black;margin-bottom:30px">
+<audio controls="" preload="none" style="width:220px;float:right" data-startoffset="0" data-mwtitle="Necro-killed-by-sorc.ogg" data-mwprovider="Blizzard Entertainment">
+<source src="miscellaneous-files/Necro-killed-by-sorc.ogg" type="audio/ogg; codecs=&quot;vorbis&quot;" data-title="Ogg file (50 kbps)" data-shorttitle="Ogg source" data-width="0" data-height="0" />
+</audio>
+Sorceress VS evil Necromancer.<br>
+(17 seconds, Ogg data, Vorbis audio, mono, 22050 Hz, 111,119-bytes/111KB)<br>
+(wav shorts ripped from d2sfx.mpq &amp; d2xtalk.mpq with <a href="https://github.com/Kanma/MPQExtractor">MPQExtractor</a> (<code>for i in d2sfx d2xtalk; do mkdir $i-out || break; ./MPQExtractor -l $i-list.txt -e '*' -f -o $i-out/ $i.mpq; done</code>) and mixed together in Audacity <a href="https://www.google.com/search?q=audacity">[1]</a> <a href="https://www.audacityteam.org/">[2]</a> <a href="https://www.fosshub.com/Audacity.html/audacity-win-2.1.3.zip">[3]</a>)
+</div>
+<br><br>
+</body>
+</html>

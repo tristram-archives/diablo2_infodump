@@ -1,0 +1,242 @@
+Defense (ac)<br>
+Defense vs. Missile (ac-miss)<br>
+Defense vs. Melee (ac-hth)<br>
+Damage Reduced by (red-dmg)<br>
+Damage Reduced by (red-dmg%)<br>
+Enhanced Defense (ac%)<br>
+Magic Damage Reduced by (red-mag)<br>
+to Strength (str)<br>
+to Dexterity (dex)<br>
+to Vitality (vit)<br>
+to Energy (enr)<br>
+to Mana (mana)<br>
+Increase Maximum Mana (mana%)<br>
+to Life (hp)<br>
+Increase Maximum Life (hp%)<br>
+to Attack Rating (att)<br>
+Increased Chance of Blocking (block)<br>
+to Minimum Cold Damage (cold-min)<br>
+to Maximum Cold Damage (cold-max)<br>
+ (cold-len)<br>
+to Minimum Fire Damage (fire-min)<br>
+to Maximum Fire Damage (fire-max)<br>
+to Minimum Lightning Damage (ltng-min)<br>
+to Maximum Lightning Damage (ltng-max)<br>
+to Minimum Poison Damage (pois-min)<br>
+to Maximum Poison Damage (pois-max)<br>
+ (pois-len)<br>
+ (dmg-min)<br>
+ (dmg-max)<br>
+ (dmg%)<br>
+Damage Taken Goes To Mana (dmg-to-mana)<br>
+Fire Resist (res-fire)<br>
+to Maximum Fire Resist (res-fire-max)<br>
+Lightning Resist (res-ltng)<br>
+to Maximum Lightning Resist (res-ltng-max)<br>
+Cold Resist (res-cold)<br>
+to Maximum Cold Resist (res-cold-max)<br>
+Magic Resist (res-mag)<br>
+to Maximum Magic Resist (res-mag-max)<br>
+Poison Resist (res-pois)<br>
+to Maximum Poison Resist (res-pois-max)<br>
+Fire Resist (res-all)<br>
+to Maximum Fire Resist (res-all-max)<br>
+Fire Absorb (abs-fire%)<br>
+Fire Absorb (abs-fire)<br>
+Lightning Absorb (abs-ltng%)<br>
+Lightning Absorb (abs-ltng)<br>
+Magic Absorb (abs-mag%)<br>
+Magic Absorb (abs-mag)<br>
+Cold Absorb (abs-cold%)<br>
+Cold Absorb (abs-cold)<br>
+ (dur)<br>
+Increase Maximum Durability (dur%)<br>
+Replenish Life (regen)<br>
+Attacker Takes Damage of (thorns)<br>
+Increased Attack Speed (swing1)<br>
+Increased Attack Speed (swing2)<br>
+Increased Attack Speed (swing3)<br>
+Extra Gold from Monsters (gold%)<br>
+Better Chance of Getting Magic Items (mag%)<br>
+Knockback (knock)<br>
+Heal Stamina Plus (regen-stam)<br>
+Regenerate Mana (regen-mana)<br>
+Maximum Stamina (stam)<br>
+ (time)<br>
+Mana stolen per hit (manasteal)<br>
+Life stolen per hit (lifesteal)<br>
+to Amazon Skill Levels (ama)<br>
+to Amazon Skill Levels (pal)<br>
+to Amazon Skill Levels (nec)<br>
+to Amazon Skill Levels (sor)<br>
+to Amazon Skill Levels (bar)<br>
+ (herb)<br>
+to Light Radius (light)<br>
+ (color)<br>
+Requirements (ease)<br>
+Faster Run/Walk (move1)<br>
+Faster Run/Walk (move2)<br>
+Faster Run/Walk (move3)<br>
+Faster Hit Recovery (balance1)<br>
+Faster Hit Recovery (balance2)<br>
+Faster Hit Recovery (balance3)<br>
+Faster Block Rate (block1)<br>
+Faster Block Rate (block2)<br>
+Faster Block Rate (block3)<br>
+Faster Cast Rate (cast1)<br>
+Faster Cast Rate (cast2)<br>
+Faster Cast Rate (cast3)<br>
+Poison Length Reduced by (res-pois-len)<br>
+Damage (dmg)<br>
+Hit Causes Monster to Flee (howl)<br>
+Hit Blinds Target (stupidity)<br>
+Ignore Target's Defense (ignore-ac)<br>
+Target Defense (reduce-ac)<br>
+Prevent Monster Heal (noheal)<br>
+Half Freeze Duration (half-freeze)<br>
+Bonus to Attack Rating (att%)<br>
+to Monster Defense Per Hit (dmg-ac)<br>
+Damage to Demons (dmg-demon)<br>
+Damage to Undead (dmg-undead)<br>
+to Attack Rating against Demons (att-demon)<br>
+to Attack Rating against Undead (att-undead)<br>
+Throwable (throw)<br>
+to Fire Skills (fireskill)<br>
+to All Skills (allskills)<br>
+Attacker Takes Lightning Damage of (light-thorns)<br>
+Freezes target (freeze)<br>
+Chance of Open Wounds (openwounds)<br>
+Chance of Crushing Blow (crush)<br>
+Kick Damage (kick)<br>
+to Mana after each Kill (mana-kill)<br>
+Life after each Demon Kill (demon-heal)<br>
+ (bloody)<br>
+Deadly Strike (deadly)<br>
+Slows Target by (slow)<br>
+Cannot Be Frozen (nofreeze)<br>
+Slower Stamina Drain (stamdrain)<br>
+ (reanimate)<br>
+Piercing Attack (pierce)<br>
+Fires Magic Arrows (magicarrow)<br>
+Fires Explosive Arrows or Bolts (explosivearrow)<br>
+to Amazon Skill Levels (dru)<br>
+to Amazon Skill Levels (ass)<br>
+ (skill)<br>
++%d to Javelin and Spear Skills (skilltab)<br>
+ (aura)<br>
+%d%% Chance to cast level %d %s on attack (att-skill)<br>
+%d%% Chance to cast level %d %s on striking (hit-skill)<br>
+%d%% Chance to cast level %d %s when struck (gethit-skill)<br>
+ (sock)<br>
+to Minimum Fire Damage (dmg-fire)<br>
+to Minimum Lightning Damage (dmg-ltng)<br>
++%d magic damage (dmg-mag)<br>
+to Minimum Cold Damage (dmg-cold)<br>
+to Minimum Poison Damage (dmg-pois)<br>
+ (dmg-throw)<br>
+to Minimum Damage (dmg-norm)<br>
+Defense (ac/lvl)<br>
+Enhanced Defense (ac%/lvl)<br>
+to Life (hp/lvl)<br>
+to Mana (mana/lvl)<br>
+to Maximum Damage (dmg/lvl)<br>
+Enhanced Maximum Damage (dmg%/lvl)<br>
+to Strength (str/lvl)<br>
+to Dexterity (dex/lvl)<br>
+to Energy (enr/lvl)<br>
+to Vitality (vit/lvl)<br>
+to Attack Rating (att/lvl)<br>
+Bonus to Attack Rating (att%/lvl)<br>
+to Maximum Cold Damage (dmg-cold/lvl)<br>
+to Maximum Fire Damage (dmg-fire/lvl)<br>
+to Maximum Lightning Damage (dmg-ltng/lvl)<br>
+to Maximum Poison Damage (dmg-pois/lvl)<br>
+Cold Resist (res-cold/lvl)<br>
+Fire Resist (res-fire/lvl)<br>
+Lightning Resist (res-ltng/lvl)<br>
+Poison Resist (res-pois/lvl)<br>
+Absorbs Cold Damage (abs-cold/lvl)<br>
+Absorbs Fire Damage (abs-fire/lvl)<br>
+Absorbs Lightning Damage (abs-ltng/lvl)<br>
+ (abs-pois/lvl)<br>
+Attacker Takes Damage of (thorns/lvl)<br>
+Extra Gold from Monsters (gold%/lvl)<br>
+Better Chance of Getting Magic Items (mag%/lvl)<br>
+Heal Stamina Plus (regen-stam/lvl)<br>
+Maximum Stamina (stam/lvl)<br>
+Damage to Demons (dmg-dem/lvl)<br>
+Damage to Undead (dmg-und/lvl)<br>
+to Attack Rating against Demons (att-dem/lvl)<br>
+to Attack Rating against Undead (att-und/lvl)<br>
+Chance of Crushing Blow (crush/lvl)<br>
+Chance of Open Wounds (wounds/lvl)<br>
+Kick Damage (kick/lvl)<br>
+Deadly Strike (deadly/lvl)<br>
+Repairs %d durability per second (rep-dur)<br>
+Replenishes quantity (rep-quant)<br>
+Increased Stack Size (stack)<br>
+Defense (ac/time)<br>
+Enhanced Defense (ac%/time)<br>
+to Life (hp/time)<br>
+to Mana (mana/time)<br>
+to Maximum Damage (dmg/time)<br>
+Enhanced Maximum Damage (dmg%/time)<br>
+to Strength (str/time)<br>
+to Dexterity (dex/time)<br>
+to Energy (enr/time)<br>
+to Vitality (vit/time)<br>
+to Attack Rating (att/time)<br>
+Bonus to Attack Rating (att%/time)<br>
+to Maximum Cold Damage (dmg-cold/time)<br>
+to Maximum Fire Damage (dmg-fire/time)<br>
+to Maximum Lightning Damage (dmg-ltng/time)<br>
+to Maximum Poison Damage (dmg-pois/time)<br>
+Cold Resist (res-cold/time)<br>
+Fire Resist (res-fire/time)<br>
+Lightning Resist (res-ltng/time)<br>
+Poison Resist (res-pois/time)<br>
+Absorbs Cold Damage (abs-cold/time)<br>
+Absorbs Fire Damage (abs-fire/time)<br>
+Absorbs Lightning Damage (abs-ltng/time)<br>
+ (abs-pois/time)<br>
+Extra Gold from Monsters (gold%/time)<br>
+Better Chance of Getting Magic Items (mag%/time)<br>
+Heal Stamina Plus (regen-stam/time)<br>
+Maximum Stamina (stam/time)<br>
+Damage to Demons (dmg-dem/time)<br>
+Damage to Undead (dmg-und/time)<br>
+to Attack Rating against Demons (att-dem/time)<br>
+to Attack Rating against Undead (att-und/time)<br>
+Chance of Crushing Blow (crush/time)<br>
+Chance of Open Wounds (wounds/time)<br>
+Kick Damage (kick/time)<br>
+Deadly Strike (deadly/time)<br>
+ (pierce-fire)<br>
+ (pierce-ltng)<br>
+ (pierce-cold)<br>
+ (pierce-pois)<br>
+ (indestruct)<br>
+(%d/%d Charges) (charged)<br>
+ (extra-fire)<br>
+ (extra-ltng)<br>
+ (extra-cold)<br>
+ (extra-pois)<br>
+to Minimum Fire Damage (dmg-elem)<br>
+to Minimum Fire Damage (dmg-elem-min)<br>
+to Maximum Fire Damage (dmg-elem-max)<br>
+to Strength (all-stats)<br>
+ (addxp)<br>
+ (heal-kill)<br>
+ (cheap)<br>
+ (rip)<br>
+ (att-mon%)<br>
+ (dmg-mon%)<br>
+ (kill-skill)<br>
+ (death-skill)<br>
+ (levelup-skill)<br>
+ (skill-rand)<br>
+ (fade)<br>
+ (levelreq)<br>
+ (ethereal)<br>
+ (oskill)<br>
+ (state)<br>

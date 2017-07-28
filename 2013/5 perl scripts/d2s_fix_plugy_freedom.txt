@@ -1,0 +1,93 @@
+#From $From_D2s to $To_D2s:
+#- Added all waypoints
+#- Can now access Nightmare and Hell difficulties
+use warnings;
+use strict;
+
+#<config>
+my $From_D2s = 'OhYes.d2s';
+my $To_D2s = 'delete_me.d2s';
+#</config>
+
+
+
+
+#Open for reading the original D2S file.
+open(my ${f1}, '<', $From_D2s) or die $!;
+
+#First calculate checksum
+my $c = 0;  #checksum
+my $loc = 0;
+while(sysread(${f1}, my $s, 1)){
+  my ($byte) = unpack('C', $s);
+  if($loc == 12 || $loc == 13 || $loc == 14 || $loc == 15){
+    $byte = 0;
+  }
+  elsif($loc == 37){  #nm/hell
+    $byte = 15;
+  }
+  elsif($loc >= 643 && $loc <= 647){  #normal waypoints
+    $byte = 255;
+  }
+  elsif($loc >= 667 && $loc <= 671){  #nightmare waypoints
+    $byte = 255;
+  }
+  elsif($loc >= 691 && $loc <= 695){  #hell waypoints
+    $byte = 255;
+  }
+  if($c < 0){
+    $byte++;
+  }
+  $c = $byte + $c * 2;
+  undef $byte;
+  ($c) = unpack('l', pack('l', $c));
+  $loc++;
+}
+
+#Now create $To_D2s with the new checksum and new name.
+$loc = 0;
+sysseek(${f1}, 0, 0);
+open(my ${f2}, '>', $To_D2s) or die $!;
+while(sysread(${f1}, my $s, 1)){
+  if($loc == 12){ #insert the checksum.
+    syswrite(${f2}, pack('L', $c), 4);
+    $loc++;
+    next;
+  }
+  elsif($loc == 13 || $loc == 14 || $loc == 15){
+    $loc++;
+    next;
+  }
+  elsif($loc == 37){  #insert Hell availability
+    syswrite(${f2}, pack('C', 15), 1);
+    $loc++;
+    next;
+  }
+  elsif($loc >= 643 && $loc <= 647){  #normal waypoints
+    syswrite(${f2}, pack('C', 255), 1);
+    $loc++;
+    next;
+  }
+  elsif($loc >= 667 && $loc <= 671){  #nightmare waypoints
+    syswrite(${f2}, pack('C', 255), 1);
+    $loc++;
+    next;
+  }
+  elsif($loc >= 691 && $loc <= 695){ #insert Hell waypoints.
+    syswrite(${f2}, pack('C', 255), 1);
+    $loc++;
+    next;
+  }
+  syswrite(${f2}, $s, 1);
+  $loc++;
+}
+undef $loc;
+undef $c;
+close ${f1};
+close ${f2};
+print <<EOF;
+From $From_D2s to $To_D2s:
+- Added all waypoints
+- Can now access Nightmare and Hell difficulties
+EOF
+

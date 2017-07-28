@@ -1,0 +1,51 @@
+#!/usr/bin/perl
+
+use warnings;
+use strict;
+use feature 'say';
+=pod
+This assumes you have free stat and skill pts to distribute!!
+=cut
+
+my ($id1, $v1, #strength
+    $id2, $v2, #energy
+    $id3, $v3, #dexterity
+    $id4, $v4, #vitality
+    $id5, $v5) #free stat points
+= (
+  #organize into ID number 9-bits long
+  &v(0,9), &v(250, 10),
+  &v(1,9), &v(15, 10),  #XXX edit what you want
+  &v(2,9), &v(250, 10),
+  &v(3,9), &v(25, 10),  #XXX edit however
+  &v(4,9), &v(300, 10)    #XXX change me
+);
+#the prepended '1' is for the free skill pt ID
+#to make the string into 8-bit sections
+#to make valid change.pl commands.
+my $binary_stream = "1$v5$id5$v4$id4$v3$id3$v2$id2$v1$id1";
+
+#say $binary_stream; #say what we wish to alter in our D2S file.
+#hmmm...we are taking chunks of $binary_stream starting from the front.
+my $binary_stream_location = -8;
+#the location in the d2s file.
+my $byte_location = 767;
+while(1){
+  #did we fall off the $binary_stream string?
+  if(length($binary_stream) + $binary_stream_location < 0){last;}
+  #print out the change.pl command.
+  print qq("\@${byte_location}make), 
+    substr($binary_stream, $binary_stream_location, 8), qq(" );
+  #& yes we are making chunks starting and the end and working ourselves
+  #left.
+  $binary_stream_location -= 8;
+  #and our BYTE location is working itself forward.
+  $byte_location++;
+}
+say '';
+
+#value: number/integer $value into binary string of length $length
+sub v{
+  my ($value, $length) = @_;
+  return sprintf("%0${length}b", $value);
+}

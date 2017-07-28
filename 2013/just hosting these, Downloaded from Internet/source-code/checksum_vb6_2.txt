@@ -1,0 +1,22 @@
+$MyFile=”PutYourCharNameHere.d2s”
+$MyFileSize=FileGetSize($MyFile)
+
+dim $byteA[$MyFileSize]
+$MyFileHandle=FileOpen($Myfile,16)
+for $k = 0 to $MyFileSize – 1
+$byteA[$k]=FileRead($MyFileHandle,1)
+Next
+FileClose($MyFileHandle)
+
+$byteA[0x1AB]=”0×02″ ; this makes Akara willing to reset your skills when you talk to her.
+
+FixCheckSum()
+;MsgBox(0, “Debug messege”,”Fixed in memory “)
+
+FileDelete($MyFile)
+$MyFileHandle=FileOpen($Myfile,17)
+for $k = 0 to $MyFileSize – 1
+FileWrite($MyFileHandle,$byteA[$k])
+Next
+FileClose($MyFileHandle)
+MsgBox(0, “Debug messege”,”Sum check fixed for file: ” & $MyFile)

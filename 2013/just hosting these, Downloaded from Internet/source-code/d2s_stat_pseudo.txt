@@ -1,0 +1,45 @@
+BOOL done = FALSE;
+
+while(done == FALSE)
+{
+i = read_field ( 9);
+
+switch(i) {
+case 0:
+strength = read_field (10); break;
+case 1:
+energy = read_field (10); break;
+case 2:
+dexterity = read_field (10); break;
+case 3:
+vitality = read_field (10); break;
+case 4:
+statp_remaining = read_field (10); break;
+case 5:
+skillp_remaining = read_field ( 8 ); break;
+case 6:
+life.current = read_field (21); break;
+case 7:
+life.base = read_field (21); break;
+case 8:
+mana.current = read_field ( 21); break;
+case 9:
+mana.base = read_field (21); break;
+case 10:
+stamina.current = read_field (21); break;
+case 11:
+stamina.base = read_field (21); break;
+case 12:
+level = read_field ( 7); break;
+case 13:
+experience = read_field (32); break;
+case 14:
+gold_in_inventory = read_field ( 25); break;
+case 15:
+gold_in_stash = read_field ( 25); break;
+case 0x1ff:
+done = TRUE; break;
+default:
+Error("Corrupt file: Invalid stats data terminator"); break;
+}
+} 

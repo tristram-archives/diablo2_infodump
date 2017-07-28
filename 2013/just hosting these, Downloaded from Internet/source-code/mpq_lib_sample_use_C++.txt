@@ -1,0 +1,12 @@
+/
+// Opens the main WarCraft 3 MPQ archive.
+//
+using(var Archive = new MpqLib.Mpq.CArchive("C:\\Program Files\\Warcraft III\\War3.mpq"))
+{
+	//
+	// Exports a file from the archive. The first path refers to the path inside the archive.
+	// The second path refers to where the file should be exported.
+	//
+	Archive.ExportFile("Sound\\Music\\mp3Music\\Comradeship.mp3", "C:\\Temp\\Comradeship.mp3");
+}
+

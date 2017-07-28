@@ -1,0 +1,270 @@
+find -type f -printf '%P\n' | sort | perl -ne 'BEGIN{@first;@second;@third;@fourth;@last;}if(m#/#){if(m#^website 2017#){push @second, $_;}elsif(m#^website 2015#){push @third, $_;}elsif(m#^website 2013#){push @fourth, $_;}else{push(@last,$_);}}else{push(@first,$_);}END{print @first, @second, @third, @fourth, @last;}'
+list-files-here-20170726.txt
+README.txt
+website 2017/CMod Work Folder not actually on website/magicPrefixSuffix2mod/114d_MagicPrefix.txt
+website 2017/CMod Work Folder not actually on website/magicPrefixSuffix2mod/114d_MagicSuffix.txt
+website 2017/CMod Work Folder not actually on website/magicPrefixSuffix2mod/analysis2.pl
+website 2017/CMod Work Folder not actually on website/magicPrefixSuffix2mod/analysis.pl
+website 2017/CMod Work Folder not actually on website/magicPrefixSuffix2mod/create-mod.pl
+website 2017/CMod Work Folder not actually on website/magicPrefixSuffix2mod/CsMagicPrefix.txt
+website 2017/CMod Work Folder not actually on website/magicPrefixSuffix2mod/CsMagicSuffix.txt
+website 2017/CMod Work Folder not actually on website/magicPrefixSuffix2mod/modifier-definitions.txt
+website 2017/CMod Work Folder not actually on website/magicPrefixSuffix2mod/mod_MagicPrefix.txt
+website 2017/CMod Work Folder not actually on website/magicPrefixSuffix2mod/mod_MagicSuffix.txt
+website 2017/CMod Work Folder not actually on website/magicPrefixSuffix2mod/out2.txt
+website 2017/CMod Work Folder not actually on website/magicPrefixSuffix2mod/out.txt
+website 2017/CMod Work Folder not actually on website/magicPrefixSuffix2mod/README.txt
+website 2017/CMod Work Folder not actually on website/originalDataFromDiabloII114dThatIChangeInCMod.zip
+website 2017/CMod Work Folder not actually on website/README.txt
+website 2017/d2-character-GeneralQor.html
+website 2017/diablo-2-downloads/change-skill-data/cold.png
+website 2017/diablo-2-downloads/change-skill-data/fire.png
+website 2017/diablo-2-downloads/change-skill-data/lightning.png
+website 2017/diablo-2-downloads/change-skill-data/view.htm
+website 2017/diablo-2-downloads/change-skill-data.zip
+website 2017/diablo-2-downloads/changes.txt
+website 2017/diablo-2-downloads/change.txt
+website 2017/diablo-2-downloads/Checksums/chksum.cpp.txt
+website 2017/diablo-2-downloads/Checksums/chksum.cs.txt
+website 2017/diablo-2-downloads/Checksums/chksum.c.txt
+website 2017/diablo-2-downloads/Checksums/chksum.java.txt
+website 2017/diablo-2-downloads/Checksums/chksum.py.txt
+website 2017/diablo-2-downloads/Checksums/chksums.pl.txt
+website 2017/diablo-2-downloads/Checksums.zip
+website 2017/diablo-2-downloads/CMod.zip
+website 2017/diablo-2-downloads/get-skill-data.txt
+website 2017/diablo-2-downloads/give-stats.txt
+website 2017/diablo-2-downloads/index.htm
+website 2017/diablo-2-downloads/JM-find-codes.txt
+website 2017/diablo-2-downloads/JM-inserter.txt
+website 2017/diablo-2-downloads/load_d2s.txt
+website 2017/diablo-2-downloads/make-free.txt
+website 2017/diablo-2-downloads/make-perma.txt
+website 2017/diablo-2-downloads/myconfig.txt
+website 2017/diablo-2-downloads/print-item-location.txt
+website 2017/diablo-2-downloads/revert.txt
+website 2017/diablo-2.html
+website 2017/diablo-2-images/CMod-drop-example1.jpg
+website 2017/diablo-2-images/CMod-drop-example2.jpg
+website 2017/diablo-2-images/d2-screenshot-win10_1.jpg
+website 2017/diablo-2-images/d2-screenshot-win10_2.jpg
+website 2017/diablo-2-images/d2-screenshot-win10_3.jpg
+website 2017/diablo-2-images/d2-screenshot-win10_4.jpg
+website 2017/diablo-2-images/d2-screenshot-win10_5.jpg
+website 2017/diablo-2-images/d2-screenshot-win10_6.jpg
+website 2017/diablo-2-images/d2-screenshot-win8_1_1.jpg
+website 2017/diablo-2-images/d2-screenshot-win8_1_2.jpg
+website 2017/diablo-2-images/d2-screenshot-win8_1_3.jpg
+website 2017/diablo-2-images/d2-screenshot-win8_1_4.jpg
+website 2017/diablo-2-images/d2-screenshot-win8_1_5.jpg
+website 2017/diablo-2-images/d2-screenshot-win8_2_1.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/GeneralQor-boots-cropped.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/GeneralQor-boots.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/GeneralQor-wand-cropped.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/GeneralQor-wand.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/inventory-crops-and-empty/cropped_1.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/inventory-crops-and-empty/cropped_2.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/inventory-crops-and-empty/cropped_3.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/inventory-crops-and-empty/cropped_4.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/inventory-crops-and-empty/cropped_5.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/inventory-crops-and-empty/cropped_6.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/inventory-crops-and-empty/cropped_7.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/inventory-crops-and-empty/cropped_8.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/inventory-crops-and-empty/emptied.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/Qor-price_reduction1-cropped.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/Qor-price_reduction1.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/Qor-price_reduction2-cropped.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/Qor-price_reduction2.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/Qor-price_reduction3-cropped.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/Qor-price_reduction3.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/Qor-price_reduction4-cropped.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/Qor-price_reduction4.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/Qor-price_reduction5-cropped.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/Qor-price_reduction5.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/Qor-skills1-clipped.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/Qor-skills1.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/Qor-skills2-clipped.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/Qor-skills2.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/Qor-skills3-clipped.jpg
+website 2017/diablo-2-images/diablo-2-character-general-qor/Qor-skills3.jpg
+website 2017/diablo-2-images/runeword-images/Dragon.jpg
+website 2017/diablo-2-images/runeword-images/Dream.jpg
+website 2017/diablo-2-images/runeword-images/Edge.jpg
+website 2017/diablo-2-images/runeword-images/Enigma.jpg
+website 2017/diablo-2-images/runeword-images/Insight.jpg
+website 2017/diablo-2-images/runeword-images/Lawbringer.jpg
+website 2017/diablo-2-images/runeword-images/Lore.jpg
+website 2017/diablo-2-images/runeword-images/Malice.jpg
+website 2017/diablo-2-images/runeword-images/Rhyme.jpg
+website 2017/miscellaneous-files/GeneralQor.d2s
+website 2017/miscellaneous-files/main.css
+website 2017/miscellaneous-files/Necro-killed-by-sorc.ogg
+website 2017/miscellaneous-files/Patch.txt
+website 2015, 21-code-files/all code.zip
+website 2015, 21-code-files/change.pl.txt
+website 2015, 21-code-files/change skill.html
+website 2015, 21-code-files/changes.pl.txt
+website 2015, 21-code-files/chksum.cpp.txt
+website 2015, 21-code-files/chksum.cs.txt
+website 2015, 21-code-files/chksum.c.txt
+website 2015, 21-code-files/chksum.java.txt
+website 2015, 21-code-files/chksum.py.txt
+website 2015, 21-code-files/chksums.pl.txt
+website 2015, 21-code-files/cold.png
+website 2015, 21-code-files/fire.png
+website 2015, 21-code-files/Form1.cs.txt
+website 2015, 21-code-files/get skill data.pl.txt
+website 2015, 21-code-files/give all waypoints.pl.txt
+website 2015, 21-code-files/give full rejuvs.pl.txt
+website 2015, 21-code-files/give stats.pl.txt
+website 2015, 21-code-files/lightning.png
+website 2015, 21-code-files/load_d2s.pl.txt
+website 2015, 21-code-files/make perma.pl.txt
+website 2015, 21-code-files/myconfig.pm.txt
+website 2015, 21-code-files/revert.pl.txt
+website 2015, 21-code-files/stats.pl.txt
+website 2015, 21-code-files/test.pl.txt
+website 2013/5 perl scripts/d2s_calc_checksum.txt
+website 2013/5 perl scripts/d2s_fix_freedom.txt
+website 2013/5 perl scripts/d2s_fix_plugy_freedom.txt
+website 2013/5 perl scripts/d2s_fix_skills.txt
+website 2013/5 perl scripts/d2s_show_info.txt
+website 2013/5 perl scripts/d2s_show_old_checksum.txt
+website 2013/CMod_withPlugY_113c_2013/data/global/excel/ItemStatCost.txt
+website 2013/CMod_withPlugY_113c_2013/data/global/excel/MagicPrefix.txt
+website 2013/CMod_withPlugY_113c_2013/data/global/excel/MagicSuffix.txt
+website 2013/CMod_withPlugY_113c_2013/data/global/excel/TreasureClassEx.txt
+website 2013/CMod_withPlugY_113c_2013/data/global/excel/UniqueItems.txt
+website 2013/CMod_withPlugY_113c_2013/PlugY.ini
+website 2013/CMod_withPlugY_113c_2013/README.txt
+website 2013/just hosting these, Downloaded from Internet/documentation/animations-tutorial-in-html.zip
+website 2013/just hosting these, Downloaded from Internet/documentation/d2s_109_docs_in_html.zip
+website 2013/just hosting these, Downloaded from Internet/documentation/d2s_110_format_table.htm
+website 2013/just hosting these, Downloaded from Internet/documentation/d2s_editor_manual_v1.09.pdf
+website 2013/just hosting these, Downloaded from Internet/documentation/d2s_notes.txt
+website 2013/just hosting these, Downloaded from Internet/documentation/d2s_save_file_format_1.13d.html
+website 2013/just hosting these, Downloaded from Internet/documentation/d2s_save_item_format_1.13d.html
+website 2013/just hosting these, Downloaded from Internet/documentation/d2s_save_skills_format_1.13d.html
+website 2013/just hosting these, Downloaded from Internet/documentation/dt1-docs-in-html.zip
+website 2013/just hosting these, Downloaded from Internet/documentation/extracting_diablo_2_animations.pdf
+website 2013/just hosting these, Downloaded from Internet/executables/cv52.zip
+website 2013/just hosting these, Downloaded from Internet/executables/cv5.zip
+website 2013/just hosting these, Downloaded from Internet/executables/cvdcc3.zip
+website 2013/just hosting these, Downloaded from Internet/executables/D2InventoryPK03122010.zip
+website 2013/just hosting these, Downloaded from Internet/executables/D2InventoryPKv1.6March2010.zip
+website 2013/just hosting these, Downloaded from Internet/executables/dc6maker3.zip
+website 2013/just hosting these, Downloaded from Internet/executables/DCC_Database.zip
+website 2013/just hosting these, Downloaded from Internet/executables/DRTest_11_16_08.zip
+website 2013/just hosting these, Downloaded from Internet/executables/DRTest.zip
+website 2013/just hosting these, Downloaded from Internet/executables/gfxinfo.zip
+website 2013/just hosting these, Downloaded from Internet/executables/resource_viewer.zip
+website 2013/just hosting these, Downloaded from Internet/executables/SixDice-v0.63.zip
+website 2013/just hosting these, Downloaded from Internet/executables/win_ds1edit_exe_2.zip
+website 2013/just hosting these, Downloaded from Internet/executables/WorldofWarcraftGraphics.zip
+website 2013/just hosting these, Downloaded from Internet/executables/zip.zip
+website 2013/just hosting these, Downloaded from Internet/miscellaneous/cof_file_listings.txt
+website 2013/just hosting these, Downloaded from Internet/miscellaneous/diablo_2_listfile2.txt
+website 2013/just hosting these, Downloaded from Internet/miscellaneous/diablo_2_listfile.txt
+website 2013/just hosting these, Downloaded from Internet/miscellaneous/itempack_da.zip
+website 2013/just hosting these, Downloaded from Internet/miscellaneous/itempack_fishysmelly.zip
+website 2013/just hosting these, Downloaded from Internet/miscellaneous/itempack_shadowtalon.zip
+website 2013/just hosting these, Downloaded from Internet/miscellaneous/palettes_for_paint_shop_pro.zip
+website 2013/just hosting these, Downloaded from Internet/miscellaneous/palettes_gifs.zip
+website 2013/just hosting these, Downloaded from Internet/mods/slash_mod_docs.txt
+website 2013/just hosting these, Downloaded from Internet/mods/slash_mod_for_1.13c.zip
+website 2013/just hosting these, Downloaded from Internet/Readme.txt
+website 2013/just hosting these, Downloaded from Internet/source-code/allegro_alpha_test.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/allegro_rgb_image_count.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/allegro_test.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/allegro_unknown.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/animdata_d2_cof.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/animdata_d2_converter_v2_1.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/animdata_d2_converter_v2_2.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/checksum_C++_1.txt
+website 2013/just hosting these, Downloaded from Internet/source-code/checksum_C++_2.txt
+website 2013/just hosting these, Downloaded from Internet/source-code/checksum_C++_3.txt
+website 2013/just hosting these, Downloaded from Internet/source-code/checksum_C.txt
+website 2013/just hosting these, Downloaded from Internet/source-code/checksum_perl.txt
+website 2013/just hosting these, Downloaded from Internet/source-code/checksum_python.txt
+website 2013/just hosting these, Downloaded from Internet/source-code/checksum_vb6_1.txt
+website 2013/just hosting these, Downloaded from Internet/source-code/checksum_vb6_2.txt
+website 2013/just hosting these, Downloaded from Internet/source-code/checksum_vb6_3.txt
+website 2013/just hosting these, Downloaded from Internet/source-code/cof_d2_file_unknown.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/cof_info.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/d2s_109.c
+website 2013/just hosting these, Downloaded from Internet/source-code/d2s_editor_2003-08-02.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/d2s_info_php.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/d2s_read_bits_C.txt
+website 2013/just hosting these, Downloaded from Internet/source-code/d2s_stat_pseudo.txt
+website 2013/just hosting these, Downloaded from Internet/source-code/dc6_color.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dc6_converter_1.0b.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dc6_converter_1.0c.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dc6_converter_alpha_rgb.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dc6_converter.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dc6_edit_1.01.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dc6_edit_1.02.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dc6_edit.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dc6_extr.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dc6_font_20111108.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dc6_font.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dc6_table.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dcc_doc.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dcc_encoder.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dcc_extract_recursive.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dcc_info.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dcc_mergev2.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dcc_merge.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/ds1_edit_src.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dt1_all.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/dt1_check.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/jamella-cpp-code.txt
+website 2013/just hosting these, Downloaded from Internet/source-code/jamella-diablo-ii-source-code.pdf
+website 2013/just hosting these, Downloaded from Internet/source-code/kill_counter.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/mpq_extractor-master.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/mpq_lib_sample_use_C++.txt
+website 2013/just hosting these, Downloaded from Internet/source-code/mpq_lib_source.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/mpq_stormlib_8.21.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/mpq_stormlib_doc.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/mpq_stormlib_sample_use_C++.txt
+website 2013/just hosting these, Downloaded from Internet/source-code/mpqview_s.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/palette_writer.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/Sir_General_D2Coding_Tutorial1.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/states_txt_colorshift_creator.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/test_gfx_maker.zip
+website 2013/just hosting these, Downloaded from Internet/source-code/txt_analyzer.zip
+5 personal tools like rename Character name/bin/d2-backupChar-Reads.sh
+5 personal tools like rename Character name/bin/d2-changeSkills-Reads.sh
+5 personal tools like rename Character name/bin/d2-insertItem-Alters.sh
+5 personal tools like rename Character name/bin/d2-makeFree-Safe.sh
+5 personal tools like rename Character name/bin/d2-renameChar-Safe.sh
+5 personal tools like rename Character name/bin/d2-showItems-Reads.sh
+5 personal tools like rename Character name/bin/d2-stam2rejuv-Reads.sh
+5 personal tools like rename Character name/bin/README.TXT
+5 personal tools like rename Character name/README.txt
+5 personal tools like rename Character name/share/d2-tools/change.pl
+5 personal tools like rename Character name/share/d2-tools/change skill.html
+5 personal tools like rename Character name/share/d2-tools/cold.png
+5 personal tools like rename Character name/share/d2-tools/fire.png
+5 personal tools like rename Character name/share/d2-tools/get skill data.pl
+5 personal tools like rename Character name/share/d2-tools/JM-find-codes.pl
+5 personal tools like rename Character name/share/d2-tools/JM-inserter.go
+5 personal tools like rename Character name/share/d2-tools/lightning.png
+5 personal tools like rename Character name/share/d2-tools/make free.pl
+5 personal tools like rename Character name/share/d2-tools/make perma.pl
+5 personal tools like rename Character name/share/d2-tools/print-item-location.pl
+5 personal tools like rename Character name/share/d2-tools/print-JM-potions.pl
+5 personal tools like rename Character name/share/d2-tools/rename-toon.pl
+5 personal tools like rename Character name/share/d2-tools/revert.pl
+5 personal tools like rename Character name/share/d2-tools/stam2rejuv.pl
+from-github-my-only-diablo2-repo/d2_inventory_screenshots_to_html-2017.sh
+from-github-my-only-diablo2-repo/d2_inventory_screenshots_to_html.sh
+from-github-my-only-diablo2-repo/diablo-2-rings-x5-mod-creator.pl
+from-github-my-only-diablo2-repo/image-difference-through-compositeness-research.sh
+from-github-my-only-diablo2-repo/README.txt
+Jamella Diablo II Editor C++/all_C++.txt
+Jamella Diablo II Editor C++/jamella-diablo-ii-source-code.pdf
+Jamella Diablo II Editor C++/pdf2c++/c++.txt
+Jamella Diablo II Editor C++/pdf2c++/jamella.pdf
+Jamella Diablo II Editor C++/pdf2c++/pdf2c++.txt
+Jamella Diablo II Editor C++/pdf2c++/rc-files-count.pl
+Jamella Diablo II Editor C++/README.txt

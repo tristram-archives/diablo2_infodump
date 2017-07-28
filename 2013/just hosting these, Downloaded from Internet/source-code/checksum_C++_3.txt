@@ -1,0 +1,19 @@
+// pucData - pointer to the byte stream of the .d2s file
+// iSize - number of bytes in the stream ( filesize )
+DWORD Checksum( unsigned char *pucData, int iSize )
+{
+    // delete old checksum at offset 0x0C
+    *((unsigned int*)(pucData+12)) = 0;
+
+    // init new checksum with 0
+    unsigned int uiCS = 0;
+
+    // this is the whole checksum calculation
+    for ( int i = 0; i < iSize; ++i )
+        uiCS = (uiCS<<1) + pucData[i] + ( uiCS & 0x80000000 ? 1 : 0 );
+
+    // write new checksum to stream
+    *((unsigned int*)(pucData+12)) = uiCS;
+    return uiCS;
+}
+

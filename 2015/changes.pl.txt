@@ -1,0 +1,61 @@
+use warnings;
+use strict;
+use myconfig qw/read_config/;
+
+my $d2s_original = read_config();
+#'C:\Users\user1\AppData\Local\VirtualStore\Program Files (x86)\Diablo II\Save\my_d.d2s';
+#'revert.d2s';
+my $d2s_loaded = 'loaded.d2s';
+
+if(! -f $d2s_original){
+  die 'wtf the character file does not exist.';
+}
+if(! -f $d2s_loaded){
+  die 'The d2s file is not loaded!!';
+}
+
+#if different sizes, abort.
+my (@s1, @s2);
+@s1 = stat($d2s_original);
+@s2 = stat($d2s_loaded);
+if(scalar(@s1) == 0){
+  die('unable to stat original d2s file.');
+}
+if(scalar(@s2) == 0){
+  die('unable to stat loaded d2s file.');
+}
+if($s1[7] != $s2[7]){
+  die 'Files are different sizes, cannot compare.';
+}
+
+#detect changes in the files.
+my (${f1}, ${f2});
+open(${f1}, '<', $d2s_original);
+open(${f2}, '<', $d2s_loaded);
+my ($b1, $b2);
+my $address = -1;
+my $changes = 0;
+while(sysread(${f1}, $b1, 1) == 1){
+  $address++;
+  sysread(${f2}, $b2, 1) or die 'Cannot read the loaded d2s file.';
+  #ignore the checksum changes.
+  #if($address >= 13 && $address <= 15){
+  #  next;
+  #}
+  if(ord($b1) != ord($b2)){
+    print('@ ', $address, ': ', ord($b2), '/', ord($b1), ' ');
+    print('B8:', (unpack('B8', $b2))[0], '/', (unpack('B8', $b1))[0], ' ');
+    print('H2:0x', (unpack('H2', $b2))[0], '/0x', (unpack('H2', $b1))[0], ' ');
+    print('b8:', (unpack('b8', $b2))[0], '/', (unpack('b8', $b1))[0], ' ');
+    print('h2:0x', (unpack('h2', $b2))[0], '/0x', (unpack('h2', $b1))[0], ' ');
+    print "\n";
+    $changes++;
+  }
+}
+
+if($changes == 0){
+  die 'The files are the same...dummy.';
+}
+else{
+  CORE::say "Total of #$changes byte changes.";
+}

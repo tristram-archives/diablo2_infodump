@@ -1,0 +1,63 @@
+//-----------------------------------------------------------------------------
+// Extracts an archived file and saves it to the disk.
+//
+// Parameters :
+//
+//   char * szArchiveName  - Archive file name
+//   char * szArchivedFile - Name/number of archived file.
+//   char * szFileName     - Name of the target disk file.
+
+static int ExtractFile(char * szArchiveName, char * szArchivedFile, char * szFileName)
+{
+    HANDLE hMpq   = NULL;          // Open archive handle
+    HANDLE hFile  = NULL;          // Archived file handle
+    HANDLE handle = NULL;          // Disk file handle
+    int    nError = ERROR_SUCCESS; // Result value
+
+    // Open an archive, e.g. "d2music.mpq"
+    if(nError == ERROR_SUCCESS)
+    {
+        if(!SFileOpenArchive(szArchiveName, 0, 0, &hMpq))
+            nError = GetLastError();
+    }
+    
+    // Open a file in the archive, e.g. "data\global\music\Act1\tristram.wav"
+    if(nError == ERROR_SUCCESS)            
+    {
+        if(!SFileOpenFileEx(hMpq, szArchivedFile, 0, &hFile))
+            nError = GetLastError()
+    }
+
+    // Create the target file
+    if(nError == ERROR_SUCCESS)
+    {
+        handle = CreateFile(szFileName, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, 0, NULL);
+        if(handle == INVALID_HANDLE_VALUE)
+            nError = GetLastError();
+    }
+
+    // Read the file from the archive
+    if(nError == ERROR_SUCCESS)
+    {
+        char  szBuffer[0x10000];
+        DWORD dwBytes = 1;
+
+        while(dwBytes > 0)
+        {
+            SFileReadFile(hFile, szBuffer, sizeof(szBuffer), &dwBytes, NULL);
+            if(dwBytes > 0)
+                WriteFile(handle, szBuffer, dwBytes, &dwBytes, NULL);
+        }
+    }        
+
+    // Cleanup and exit
+    if(handle != NULL)
+        CloseHandle(handle);
+    if(hFile != NULL)
+        SFileCloseFile(hFile);
+    if(hMpq != NULL)
+        SFileCloseArchive(hMpq);
+
+    return nError;
+}
+

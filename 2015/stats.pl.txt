@@ -1,0 +1,176 @@
+use warnings;
+use strict;
+use myconfig qw/read_config/;
+
+my $D2sDataFile = read_config();
+
+if(! -f $D2sDataFile){
+  die "$D2sDataFile does not exist! What do you want to change?";
+}
+
+my $all;
+{
+  local $/;
+  open(my ${f}, '<', $D2sDataFile) or die $!;
+  $all = <$f>;
+  close(${f});
+}
+
+my $skill_loc = index($all, 'if', 767);  #'gf' @ 765
+if($skill_loc == -1){ die ''; }
+my ($strength, $energy, $dexterity, $vitality, $statpts, $newskills,
+  $hitpoints, $maxhp, $mana, $maxmana, $stamina, $maxstamina, $level,
+  $experience, $gold, $goldbank) = split(//, '0' x 16);
+{
+  
+  #get binary string of pearls.
+  my $binary_stream = '';
+  for my $byte_loc (reverse(767 .. $skill_loc - 1)){
+    #b8 is reversed.
+    #B8 is 'C'
+    my ($byte) = unpack('B8', substr($all, $byte_loc, 1));
+    $binary_stream = $binary_stream . $byte;
+    undef $byte;
+  }
+  CORE::say $binary_stream, ' ', $skill_loc;
+  my @siz_info = qw{
+    strength:   10
+    energy:     10
+    dexterity:  10
+    vitality:   10
+    statpts:    10
+    newskills:  8
+    hitpoints:  21
+    maxhp:      21
+    mana:       21
+    maxmana:    21
+    stamina:    21
+    maxstamina: 21
+    level:      7
+    experience: 32
+    gold:       25
+    goldbank:   25
+  };
+  my ($strength_siz, $energy_siz, $dexterity_siz, $vitality_siz, $statpts_siz,
+  $newskills_siz, $hitpoints_siz, $maxhp_siz, $mana_siz, $maxmana_siz,
+  $stamina_siz, $maxstamina_siz, $level_siz, $experience_siz, $gold_siz,
+  $goldbank_siz) = grep { /^[0-9]+$/ } @siz_info;
+  undef @siz_info;
+  my $binary_stream_location = 0;
+  my $id_offset = 9;
+  while(1){
+    $binary_stream_location -= $id_offset;
+    my $id = &bin(substr($binary_stream, $binary_stream_location, 9));
+    print "ID Found: ",  $id, "\n";
+    if($id == 0){
+      $binary_stream_location -= $strength_siz;
+      $strength = &bin(substr($binary_stream, $binary_stream_location,
+        $strength_siz));
+    }
+    elsif($id == 1){
+      $binary_stream_location -= $energy_siz;
+      $energy = &bin(substr($binary_stream, $binary_stream_location,
+        $energy_siz));
+    }
+    elsif($id == 2){
+      $binary_stream_location -= $dexterity_siz;
+      $dexterity = &bin(substr($binary_stream, $binary_stream_location,
+        $dexterity_siz));
+    }
+    elsif($id == 3){
+      $binary_stream_location -= $vitality_siz;
+      $vitality = &bin(substr($binary_stream, $binary_stream_location,
+        $vitality_siz));
+    }
+    elsif($id == 4){
+      $binary_stream_location -= $statpts_siz;
+      $statpts = &bin(substr($binary_stream, $binary_stream_location,
+        $statpts_siz));
+    }
+    elsif($id == 5){
+      $binary_stream_location -= $newskills_siz;
+      $newskills = &bin(substr($binary_stream, $binary_stream_location,
+        $newskills_siz));
+    }
+    elsif($id == 6){
+      $binary_stream_location -= $hitpoints_siz;
+      $hitpoints = &bin(substr($binary_stream, $binary_stream_location,
+        $hitpoints_siz)) >> 8;
+    }
+    elsif($id == 7){
+      $binary_stream_location -= $maxhp_siz;
+      $maxhp = &bin(substr($binary_stream, $binary_stream_location,
+        $maxhp_siz)) >> 8;
+    }
+    elsif($id == 8){
+      $binary_stream_location -= $mana_siz;
+      $mana = &bin(substr($binary_stream, $binary_stream_location,
+        $mana_siz)) >> 8;
+    }
+    elsif($id == 9){
+      $binary_stream_location -= $maxmana_siz;
+      $maxmana = &bin(substr($binary_stream, $binary_stream_location,
+        $maxmana_siz)) >> 8;
+    }
+    elsif($id == 10){
+      $binary_stream_location -= $stamina_siz;
+      $stamina = &bin(substr($binary_stream, $binary_stream_location,
+        $stamina_siz)) >> 8;
+    }
+    elsif($id == 11){
+      $binary_stream_location -= $maxstamina_siz;
+      $maxstamina = &bin(substr($binary_stream, $binary_stream_location,
+        $maxstamina_siz)) >> 8;
+    }
+    elsif($id == 12){
+      $binary_stream_location -= $level_siz;
+      $level = &bin(substr($binary_stream, $binary_stream_location,
+        $level_siz));
+    }
+    elsif($id == 13){
+      $binary_stream_location -= $experience_siz;
+      $experience = &bin(substr($binary_stream, $binary_stream_location,
+        $experience_siz));
+    }
+    elsif($id == 14){
+      $binary_stream_location -= $gold_siz;
+      $gold = &bin(substr($binary_stream, $binary_stream_location,
+        $gold_siz));
+    }
+    elsif($id == 15){
+      $binary_stream_location -= $goldbank_siz;
+      $goldbank = &bin(substr($binary_stream, $binary_stream_location,
+        $goldbank_siz));
+      last;
+    }
+    else{
+      last;
+    }
+    undef $id;
+  }
+  undef $binary_stream_location;
+  undef $id_offset;
+}
+print <<EOF;
+Strength:   $strength
+Energy:     $energy
+Dexterity:  $dexterity
+Vitality:   $vitality
+Statpts:    $statpts
+Newskills:  $newskills
+Hitpoints:  $hitpoints
+MaxHP:      $maxhp
+Mana:       $mana
+MaxMana:    $maxmana
+Stamina:    $stamina
+MaxStamina: $maxstamina
+Level:      $level
+Experience: $experience
+Gold:       $gold
+GoldBank:   $goldbank
+
+EOF
+
+sub bin{
+  return oct('0b' . $_[0]);
+}

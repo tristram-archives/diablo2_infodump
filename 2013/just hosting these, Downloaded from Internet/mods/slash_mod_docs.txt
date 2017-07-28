@@ -1,0 +1,117 @@
+Diablo 2 1.13c Slash Mod
+
+
+
+Game: Diablo II - Lord of Destruction
+Hack Name: Slash (Semi-legit and semi-hack)
+Description: Adds legit styled features to enhance single player gameplay
+-------------------------------------------------------------------------
+****** WARNING: VERSION 1.13c ONLY, DON'T USE ON CLOSED BATTLE.NET ******
+-------------------------------------------------------------------------
+
+Installing
+----------
+
+Backup D2Game.dll and D2Gfx.dll in your Diablo II directory.
+Copy over the data folder, D2Game.dll, and D2Gfx.dll into your Diablo II directory.
+Then add -direct -txt after the "Target: ~Diablo II path" in the shortcut propterties.
+Play and enjoy the new features. But don't forget to stay off closed battle.net using this mod.
+
+Contact
+-------
+
+Any questions or suggestions contact me at andrew-haxz@hotmail.com
+And please, distribute this mod freely with any changes, I don't care if I get credited or not.
+
+Credits
+-------
+
+Credit me-not, but rather numerous people at the phrozenkeep for helping me.
+
+The features and files modified to add each feature
+---------------------------------------------------
+
+armor.txt
+ - Certain elite-level torsos can have 5-6 sockets
+
+armor.txt + itemtypes.txt + magicprefix.txt
+ - Socketed belts, boots, and gloves
+
+armor.txt + weapons.txt
+ - Nightmare vendors sell exceptional items only and hell vendors sell elite items only
+ - More colorful armor and weapons (higher inventory transform)
+
+cat_court.ds1 + superuniques.txt
+ - Flamespike the Crawler added back from classic Diablo II (removed in classic versions 1.05&+ and expansion)
+
+cubemain.txt
+ - Cube recipes to downgrade gems and runes
+ - Cube recipe to re-roll rares modified--it now works with item sizes up to 2x4 instead of 2x3
+ - Cube recipes to socket belts, boots, and gloves
+
+cubemain.txt + D2Game.dll + gems.txt + itemstatcost.txt + itemtypes.txt + misc.txt
++ properties.txt + treasureclassex.txt + patchstring.tbl + new gem graphics
+ - A new gem, amber
+ - Skulls changed to obsidian
+
+cubemain.txt + D2Game.dll + misc.txt
+ - Rejuvenation potions can be bought from vendors at an appropriate difficulty
+
+D2Game.dll
+ - Hellforge rune drop for hell increased (Mal - Zod)
+ - Telekinesis can pick up any item again
+ - The Secret Cow Level can now be accessed unlimited times, regardless if The Cow King has been killed
+
+D2Game.dll + weapons.txt
+ - Throwing potions can be bought from vendors (like in 1.07&- in classic)
+
+D2gfx.dll
+ - Multiple Diablo II: LoD windows can be ran
+
+experience.txt
+ - Level 100 experience number removed--because the maximum level is 99
+
+gamble.txt
+ - Jewels can be gambled
+
+invamn.dc6 ~ invzod.dc6
+ - Every rune has it's own unique color
+
+inventory.txt + tradestash.dc6
+ - Stash size increased from 6x8 to 10x8
+
+invjw1.dc6 ~ invjw6.dc6
+ - Jewels' colors enhanced
+
+invjwu.dc6 + invjwu2.dc6 + uniqueitems.txt
+ - The Rainbow Facets have a unique graphic
+
+itemtypes.txt + raresuffix.txt
+ - Rare charms can be found
+
+misc.txt
+ - Amulet, Charm, and Ring color transform enabled
+ - Amulets, Charms, and Rings can be personalized
+ - Keys stack to 20, tomes stack to 40
+ - Unnecessary healing and mana potions sold from vendors in nightmare and hell removed
+
+misc.txt + patchstring.tbl
+ - Runes display their rune number below the rune name
+
+misc.txt + perfectgem.wav + sounds.txt
+ - Perfects gems use the gem inventory sound found only in 1.07a-classic and expansion
+
+patchstring.tbl
+ - Belts, boots, and gloves effects' appear on gems and runes
+
+runes.txt
+ - Ladder runewords enabled
+ - Pattern + Plague runewords enabled
+ - 4 of the 2 rune runewords are enabled for belts, boots, and gloves
+
+uniqueitems.txt
+ - The Constricting Ring enabled--can only be obtained from Baal on hell, or gambling with a level 95&+ character
+ - Metalgrid gets another effect: curse resistance
+ - Metalgrid + Carrion Wind use the beta amulet and ring graphics
+ - Annihilus can be found from level 78&+ monsters and objects
+ - Hellfire Torch can be found from level 83&+ monsters and objects

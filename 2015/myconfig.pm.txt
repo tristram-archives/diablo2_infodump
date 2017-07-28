@@ -1,0 +1,16 @@
+use warnings;
+use strict;
+package myconfig;
+use feature qw/say/;
+use Exporter 'import';
+our @EXPORT_OK = qw/read_config/;
+
+sub read_config(){
+  if($^O =~ /linux/){
+    return '/home/xubuntu/.wine/drive_c/Program Files (x86)/Diablo II/Save/my_d.d2s';
+  }
+  return
+'C:\\Users\\user1\\AppData\\Local\\VirtualStore\\Program Files (x86)\\Diablo II\\Save\\my_d.d2s';
+}
+
+1;

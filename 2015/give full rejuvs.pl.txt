@@ -1,0 +1,174 @@
+use warnings;
+use strict;
+use myconfig qw/read_config/;
+
+my $D2sDataFile = read_config();
+#'C:\Users\user1\AppData\Local\VirtualStore\Program Files (x86)\Diablo II\Save\my_d.d2s';
+
+my $all;
+{
+  local $/;
+  open(my ${f}, '<', $D2sDataFile) or die $!;
+  $all = <$f>;
+  close(${f});
+}
+
+
+#=pod
+#PRE/POST-LOCATION
+#stamina: 62073707024a4d1000a0086500<_>0262073707024a4d100080
+#  1-bit in|-------------------------|1-bit in
+#                                  3-bits |----------------| 2-bits in
+#antidote:92073707024a4d1000a0006500<_>0292073707024a4d100080
+#                   |-------------| 3-bits in.
+#                                  3-bits |----------------| 2-bits in
+#stamina: 62073707024a4d1000a0086500<_>0262073707024a4d100080
+#antidote:92073707024a4d1000a0006500<_>0292073707024a4d100080
+#fullrejuv:  WHATEVER  d1000a0006500<_>022267c706024a4d100080
+#                                 1-bit in|-----------------|
+=pod
+my $fullrejuv_location_offset = 0;
+my $targeted_moving_fullrejuv_potion_location = 1784 + 
+  $fullrejuv_location_offset;
+my $fullrejuv_potion_data =
+  substr($all, $targeted_moving_fullrejuv_potion_location, 14);
+print 'our fullrejuv potion that moved: ';
+CORE::say +(unpack('H*', $fullrejuv_potion_data))[0];
+#exit 0;
+=cut
+
+#=pod
+my $items_loc = index($all, 'JM', 767);
+if($items_loc == -1){
+  die 'where are the items?';
+}
+
+#my $possibly_fullrejuv_code = '0' . 
+#  sprintf('%08b', 0x67) . sprintf('%08b', 0xc7) .
+#  sprintf('%08b', 0x06) . sprintf('%08b', 0x02) .
+#  sprintf('%08b', 0x4a) . sprintf('%08b', 0x4d);
+my $possibly_antidote_or_stamina_code = '0' . 
+  sprintf('%08b', 0x07) . sprintf('%08b', 0x37) .
+  sprintf('%08b', 0x07) . sprintf('%08b', 0x02);
+
+$all = substr($all, $items_loc);
+my @chars = unpack('C*', $all);
+$_ = sprintf('%08b', $_) for(@chars);
+my $chars = join('', @chars);
+#print $chars;
+my $pos=-1;
+my $count = 1;
+while( ($pos = index($chars, $possibly_antidote_or_stamina_code, $pos)) > -1){
+  #print '"@', ($pos + $items_loc),'make', sprintf('%08b', 0xd7), '" ';
+  #print '"@', ($pos + $items_loc + 1),'make', sprintf('%08b', 0x36), '" ';
+  #print '"@', ($pos + $items_loc + 2),'make', sprintf('%08b', 0x07), '" ';
+  #print '"@', ($pos + $items_loc + 3),'make', sprintf('%08b', 0x02), '" ';
+  my $real_pos = ($pos - ($pos % 8)) / 8 + $items_loc;
+
+#=pod
+  my $selection = &bin(substr($chars, $pos - ($pos % 8), 8));
+  $selection = ($selection & 0x0e) + 0x20; 
+  print '"@', $real_pos, 'make', sprintf('%08b', $selection),'" '; 
+  print '"@', ($real_pos + 1), 'make', sprintf('%08b', 0x67),'" '; 
+  print '"@', ($real_pos + 2), 'make', sprintf('%08b', 0xc7),'" '; 
+  print '"@', ($real_pos + 3), 'make', sprintf('%08b', 0x06),'" '; 
+#=cut
+  #CORE::say "antidote or stamina #$count?? located @ $pos/$real_pos";
+  #last;
+  $count++;
+  $pos++;
+}
+print "\n";
+
+sub bin{
+  return oct('0b' . $_[0]);
+}
+
+=pod
+# THIS IS POST-CODE FOR ANTIDOTE POTION
+my $possibly_antidote_code = '010' . 
+  sprintf('%08b', 0x07) . sprintf('%08b', 0x37) .
+  sprintf('%08b', 0x07) . sprintf('%08b', 0x02) .
+  sprintf('%08b', 0x4a) . sprintf('%08b', 0x4d) .
+  sprintf('%08b', 0x10) . sprintf('%08b', 0x00) .
+  '10';
+=cut
+
+=pod
+#THIS IS PRE-LOCATION FOR STAMINA POTION
+my $possibly_stamina_code = '0' .  #0x62
+  '00000111' . #0x07
+  '00110111' . #0x37
+  '00000111' . #0x07
+  '000000100100' . #0x024
+  '10100100' . #a4
+  '110100010000' . #d10
+  '0000' . '0000' . 
+  sprintf('%08b', 0xa0) . sprintf('%08b', 0x08) . 
+  sprintf('%08b', 0x65) . '00000000' . '0';
+=cut
+
+=pod
+#THIS IS PRE-LOCATION FOR ANTIDOTE POTION
+my $possibly_antidote_code = '0100' . #0x4
+  '10100100' . #a4
+  '110100010000' . #d10
+  '0000' . '0000' . 
+  sprintf('%08b', 0xa0) . sprintf('%08b', 0x00) . 
+  sprintf('%08b', 0x65) . '000';
+=cut
+
+=pod
+my $possibly_antidote_code = '010' .
+  sprintf('%08b', 0x07) . sprintf('%08b', 0x37) . 
+  sprintf('%08b', 0x07) . sprintf('%08b', 0x02) .
+  sprintf('%08b', 0x4a) . sprintf('%08b', 0x4d) .
+  sprintf('%08b', 0x10) . sprintf('%08b', 0x00);
+$all = substr($all, $items_loc);
+my @chars = unpack('C*', $all);
+$_ = sprintf('%08b', $_) for(@chars);
+my $chars = join('', @chars);
+#print $chars;
+my $pos=-1;
+my $count = 1;
+while( ($pos = index($chars, $possibly_antidote_code, $pos)) > -1){
+  #print '"@', ($pos + $items_loc),'make', sprintf('%08b', 0xd7), '" ';
+  #print '"@', ($pos + $items_loc + 1),'make', sprintf('%08b', 0x36), '" ';
+  #print '"@', ($pos + $items_loc + 2),'make', sprintf('%08b', 0x07), '" ';
+  #print '"@', ($pos + $items_loc + 3),'make', sprintf('%08b', 0x02), '" ';
+  CORE::say "antidote potion #$count?? located @ $pos";
+  #last;
+  $count++;
+  $pos++;
+}
+print "\n";
+=cut
+
+=pod
+$all = substr($all, $items_loc);
+my @chars = unpack('C*', $all);
+$_ = sprintf('%02x', $_) for(@chars);
+my $chars = join('', @chars);
+#print $chars;
+my $pos=-1;
+my $count = 1;
+while( ($pos = index($chars, '07370702', $pos)) > -1){
+  #print '"@', ($pos + $items_loc),'make', sprintf('%08b', 0xd7), '" ';
+  #print '"@', ($pos + $items_loc + 1),'make', sprintf('%08b', 0x36), '" ';
+  #print '"@', ($pos + $items_loc + 2),'make', sprintf('%08b', 0x07), '" ';
+  #print '"@', ($pos + $items_loc + 3),'make', sprintf('%08b', 0x02), '" ';
+  CORE::say "antidote potion #$count?? located @ $pos";
+  #last;
+  $count++;
+  $pos++;
+}
+print "\n";
+=cut
+
+
+=pod
+printf("%02x\n", $chars[12]);
+printf("%02x\n", $chars[13]);
+printf("%02x\n", $chars[14]);
+printf("%02x\n", $chars[15]);
+=cut

@@ -1,0 +1,185 @@
+mod_MagicPrefix.txt and CsMagicPrefix.txt are the same! whooooooooa.
+
+run create-mod.pl to x5 ring attributes from reading 114d_Magic*.txt
+
+Put mod_MagicPrefix.txt and mod_MagicSuffix.txt to:
+$D2_dir/data/global/excel/MagicPrefix.txt
+$D2_dir/data/global/excel/MagicSuffix.txt
+
+****BACK-UP/MOVE YOUR CURRENT CHARACTER DATA (.d2s)
+****because the mod may mess with your saves.
+
+Run Diablo 2 like:
+wine Diablo\ II.exe -direct -txt
+
+//Changes:
+Mod installed: stam; Values=25, 50
+Mod installed: att; Values=50, 100
+Mod installed: att; Values=105, 200
+Mod installed: att; Values=205, 300
+Mod installed: att; Values=305, 400
+Mod installed: att; Values=505, 600
+Mod installed: att; Values=605, 750
+Mod installed: mag%; Values=50, 75
+Mod installed: light; Values=5, 5
+Mod installed: light; Values=10, 10
+Mod installed: mana; Values=5, 25
+Mod installed: mana; Values=25, 50
+Mod installed: mana; Values=55, 100
+Mod installed: mana; Values=105, 150
+Mod installed: mana; Values=155, 200
+Mod installed: mana; Values=205, 300
+Mod installed: res-all; Values=75, 75
+Mod installed: res-cold; Values=25, 50
+Mod installed: res-cold; Values=55, 100
+Mod installed: res-cold; Values=105, 150
+Mod installed: res-cold; Values=155, 250
+Mod installed: res-fire; Values=25, 50
+Mod installed: res-fire; Values=55, 100
+Mod installed: res-fire; Values=105, 150
+Mod installed: res-fire; Values=155, 250
+Mod installed: res-ltng; Values=25, 50
+Mod installed: res-ltng; Values=55, 100
+Mod installed: res-ltng; Values=105, 150
+Mod installed: res-ltng; Values=155, 250
+Mod installed: res-pois; Values=25, 50
+Mod installed: res-pois; Values=55, 100
+Mod installed: res-pois; Values=55, 100
+Mod installed: res-pois; Values=105, 150
+Mod installed: res-pois; Values=155, 250
+Mod installed: mana-kill; Values=5, 5
+Mod installed: stam; Values=25, 50
+Mod installed: stam; Values=55, 100
+Mod installed: att; Values=50, 100
+Mod installed: att; Values=105, 200
+Mod installed: att; Values=205, 300
+Mod installed: att; Values=305, 400
+Mod installed: att; Values=405, 500
+Mod installed: att; Values=505, 600
+Mod installed: light; Values=5, 5
+Mod installed: light; Values=10, 10
+Mod installed: mag%; Values=25, 50
+Mod installed: mag%; Values=55, 75
+Mod installed: mana; Values=15, 25
+Mod installed: mana; Values=25, 50
+Mod installed: mana; Values=55, 100
+Mod installed: mana; Values=105, 150
+Mod installed: mana; Values=155, 200
+Mod installed: mana; Values=205, 300
+Mod installed: mana; Values=305, 450
+Mod installed: mana; Values=455, 600
+Mod installed: res-all; Values=15, 35
+Mod installed: res-all; Values=40, 55
+Mod installed: res-all; Values=60, 75
+Mod installed: res-cold; Values=25, 50
+Mod installed: res-cold; Values=55, 100
+Mod installed: res-cold; Values=105, 150
+Mod installed: res-fire; Values=55, 100
+Mod installed: res-fire; Values=105, 150
+Mod installed: res-ltng; Values=25, 50
+Mod installed: res-ltng; Values=55, 100
+Mod installed: res-ltng; Values=105, 150
+Mod installed: res-pois; Values=25, 50
+Mod installed: res-pois; Values=55, 100
+Mod installed: res-pois; Values=105, 150
+Mod installed: mana-kill; Values=5, 5
+Mod installed: res-fire; Values=25, 50
+Mod installed: mana; Values=5, 10
+Mod installed: res-cold; Values=25, 25
+Mod installed: res-fire; Values=25, 25
+Mod installed: res-ltng; Values=25, 25
+Mod installed: res-pois; Values=25, 25
+creating mod_MagicPrefix.txt
+
+
+Mod installed: red-dmg; Values=5, 5
+Mod installed: red-dmg; Values=10, 10
+Mod installed: red-mag; Values=5, 5
+Mod installed: red-mag; Values=10, 10
+Mod installed: cast1; Values=50, 50
+Mod installed: dmg-max; Values=5, 10
+Mod installed: dmg-max; Values=15, 20
+Mod installed: dmg-min; Values=15, 15
+Mod installed: dmg-min; Values=10, 10
+Mod installed: dex; Values=5, 5
+Mod installed: dex; Values=5, 15
+Mod installed: dex; Values=20, 30
+Mod installed: dex; Values=35, 50
+Mod installed: dex; Values=55, 75
+Mod installed: regen; Values=15, 15
+Mod installed: regen; Values=25, 25
+Mod installed: gold%; Values=200, 300
+Mod installed: mag%; Values=50, 95
+Mod installed: mana; Values=5, 5
+Mod installed: mana; Values=5, 25
+Mod installed: mana; Values=30, 50
+Mod installed: mana; Values=55, 75
+Mod installed: mana; Values=105, 150
+Mod installed: light; Values=5, 5
+Mod installed: light; Values=15, 15
+Mod installed: light; Values=25, 25
+Mod installed: hp; Values=5, 25
+Mod installed: hp; Values=25, 50
+Mod installed: hp; Values=55, 100
+Mod installed: hp; Values=105, 150
+Mod installed: hp; Values=155, 200
+Mod installed: lifesteal; Values=20, 35
+Mod installed: manasteal; Values=20, 40
+Mod installed: str; Values=5, 15
+Mod installed: str; Values=20, 30
+Mod installed: str; Values=35, 50
+Mod installed: str; Values=55, 75
+Mod installed: red-dmg; Values=5, 5
+Mod installed: red-dmg; Values=10, 10
+Mod installed: red-mag; Values=5, 5
+Mod installed: red-mag; Values=10, 10
+Mod installed: abs-fire; Values=10, 10
+Mod installed: abs-ltng; Values=10, 10
+Mod installed: abs-cold; Values=10, 10
+Mod installed: cast1; Values=50, 50
+Mod installed: dmg-max; Values=5, 5
+Mod installed: dmg-max; Values=15, 20
+Mod installed: dmg-min; Values=10, 15
+Mod installed: dmg-min; Values=20, 25
+Mod installed: dmg-min; Values=30, 45
+Mod installed: dmg-min; Values=50, 65
+Mod installed: dmg-pois; Values=855, 855
+Mod installed: dex; Values=5, 10
+Mod installed: dex; Values=15, 25
+Mod installed: dex; Values=30, 45
+Mod installed: dex; Values=50, 75
+Mod installed: dex; Values=80, 100
+Mod installed: regen; Values=15, 25
+Mod installed: regen; Values=30, 45
+Mod installed: gold%; Values=125, 200
+Mod installed: mag%; Values=25, 75
+Mod installed: mag%; Values=80, 125
+Mod installed: enr; Values=5, 15
+Mod installed: enr; Values=20, 30
+Mod installed: enr; Values=35, 50
+Mod installed: enr; Values=55, 75
+Mod installed: enr; Values=80, 100
+Mod installed: light; Values=5, 5
+Mod installed: light; Values=15, 15
+Mod installed: light; Values=25, 25
+Mod installed: hp; Values=5, 25
+Mod installed: hp; Values=30, 50
+Mod installed: hp; Values=55, 100
+Mod installed: hp; Values=105, 150
+Mod installed: hp; Values=155, 200
+Mod installed: lifesteal; Values=15, 20
+Mod installed: lifesteal; Values=25, 30
+Mod installed: lifesteal; Values=35, 40
+Mod installed: str; Values=5, 10
+Mod installed: str; Values=15, 25
+Mod installed: str; Values=30, 45
+Mod installed: str; Values=50, 75
+Mod installed: str; Values=80, 100
+Mod installed: dex; Values=5, 5
+Mod installed: str; Values=5, 5
+Mod installed: enr; Values=5, 5
+Mod installed: light; Values=5, 5
+Mod installed: manasteal; Values=10, 15
+Mod installed: manasteal; Values=20, 25
+Mod installed: manasteal; Values=30, 30
+creating mod_MagicSuffix.txt

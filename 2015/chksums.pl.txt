@@ -1,0 +1,41 @@
+use warnings;
+use strict;
+use File::Copy;
+use feature 'say';
+use myconfig qw/read_config/;
+
+my $D2sDataFile = read_config();
+
+if(! -f $D2sDataFile){
+  die "$D2sDataFile does not exist! Where can we get the checksum?";
+}
+
+my $all;
+{
+  local $/;
+  open(my ${f}, '<', $D2sDataFile);
+  $all = <$f>;
+  close(${f});
+}
+
+#say 'in file checksum: ', +(unpack('H8', &get_actual_checksum()))[0];
+say 'in file checksum: ', uc(&get_actual_checksum());
+say 'my checksum:      ', sprintf('%08X', &get_your_checksum());
+
+sub get_actual_checksum(){
+  #CORE::say +(unpack('H32', $all))[0];
+  #return pack('H*', substr((unpack('H32', $all))[0], 24, 8));
+  return unpack('H*', substr($all, 12, 4));
+}
+
+sub get_your_checksum(){
+  my $c = 0;
+  my $addr = 0;
+  my @cs = unpack('C*', $all);
+  for my $ct(@cs){
+    $ct += $c >> 31 & 1;
+    $c = (($addr >> 2 == 3) ? 0 : $ct) + ($c << 1);
+    $addr++;
+  }
+  return ($c & 0xff000000) >> 24 | ($c & 0xff0000) >> 8 | ($c & 0xff00) << 8 | ($c & 0xff) << 24;
+}

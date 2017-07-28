@@ -1,0 +1,37 @@
+use warnings;
+use strict;
+use File::Copy;
+use myconfig qw/read_config/;
+
+my $D2s_Location = read_config();
+#'C:\Users\user1\AppData\Local\VirtualStore\Program Files (x86)\Diablo II\Save\my_d.d2s';
+my $D2s_Loaded_Location = 'loaded.d2s';
+
+if( ! -f $D2s_Location ){
+  die('Our character file does not exist..aborting.');
+}
+if( -f $D2s_Loaded_Location){
+  my (@s1, @s2);
+  @s1 = stat($D2s_Loaded_Location);
+  @s2 = stat($D2s_Location);
+  if($s1[7] == $s2[7]){
+    #if they are the same..Abort.
+    my $D2s_Loaded_data;
+    my $D2s_data;
+    local $/;
+    open(my ${i1}, '<', $D2s_Loaded_Location) or die $!;
+    open(my ${i2}, '<', $D2s_Location) or die $!;
+    my $o1 = unpack('H*', <$i1>);
+    my $o2 = unpack('H*', <$i2>);
+    if(length($o1) != length($o2)){die 'wtf';} 
+    if($o1 eq $o2){
+      die('The loaded d2s file is the same as the current character.');
+    }
+  }
+}
+
+if(-f $D2s_Loaded_Location){
+  unlink $D2s_Loaded_Location or die("Unable to remove $D2s_Loaded_Location");
+}
+copy($D2s_Location, 'loaded.d2s');
+CORE::say 'D2S File loaded.';

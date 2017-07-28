@@ -1,0 +1,65 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Diagnostics;
+
+
+namespace d2_helper
+{
+  public partial class Form1 : Form
+  {
+    public Form1()
+    {
+      InitializeComponent();
+    }
+
+    private void btnGetRejuvs_Click(object sender, EventArgs e)
+    {
+      Process p = new Process();
+      try
+      {
+        p.StartInfo.FileName = "perl";
+        p.StartInfo.Arguments = "\"give full rejuvs.pl\"";
+        p.StartInfo.CreateNoWindow = false;
+        p.StartInfo.UseShellExecute = false;
+        p.StartInfo.RedirectStandardOutput = true;
+        p.StartInfo.WorkingDirectory = "C:\\Users\\user1\\Desktop";
+        //DataReceivedEventHandler dreh = p.OutputDataReceived;
+        p.Start();
+        //p.
+        string myout = p.StandardOutput.ReadToEnd();
+
+        while (myout.IndexOf("\r\n") >= 0)
+        {
+          myout = myout.Remove(myout.IndexOf("\r\n"));
+        }
+        myout = myout.TrimEnd(' ');
+        if (myout != "")
+        {
+          Console.WriteLine("Copied to clipboard: " + myout);
+          System.Windows.Forms.Clipboard.SetText(myout);
+          Console.WriteLine("Good luck.");
+        }
+        else
+        {
+          Console.WriteLine("No antidote/stamina potions to convert to full rejuvs!!!");
+        }
+      }
+      catch (InvalidOperationException ioex)
+      {
+        Console.WriteLine(ioex.StackTrace);
+        Console.WriteLine(ioex.Message);
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine(ex.Message);
+      }
+    }
+  }
+}

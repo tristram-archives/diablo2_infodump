@@ -1,0 +1,72 @@
+
+
+
+/* <The page bare minimum> */
+*{margin:0;padding:0}
+html{ 
+  font-size:100%;
+  height:100%
+}
+body{
+  background-color:#ddd;
+  width:100%
+}
+@media screen and (min-width: 740px){
+  body{
+    position: relative;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2em;
+    box-sizing: border-box
+  }
+  body{
+    font-family:'URW Palladio L','Bitstream Charter',serif;
+    font-size:19px
+  }
+  a,h1,h2,h3,h4,h5{
+    font-family:sans-serif
+  }
+  a{font-size:0.89em}
+  .titled{
+    font-family:sans-serif
+  }
+}
+/* </The page bare minimum> */
+
+
+
+
+
+
+/* <special but fun and useful> */
+ol li{margin-left:36px}
+ul li{margin-left:36px}
+/*
+./index.html:14:<div class="more-readable">
+./index.html:33:<div class="more-readable">
+./my-peppermint-plant.html:24:<div class="more-readable" style="margin-bottom:84px">
+./my-secondary-computer.html:20:<div class="more-readable" style="margin-bottom:13px">
+./my-secondary-computer.html:35:<div class="more-readable" style="margin-bottom:13px">
+./my-secondary-computer.html:42:<div class="more-readable" style="margin-bottom:13px">
+./my-secondary-computer.html:49:<div class="more-readable" style="margin-bottom:84px">
+*/
+.more-readable{
+  line-height:1.4em
+}
+/*
+./d.html:17:- <span class="a-date">May 17th, 2017. 2:25pm</span>
+./diablo-2.html:42:<span class="a-date">May 31 (2017) 12:34AM PDT</span><br>
+./diablo-2.html:44:<span class="a-date">May 19 (2017) 10:08PM PDT</span><br>
+./index.html:36:<span class="a-date">June 7th, 2017 2:00AM PDT</span>.<br>
+./my-peppermint-plant.html:26:<div class="a-date plant-date-out">May 11 (2017) 11:53am PDT</div>
+./my-peppermint-plant.html:28:<div class="a-date plant-date-out">April 18th (2017) 10:45am-11:13am PDT</div>
+./my-peppermint-plant.html:34:<span class="a-date">May 12th, 2017 8:29PM</span>
+./my-secondary-computer.html:267:<span class="a-date">June 7th, 2017 2:00AM</span>
+*/
+.a-date{
+  color:#333
+}
+/* </special but fun and useful> */
+
+
+

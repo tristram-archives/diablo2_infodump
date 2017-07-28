@@ -1,0 +1,76 @@
+'calculate checksum for d2s file
+Public Sub UpdateChecksum()
+
+Dim lCharFileLen As Long
+
+Dim i As Long 'just for counting
+Dim a1 As Integer '1st byte of DWORD
+Dim a2 As Integer '2nd byte of DWORD
+Dim a3 As Integer '3rd byte of DWORD
+Dim a4 As Integer '4th byte of DWORD
+Dim b As Byte 'could be 0 or 1, see the code
+Dim d As Integer  'precalculation
+
+' Character bytes stored in gbytArray(), starting at 1
+' positions 13 - 16 are where the checksum was in the original .d2s file,
+' but these 4 bytes must NOT be used in the calculation of the new checksum
+
+ gbytArray(13) = 0
+ gbytArray(14) = 0
+ gbytArray(15) = 0
+ gbytArray(16) = 0
+
+ ' local variables initialization
+ b = 0
+ d = 0
+ a1 = 0
+ a2 = 0
+ a3 = 0
+ a4 = 0
+ lCharFileLen = gCharacter.FileSize 'total number of bytes in Character "d2s" file
+
+ ' loop over the total file contents
+ For i = 1 To lCharFileLen
+  ' get the bytes and add overflow (b)
+  d = CInt(gbytArray(i)) + b
+  ' begining of the checksum calculation
+  a1 = (a1 * 2) + d
+  a2 = a2 * 2
+  ' overflow control
+  If a1 > 255 Then
+   a2 = a2 + CInt((a1 - (a1 Mod 256)) / 256)
+   a1 = a1 Mod 256
+  End If
+  a3 = a3 * 2
+  ' overflow control
+  If a2 > 255 Then
+   a3 = a3 + CInt((a2 - (a2 Mod 256)) / 256)
+   a2 = a2 Mod 256
+  End If
+  a4 = a4 * 2
+  ' overflow control
+  If a3 > 255 Then
+   a4 = a4 + CInt((a3 - (a3 Mod 256)) / 256)
+   a3 = a3 Mod 256
+  End If
+  ' overflow control
+  If a4 > 255 Then
+   a4 = a4 Mod 256
+  End If
+        
+  ' simulating the "setl bl" - ASM code
+  If ((a4 And &H80) <> 0) Then
+   b = 1
+  Else
+   b = 0
+  End If
+ Next i
+
+ 'done, so put the new checksum back into the Char byte array
+ gbytArray(13) = CByte(a1)
+ gbytArray(14) = CByte(a2)
+ gbytArray(15) = CByte(a3)
+ gbytArray(16) = CByte(a4)
+End Sub
+
+

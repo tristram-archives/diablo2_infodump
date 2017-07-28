@@ -1,0 +1,34 @@
+I can't remember when I used the `rc-files-count.pl` perl script..
+
+2-305
+
+#create pages1/
+mkdir pages1
+for page in `seq 2 305`; do pdftotext -eol unix -f $page -l $page -raw jamella.pdf pages1/$page.txt ; done
+
+cp -R pages1 pages2
+#fix pages2/
+for i in *.txt; do perl -i -pe 's/\xc//' $i ; done
+
+cp -R pages2 pages3
+#convert pages3/ to pages4/
+for i in *.txt ; do
+  perl -ne 'BEGIN{$out=""}$out.=$_;END{$out =~ s/[^\n]+$//;print $out}' $i > ../pages4/$i
+done
+
+#fix pages4/
+for i in 1.txt; do perl -i -pe 'BEGIN{$ln=1}if($ln++ == 1){s#^#//!!#}' $i ; done
+
+#so 268 pages are .c/.h
+egrep -RsHIn '^//!!.*\.[ch]' . | egrep -o '[0-9]+\.txt' | sort -n | wc -l
+
+#now we need to know which files are NOT .cpp!
+
+#36 pages are .rc
+#2 .. 269 are .cpp/.h
+#270 .. 305 are .rc
+
+cp -R pages4 pages5
+for i in `seq 2 269` ; do
+  cat pages5/$i.txt >> c++.txt
+done

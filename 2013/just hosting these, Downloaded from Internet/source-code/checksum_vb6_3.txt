@@ -1,0 +1,39 @@
+func FixCheckSum()
+dim $checksum[4]
+$byteA[12]=0x00
+$byteA[13]=0x00
+$byteA[14]=0x00
+$byteA[15]=0x00
+$boolCarry=0
+for $i=0 to UBound($byteA)-1
+$temp=Dec(Hex(Binary($byteA[$i])))+$boolCarry
+$checksum[0]= $checksum[0]*2 +$temp
+$checksum[1]=$checksum[1]*2
+if $checksum[0] > 255 Then
+$checksum[1] = $checksum[1] + ($checksum[0] - Mod($checksum[0],256)) / 256
+$checksum[0] = Mod($checksum[0],256)
+EndIf
+$checksum[2]=$checksum[2]*2
+if $checksum[1] > 255 Then
+$checksum[2] = $checksum[2] + ($checksum[1] - Mod($checksum[1],256)) / 256
+$checksum[1] = Mod($checksum[1],256)
+EndIf
+$checksum[3]=$checksum[3]*2
+if $checksum[2] > 255 Then
+$checksum[3] = $checksum[3] + ($checksum[2] - Mod($checksum[2],256)) / 256
+$checksum[2] = Mod($checksum[2],256)
+EndIf
+If $checksum[3] > 255 Then
+$checksum[3] = Mod($checksum[3], 256)
+EndIf
+if BitAND($checksum[3],0x80)<>0 Then
+$boolCarry=1
+Else
+$boolCarry=0
+EndIf
+Next
+$byteA[12]="0x"&Hex($checksum[0],2)
+$byteA[13]="0x"&Hex($checksum[1],2)
+$byteA[14]="0x"&Hex($checksum[2],2)
+$byteA[15]="0x"&Hex($checksum[3],2)
+EndFunc

@@ -1,0 +1,47 @@
+use warnings;
+use strict;
+use feature 'say';
+=pod
+This assumes you have free stat and skill pts to distribute
+=cut
+
+my ($id1, $v1, #strength
+    $id2, $v2, #energy
+    $id3, $v3, #dexterity
+    $id4, $v4, #vitality
+    $id5, $v5) #free stat points
+= (
+  &v(0,9), &v(1016, 10),
+  &v(1,9), &v(545, 10),
+  &v(2,9), &v(1016, 10),
+  &v(3,9), &v(30, 10),
+  &v(4,9), &v(500, 10)
+);
+#the prepended '1' is for the free skill pt ID
+#to make the string into 8-bit sections
+#to make valid change.pl commands.
+my $binary_stream = "1$v5$id5$v4$id4$v3$id3$v2$id2$v1$id1";
+#say(length($binary_stream) % 8);
+#exit 0;
+#while(length($binary_stream) % 8 != 0){
+#  $binary_stream = '0' . $binary_stream;
+#}
+
+say $binary_stream;
+my $binary_stream_location = -8;
+my $byte_location = 767;
+while(1){
+  # 00000000 $binary_stream_location=-8, THIS=0
+  if(length($binary_stream) + $binary_stream_location < 0){last;}
+  print "'\@${byte_location}make" . 
+    substr($binary_stream, $binary_stream_location, 8), "' ";
+  $binary_stream_location -= 8;
+  $byte_location++;
+}
+say '';
+
+#value: value into binary string
+sub v{
+  my ($value, $length) = @_;
+  return sprintf("%0${length}b", $value);
+}

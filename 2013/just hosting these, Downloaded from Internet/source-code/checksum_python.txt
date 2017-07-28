@@ -1,0 +1,45 @@
+from BitsAndBytes import *
+
+readFrom = open('E:\\Diablo II\\save\\test.d2s','rb')
+fileLength = len(readFrom.read())
+bytes = []
+for i in range(0,fileLength):
+    readFrom.seek(0)
+    readFrom.seek(i)
+    data = readFrom.read(1)
+    bytes.append(data)
+a1 = 0
+a2 = 0
+a3 = 0
+a4 = 0
+b = 0
+bytes[12] = 0
+bytes[13] = 0
+bytes[14] = 0
+bytes[15] = 0
+
+for c in bytes:
+    a1 = (a1 << 1) + b + BinaryToDecimal(HexToBinary(ByteToHex(str(c))))
+    a2 <<= 1
+
+    a2 += (a1 >> 8)
+    a1 = a1 & 255
+
+    a3 <<= 1
+    a3 +=  (a2 >> 8)
+    a2 = a2 & 255
+         
+    a4 <<= 1
+    a4 += (a3 >> 8)
+    a3 = a3 & 255
+    a4 = a4 & 255
+           
+    if (a4 & 0x80) <> 0:
+        b = 1
+    else:
+        b = 0
+
+print BinaryToHex(DecimalToBinary(a1,8))
+print BinaryToHex(DecimalToBinary(a2,8))
+print BinaryToHex(DecimalToBinary(a3,8))
+print BinaryToHex(DecimalToBinary(a4,8))

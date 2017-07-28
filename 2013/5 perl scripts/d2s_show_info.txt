@@ -1,0 +1,333 @@
+=pod
+SAMPLE OUTPUT:
+--------------------------------------
+Name: my_b
+Title information: 00001111
+Character title: Patriarch/Matriarch
+Type: Sorceress
+Level: 1
+Hell town: Act 1
+Normal waypoints: 1000000000000000000000000000000000000000
+Nightmare waypoints: 1000000000000000000000000000000000000000
+Hell waypoints: 1111111111111111111111111111111111111111
+Strength:   10
+Energy:     35
+Dexterity:  25
+Vitality:   10
+Statpts:    0
+Newskills:  0
+Hitpoints:  40
+MaxHP:      40
+Mana:       35
+MaxMana:    35
+Stamina:    74
+MaxStamina: 74
+Level:      1
+Experience: 0
+Gold:       0
+GoldBank:   372352
+
+Skill#1:0 Skill#2:0 Skill#3:0 Skill#4:0 Skill#5:0 Skill#6:0 Skill#7:0 Skill#8:0 
+Skill#9:0 Skill#10:0 Skill#11:0 Skill#12:0 Skill#13:0 Skill#14:0 Skill#15:0 Skill#16:0 
+Skill#17:0 Skill#18:0 Skill#19:0 Skill#20:0 Skill#21:0 Skill#22:0 Skill#23:0 Skill#24:0 
+Skill#25:0 Skill#26:0 Skill#27:0 Skill#28:0 Skill#29:0 Skill#30:0 
+=cut
+#TODO:
+# -make sure the magic numbers are proper or die()
+# -be able to change the quests.
+use warnings;
+use strict;
+use Data::Dumper;
+
+#<config>
+my $D2s = 'aTotal_Bitch.d2s';   #file to get/give information about.
+#</config>
+
+
+
+
+open(my ${f}, '<', $D2s) or die $!;
+
+my $tmp;
+my $szContents = '';
+{
+  local $/;
+  $szContents = <$f>;
+}
+
+#Name
+{
+  ($tmp) = unpack('Z*', substr($szContents, 20, 16));
+  print qq{Name: $tmp\n};
+}
+
+#Character title (Slayer, Champion, Patriarch/Matriarch)
+{ 
+  ($tmp) = unpack('C', substr($szContents, 37, 1));
+  print "Title information: ", sprintf("%08b\n", $tmp);
+  if($tmp <= 3){
+    print "(Character has no title.)\n";
+  }
+  elsif($tmp <= 8){
+    print "Character title: Slayer\n";
+  }
+  elsif($tmp <= 13){
+    print "Character title: Champion\n";
+  }
+  elsif($tmp == 15){
+    print "Character title: Patriarch/Matriarch\n";
+  }
+  else{
+    print "(Character has strange title information.)\n";
+  }
+}
+
+#Type of character (Sorc, Ama, druid, assassin, etc)
+{ 
+  ($tmp) = unpack('C', substr($szContents, 40, 1));
+  if($tmp == 0){print "Type: Amazon\n"}
+  elsif($tmp == 1){print "Type: Sorceress\n"}
+  elsif($tmp == 2){print "Type: Necromancer\n"}
+  elsif($tmp == 3){print "Type: Paladin\n"}
+  elsif($tmp == 4){print "Type: Barbarian\n"}
+  elsif($tmp == 5){print "Type: Druid\n"}
+  elsif($tmp == 6){print "Type: Assassin\n"}
+}
+
+#Character level
+{ 
+  ($tmp) = unpack('C', substr($szContents, 43, 1));
+  print "Level: $tmp\n";
+}
+
+#Current spawning town location per difficulty
+{ 
+  my %difficulty = (
+    168 => 'Normal',
+    169 => 'Nightmare', 
+    170 => 'Hell'
+  );
+  for my $i(168 .. 170){
+    ($tmp) = unpack('C', substr($szContents, $i, 1));
+    my $active = ($tmp & 0x80) ? 1 : 0;
+    my $town = $tmp & 0x07;
+    if($active){
+      if($town == 0){print "$difficulty{$i} town: Act 1\n";}
+      elsif($town == 1){print "$difficulty{$i} town: Act 2\n";}
+      elsif($town == 2){print "$difficulty{$i} town: Act 3\n";}
+      elsif($town == 3){print "$difficulty{$i} town: Act 4\n";}
+      elsif($town == 4){print "$difficulty{$i} town: Act 5\n";}
+    }
+  }
+}
+
+#Waypoint information
+{
+  #($tmp) = unpack('b88888')
+  ($tmp) = unpack('b40', substr($szContents, 643, 5));
+  print "Normal waypoints: ", $tmp, "\n";
+  ($tmp) = unpack('b40', substr($szContents, 667, 5));
+  print "Nightmare waypoints: ", $tmp, "\n";
+  ($tmp) = unpack('b40', substr($szContents, 691, 5));
+  print "Hell waypoints: ", $tmp, "\n";
+}
+
+=pod
+Quests:
+Normal:    345 (length 96)
+  345,346 Warriv
+  347-358 Act 1
+  359,360 act I -> act II travel
+  361,362 Jerhyn intro
+  262-374 Act II
+  375,376 act II -> act III travel
+  377,378 Hralti intro
+  379-390 Act III
+  391,392 act III -> act IV travel
+  393,394 act IV intro
+  395-400 Act IV
+  401,402 act IV -> act V
+  403-408 unknown
+  409,410 talk to cain after killing diablo
+  411-414 unknown
+  415-426 Act V
+  427-440 unknown
+Nightmare: 441 (length 96)
+  441,442 Nightmare warriv
+  443-454 Act I
+Hell:      537 (length 96)
+End:       633
+=cut
+
+=pod
+Misc Data
+=cut
+my $skill_loc = index($szContents, 'if', 767);  #'gf' @ 765
+if($skill_loc == -1){ die ''; }
+my ($strength, $energy, $dexterity, $vitality, $statpts, $newskills,
+  $hitpoints, $maxhp, $mana, $maxmana, $stamina, $maxstamina, $level,
+  $experience, $gold, $goldbank) = split(//, '0' x 16);
+{
+  sub bindec{
+    my $binary_stream = shift;
+    return oct('0b' . $binary_stream);
+  }
+  #get binary string of pearls.
+  my $binary_stream = '';
+  for my $byte_loc (reverse(767 .. $skill_loc - 1)){
+    #b8 is reversed.
+    #B8 is 'C'
+    my ($byte) = unpack('B8', substr($szContents, $byte_loc, 1));
+    $binary_stream = $binary_stream . $byte;
+    undef $byte;
+  }
+  #XXX strength is 11 for my PlugY mod!!!
+  my @siz_info = qw{
+    strength:   10
+    energy:     10
+    dexterity:  10
+    vitality:   10
+    statpts:    10
+    newskills:  8
+    hitpoints:  21
+    maxhp:      21
+    mana:       21
+    maxmana:    21
+    stamina:    21
+    maxstamina: 21
+    level:      7
+    experience: 32
+    gold:       25
+    goldbank:   25
+  };
+  my ($strength_siz, $energy_siz, $dexterity_siz, $vitality_siz, $statpts_siz,
+  $newskills_siz, $hitpoints_siz, $maxhp_siz, $mana_siz, $maxmana_siz,
+  $stamina_siz, $maxstamina_siz, $level_siz, $experience_siz, $gold_siz,
+  $goldbank_siz) = grep { /^[0-9]+$/ } @siz_info;
+  undef @siz_info;
+  my $binary_stream_location = 0;
+  my $id_offset = 9;
+  while(1){
+    $binary_stream_location -= $id_offset;
+    my $id = bindec(substr($binary_stream, $binary_stream_location, 9));
+    #print "ID Found: ",  $id, "\n";
+    if($id == 0){
+      $binary_stream_location -= $strength_siz;
+      $strength = bindec(substr($binary_stream, $binary_stream_location,
+        $strength_siz));
+    }
+    elsif($id == 1){
+      $binary_stream_location -= $energy_siz;
+      $energy = bindec(substr($binary_stream, $binary_stream_location,
+        $energy_siz));
+    }
+    elsif($id == 2){
+      $binary_stream_location -= $dexterity_siz;
+      $dexterity = bindec(substr($binary_stream, $binary_stream_location,
+        $dexterity_siz));
+    }
+    elsif($id == 3){
+      $binary_stream_location -= $vitality_siz;
+      $vitality = bindec(substr($binary_stream, $binary_stream_location,
+        $vitality_siz));
+    }
+    elsif($id == 4){
+      $binary_stream_location -= $statpts_siz;
+      $statpts = bindec(substr($binary_stream, $binary_stream_location,
+        $statpts_siz));
+    }
+    elsif($id == 5){
+      $binary_stream_location -= $newskills_siz;
+      $newskills = bindec(substr($binary_stream, $binary_stream_location,
+        $newskills_siz));
+    }
+    elsif($id == 6){
+      $binary_stream_location -= $hitpoints_siz;
+      $hitpoints = bindec(substr($binary_stream, $binary_stream_location,
+        $hitpoints_siz)) >> 8;
+    }
+    elsif($id == 7){
+      $binary_stream_location -= $maxhp_siz;
+      $maxhp = bindec(substr($binary_stream, $binary_stream_location,
+        $maxhp_siz)) >> 8;
+    }
+    elsif($id == 8){
+      $binary_stream_location -= $mana_siz;
+      $mana = bindec(substr($binary_stream, $binary_stream_location,
+        $mana_siz)) >> 8;
+    }
+    elsif($id == 9){
+      $binary_stream_location -= $maxmana_siz;
+      $maxmana = bindec(substr($binary_stream, $binary_stream_location,
+        $maxmana_siz)) >> 8;
+    }
+    elsif($id == 10){
+      $binary_stream_location -= $stamina_siz;
+      $stamina = bindec(substr($binary_stream, $binary_stream_location,
+        $stamina_siz)) >> 8;
+    }
+    elsif($id == 11){
+      $binary_stream_location -= $maxstamina_siz;
+      $maxstamina = bindec(substr($binary_stream, $binary_stream_location,
+        $maxstamina_siz)) >> 8;
+    }
+    elsif($id == 12){
+      $binary_stream_location -= $level_siz;
+      $level = bindec(substr($binary_stream, $binary_stream_location,
+        $level_siz));
+    }
+    elsif($id == 13){
+      $binary_stream_location -= $experience_siz;
+      $experience = bindec(substr($binary_stream, $binary_stream_location,
+        $experience_siz));
+    }
+    elsif($id == 14){
+      $binary_stream_location -= $gold_siz;
+      $gold = bindec(substr($binary_stream, $binary_stream_location,
+        $gold_siz));
+    }
+    elsif($id == 15){
+      $binary_stream_location -= $goldbank_siz;
+      $goldbank = bindec(substr($binary_stream, $binary_stream_location,
+        $goldbank_siz));
+      last;
+    }
+    else{
+      last;
+    }
+    undef $id;
+  }
+  undef $binary_stream_location;
+  undef $id_offset;
+}
+print <<EOF;
+Strength:   $strength
+Energy:     $energy
+Dexterity:  $dexterity
+Vitality:   $vitality
+Statpts:    $statpts
+Newskills:  $newskills
+Hitpoints:  $hitpoints
+MaxHP:      $maxhp
+Mana:       $mana
+MaxMana:    $maxmana
+Stamina:    $stamina
+MaxStamina: $maxstamina
+Level:      $level
+Experience: $experience
+Gold:       $gold
+GoldBank:   $goldbank
+
+EOF
+
+#Read Skill Levels
+{
+  my $skill_identity = 1;
+  for my $loc ($skill_loc + 2 .. $skill_loc + 31){
+    print "Skill#$skill_identity:",
+      unpack('C', substr($szContents, $loc, 1)), ' ';
+    print "\n" if($skill_identity % 8 == 0);
+    $skill_identity++;
+  }
+  print "\n";
+}

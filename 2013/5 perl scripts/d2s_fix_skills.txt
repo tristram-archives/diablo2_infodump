@@ -1,0 +1,85 @@
+#From $From_D2s to $To_D2s:
+#- Added 99 to all skills
+use warnings;
+use strict;
+
+#<config>
+my $From_D2s = 'my_c.d2s';
+my $To_D2s = 'my_d.d2s';
+#</config>
+
+
+
+
+
+my ($Letter_change) = $To_D2s =~ m#my_([a-z]).d2s#;
+
+#Open for reading the original D2S file.
+open(my ${f1}, '<', $From_D2s) or die $!;
+
+sysseek(${f1}, 767, 0);
+sysread(${f1}, my $s, 400);
+my $skill_loc = index($s, 'if');
+#print $skill_loc, "\n"; #40
+$skill_loc += 767;
+sysseek(${f1}, 0, 0);
+
+#First calculate checksum
+my $c = 0;  #checksum
+my $loc = 0;
+while(sysread(${f1}, my $s, 1)){
+  my ($byte) = unpack('C', $s);
+  if($loc == 12 || $loc == 13 || $loc == 14 || $loc == 15){
+    $byte = 0;
+  }
+  elsif($loc == 23){  #my_d
+    $byte = ord($Letter_change); 
+  }
+  elsif($loc >= $skill_loc + 2 && $loc < $skill_loc + 32){
+    $byte = 99;
+  }
+  if($c < 0){
+    $byte++;
+  }
+  $c = $byte + $c * 2;
+  undef $byte;
+  ($c) = unpack('l', pack('l', $c));
+  $loc++;
+}
+
+#Now create my_b.d2s with the new checksum and new name.
+$loc = 0;
+sysseek(${f1}, 0, 0);
+open(my ${f2}, '>', $To_D2s) or die $!;
+while(sysread(${f1}, my $s, 1)){
+  if($loc == 12){ #insert the checksum.
+    syswrite(${f2}, pack('L', $c), 4);
+    $loc++;
+    next;
+  }
+  elsif($loc == 13 || $loc == 14 || $loc == 15){
+    $loc++;
+    next;
+  }
+  elsif($loc == 23){ #insert the name.
+    syswrite(${f2}, $Letter_change, 1);
+    $loc++;
+    next;
+  }
+  elsif($loc >= $skill_loc + 2 && $loc < $skill_loc + 32){
+    syswrite(${f2}, pack('C', 99), 1);
+    $loc++;
+    next;
+  }
+  syswrite(${f2}, $s, 1);
+  $loc++;
+}
+undef $loc;
+undef $c;
+close ${f1};
+close ${f2};
+
+print <<EOF;
+From $From_D2s to $To_D2s:
+- Added 99 to all skills
+EOF

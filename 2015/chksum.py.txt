@@ -1,0 +1,51 @@
+#!/usr/bin/python3
+from sys import platform
+from os import path
+from struct import unpack, pack
+import sys
+import binascii
+
+d2sfile = '/home/xubuntu/.wine/drive_c/Program Files (x86)/Diablo II/Save/my_d.d2s'
+if platform != 'linux':
+  d2sfile = 'C:\\Users\\user1\\AppData\\Local\\VirtualStore\\Program Files (x86)\\Diablo II\\Save\\my_d.d2s'
+if not path.isfile(d2sfile):
+  print("your d2s file does not exist.")
+  exit(1)
+all = ''
+try:
+  myfile = open(d2sfile, mode='rb')
+  all = myfile.read()
+  myfile.close()
+except:
+  print(sys.exc_info()[0])
+  exit(2)
+#print(len(all))
+c = 0
+for addr in range(len(all)):
+  ct = ord(all[addr:addr+1])
+  ct += c >> 31 & 1
+  add = 0
+  if (addr >> 2) != 3:
+    add = ct
+  c = add + (c << 1)
+
+"""
+if c > 2147483647:
+  c = c & 2147483647
+if c < -2147483648:
+  c = c * -1
+  c = c & 2147483647
+  c = c * -1
+"""
+#print(binascii.hexlify(pack('i', c)))
+#c=255
+c = (c & 0xff000000) >> 24 | (c & 0xff0000) >> 8 | (c & 0xff00) << 8 | (c & 0xff) << 24
+chksum = '{0:08X}'.format(c)
+print('Checksum:', chksum)
+#print(backwards_chksum)
+#print('Checksum:', backwards_chksum[6:8] + backwards_chksum[4:6] + backwards_chksum[2:4] + backwards_chksum[0:2])
+#print(ord(all[37:38]))
+#myfile.seek(37)
+#out = myfile.read(1)
+#print(unpack('I', out))
+#print(ord(out))

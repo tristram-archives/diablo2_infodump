@@ -1,0 +1,3 @@
+unsigned int uiCS = 0;
+for ( int i = 0; i < iSize; ++i )
+uiCS = (uiCS<<1) + pucData[i] + ( uiCS & 0x80000000 ? 1 : 0 );

@@ -1,0 +1,17 @@
+use warnings;
+use strict;
+use myconfig qw/read_config/;
+
+my $D2sDataFile = read_config();
+#'C:\Users\user1\AppData\Local\VirtualStore\Program Files (x86)\Diablo II\Save\my_d.d2s';
+
+my $all;
+{
+  local $/;
+  open(my ${f}, '<', $D2sDataFile) or die $!;
+  $all = <$f>;
+  close(${f});
+}
+
+
+print unpack('H*', substr($all, 2086, 4));

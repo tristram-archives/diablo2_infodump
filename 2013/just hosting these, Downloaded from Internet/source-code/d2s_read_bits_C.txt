@@ -1,0 +1,7 @@
+#define read_bits(data,start,size) ((*(unsigned long*)&data[(start) / 8]) >> ((start) & 7) & ((1 << size) - 1))
+
+where
+
+data = byte array
+start = starting bit index
+size = # of bits to read 

@@ -1,0 +1,139 @@
+<html>
+<head><title>Change skills</title>
+<style>
+input{font-size:2em;margin-top:8px;margin-bottom:15px}
+</style>
+<script>
+var d = document;
+function go(_o){
+  return document.getElementById(_o);
+}
+var skill_location_to_edit = 0;
+var imported = false;
+function import2(){
+  var skill = go('txtimport').value.split(/ /);
+  skill_location_to_edit = skill.pop(); 
+  if(skill.length != 30){
+    alert('skill length is ' + skill.length + ' ???? aborting..');
+    return;
+  }
+  for(var i=0; i<skill.length; i++){
+    go('s' + (i+1)).value = skill[i];
+  }
+  imported = true;
+}
+function export2(){
+  if(imported === false){
+    alert('you need to import before exporting..because we need the address.');
+    return;
+  }
+  var szOut = '';
+  var current_skill_location = skill_location_to_edit;
+  for(var i=1; i<=30; i++){
+    szOut += '"@' + current_skill_location + 'make' + 
+      int2bin(go('s' + i).value) + '" ';
+    current_skill_location++;
+  }
+  go('txtexport').value = szOut;
+}
+function btnRain_clicked(){
+  for(var i=1; i<=30; i++){
+    go('s' + i).value = i + '';
+  }
+}
+function int2bin(_i){
+  var bin = '';
+  var n = _i;
+  for(var i=0; i<8; i++){
+    bin = (n & 1) + '' + bin;
+    n = n >> 1;
+  }
+  return bin;
+}
+</script>
+</head>
+
+<body>
+<textarea id="txtimport" cols="90" rows="1"></textarea><button onclick="import2();">Import</button>
+<button onclick="btnRain_clicked()">make it rain</button>
+<table><tr><td>
+  <img src="fire.png">
+</td>
+<td valign="top">
+  <table>
+  <tr><td></td>
+  <td><input type="text" size="2" id="s1" value=""></td>
+  <td><input type="text" size="2" id="s2" value=""></td></tr>
+  <tr><td><input type="text" size="2" id="s6" value=""></td>
+  <td></td>
+  <td></td></tr>
+  <tr><td><input type="text" size="2" id="s11" value=""></td>
+  <td><input type="text" size="2" id="s12" value=""></td>
+  <td></td></tr>
+  <tr><td><input type="text" size="2" id="s16" value=""></td>
+  <td></td>
+  <td><input type="text" size="2" id="s17" value=""></td></tr>
+  <tr><td></td>
+  <td><input type="text" size="2" id="s21" value=""></td>
+  <td></td></tr>
+  <tr><td></td>
+  <td><input type="text" size="2" id="s26" value=""></td>
+  <td><input type="text" size="2" id="s27" value=""></td></tr>
+  </table>
+</td>
+<td>
+  <img src="lightning.png">
+</td>
+<td valign="top">
+  <table>
+  <tr><td></td>
+  <td><input type="text" size="2" id="s3" value=""></td>
+  <td></td></tr>
+  <tr><td><input type="text" size="2" id="s7" value=""></td>
+  <td></td>
+  <td><input type="text" size="2" id="s8" value=""></td></tr>
+  <tr><td><input type="text" size="2" id="s13" value=""></td>
+  <td><input type="text" size="2" id="s14" value=""></td>
+  <td></td></tr>
+  <tr><td></td>
+  <td><input type="text" size="2" id="s18" value=""></td>
+  <td><input type="text" size="2" id="s19" value=""></td></tr>
+  <tr><td><input type="text" size="2" id="s22" value=""></td>
+  <td></td>
+  <td><input type="text" size="2" id="s23" value=""></td></tr>
+  <tr><td></td>
+  <td><input type="text" size="2" id="s28" value=""></td>
+  <td></td></tr>
+  </table>
+</td>
+<td>
+  <img src="cold.png">
+</td>
+<td valign="top">
+  <table>
+  <tr><td></td>
+  <td><input type="text" size="2" id="s4" value=""></td>
+  <td><input type="text" size="2" id="s5" value=""></td></tr>
+  <tr><td><input type="text" size="2" id="s9" value=""></td>
+  <td><input type="text" size="2" id="s10" value=""></td>
+  <td></td></tr>
+  <tr><td></td>
+  <td></td>
+  <td><input type="text" size="2" id="s15" value=""></td></tr>
+  <tr><td></td>
+  <td><input type="text" size="2" id="s20" value=""></td>
+  <td></td></tr>
+  <tr><td><input type="text" size="2" id="s24" value=""></td>
+  <td></td>
+  <td><input type="text" size="2" id="s25" value=""></td></tr>
+  <tr><td><input type="text" size="2" id="s29" value=""></td>
+  <td><input type="text" size="2" id="s30" value=""></td>
+  <td></td></tr>
+  </table>
+</td>
+</tr></table>
+<br>
+<button onclick="export2()">Export</button>
+<textarea id="txtexport" cols="90" rows="8"></textarea>
+</body>
+</html>

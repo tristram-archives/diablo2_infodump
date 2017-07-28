@@ -1,0 +1,1134 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Diablo II v1.13d Item Format</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<h1 align="center">Diablo II Item Format</h1>
+<h3 align="center">for Diablo II v1.13d Expansion Set: Lord of Destruction</h3>
+<div align="center">Updated June 23, 2012<br /></div>
+<p>This file was originally written by Trevin Beattie, whose site is no more (his latest version of this file is available
+<a href="http://web.archive.org/web/20070829095341/http://www.xmission.com/~trevin/DiabloIIv1.09_Item_Format.shtml">here</a> though).</p>
+<h3>Welcome!</h3>
+<p>Thanks for showing an interest in my Diablo II Item Format page. While
+you're browsing, be sure to check out the preview of my <a
+href="http://www.xmission.com/~trevin/DiabloIIv1.09_Editor.shtml">game
+editor</a> for unix+Motif. I currently have the item editor in
+development!</p>
+<h2>Introduction</h2>
+<p>Having searched the web, I found very few references to the Diablo II
+<tt>.d2s</tt> file format, and most of them covered the old (pre-1.08)
+version. Diablo II v1.09 has significantly changed the file format.
+I have started another page which details <a href="Save_File_Format.xhtml">the
+layout of the major parts of the <tt>.d2s</tt> file.</a> This document
+focuses specifically on the item structure &#x2014; all those pieces of the file
+tagged &quot;<tt>JM</tt>&quot;.</p>
+<p>Rather than describe everything in terms of byte offsets, I'm going to define
+the layout as a series of variable-length bit fields. This is a critical
+part of the item format, because the position of many of the fields can change
+depending on what comes before it. If I say a certain value is a 3-bit
+field starting at bit position 150, for example, this translates to bits 6 and 7
+of the byte 18 and bit 0 of byte 19 in the data structure. You can read an
+arbitrary bit field programatically using the following code (in C):</p>
+<pre>#define read_bits(start,size) \
+    ((*((unsigned long *) &amp;data[(start) / 8])
+      &gt;&gt; ((start) &amp; 7)) &amp; ((1 &lt;&lt; (size)) - 1))</pre>
+<h2>Item List Header</h2>
+<p>An item list begins with the following simple header:</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="10%">Byte Position</th>
+    <th width="10%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">0</td>
+    <td align="middle">2 <tt>char</tt>s</td>
+    <td>Identifier string &quot;<tt>JM</tt>&quot; { 0x4A, 0x4D }</td>
+  </tr>
+  <tr>
+    <td align="middle">2</td>
+    <td align="middle">16 bits</td>
+    <td>The number of items your character has. This does not include
+      gems or jewels which have been glued into socketed items.</td>
+  </tr>
+</tbody>
+</table>
+<p>Your item list ends with another 4-byte structure similar to the above,
+except the second field is zero (i.e.,
+{&#xA0;0x4A,&#xA0;0x4D,&#xA0;0x00,&#xA0;0x00&#xA0;}).</p>
+<p>In the Expansion Set, your hireling has his/her own item list. This
+list is separated from yours by the 2-character identifier &quot;<tt>jf</tt>&quot;. This is
+followed by an item list header for the hireling, and then his/her items.
+The second item list is <i>not</i> terminated with the same 4-byte structure as
+the first; instead, it is followed by the 2-character identifier &quot;<tt>kf</tt>&quot;.</p>
+<h2>Item Structure part 1: Simple Items</h2>
+<p>There are still many fields in the item structure which I haven't figured out
+yet, but I'll leave placeholders for them in case I find out what they mean in
+the future. All sizes are in bits unless otherwise specified.</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="10%">Bit Position</th>
+    <th width="10%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">0</td>
+    <td align="middle">2 <tt>char</tt>s</td>
+    <td>Identifier string &quot;<tt>JM</tt>&quot; { 0x4A, 0x4D }</td>
+  </tr>
+  <tr>
+    <td align="middle">16</td>
+    <td align="middle">4</td>
+    <td><i>unknown</i></td>
+  </tr>
+  <tr>
+    <td align="middle">20</td>
+    <td align="middle">1</td>
+    <td>Item has been identified</td>
+  </tr>
+  <tr>
+    <td align="middle">21</td>
+    <td align="middle">6</td>
+    <td><i>unknown</i></td>
+  </tr>
+  <tr>
+    <td align="middle"><a name="27">27</a></td>
+    <td align="middle">1</td>
+    <td>Item is <a href="#sockets">Socketed</a></td>
+  </tr>
+  <tr>
+    <td align="middle">28</td>
+    <td align="middle">1</td>
+    <td><i>unknown</i></td>
+  </tr>
+  <tr>
+    <td align="middle">29</td>
+    <td align="middle">1</td>
+    <td>This bit is set on items which you have picked up since the last time
+      the game was saved. <i>Why?...</i></td>
+  </tr>
+  <tr>
+    <td align="middle">30</td>
+    <td align="middle">2</td>
+    <td><i>unknown</i></td>
+  </tr>
+  <tr>
+    <td align="middle">32</td>
+    <td align="middle">1</td>
+    <td>
+      <div>Item is a <a href="#ear">Player Ear</a></div>
+      <div><i>Thanks go to Mike of Denmark for identifying this bit.</i></div></td>
+  </tr>
+  <tr>
+    <td align="middle">33</td>
+    <td align="middle">1</td>
+    <td>"Newbie" item. This bit is set on the weapon and shield your
+      character is given when you start the game. Apparently, this gives
+      the item the property of having a repair cost of 1gp, as well as a sell
+      value of 1gp.</td>
+  </tr>
+  <tr>
+    <td align="middle">34</td>
+    <td align="middle">3</td>
+    <td><i>unknown</i></td>
+  </tr>
+  <tr>
+    <td align="middle"><a name="37">37</a></td>
+    <td align="middle">1</td>
+    <td>
+      <div>Item is simple (only 111 bits {14 bytes} of item data)</div>
+      <div><i>Thanks go to Guillaume Courtin of France for discovering the
+      meaning of this bit.</i></div></td>
+  </tr>
+  <tr>
+    <td align="middle">38</td>
+    <td align="middle">1</td>
+    <td>Item is Ethereal (Cannot be Repaired)</td>
+  </tr>
+  <tr>
+    <td align="middle">39</td>
+    <td align="middle">1</td>
+    <td><i>unknown; this bit is 1 on the items I've looked at</i></td>
+  </tr>
+  <tr>
+    <td align="middle"><a name="40">40</a></td>
+    <td align="middle">1</td>
+    <td>Item has been <a href="#personalized">personalized</a> (by Anya in Act V)</td>
+  </tr>
+  <tr>
+    <td align="middle">41</td>
+    <td align="middle">1</td>
+    <td><i>unknown</i></td>
+  </tr>
+  <tr>
+    <td align="middle"><a name="42">42</a></td>
+    <td align="middle">1</td>
+    <td>It looks like this bit indicates the item has been given a <a href="#runeword">Rune Word</a>.</td>
+  </tr>
+  <tr>
+    <td align="middle">43</td>
+    <td align="middle">15</td>
+    <td><i>unknown; some of these bits may be set</i></td>
+  </tr>
+  <tr>
+    <td align="middle">58</td>
+    <td align="middle">3</td>
+    <td>
+      <div><a name="58">Item location.</a> Actually, I have only seen a few
+      values for these bits, so I'm not 100% certain of its validity. If
+      you see any other value here, let me know what it is and where the item is
+      located.</div>
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <td align="middle" width="20%">0</td>
+          <td width="60%">Item is stored (see <a href="#73">bit field 73</a>)</td>
+        </tr>
+        <tr>
+          <td align="middle">1</td>
+          <td>Item is equipped (somewhere on your body)</td>
+        </tr>
+        <tr>
+          <td align="middle">2</td>
+          <td>Item is tucked in your belt (or sash)</td>
+        </tr>
+        <tr>
+          <td align="middle">4</td>
+          <td>Item is being moved (i.e., has been picked up by the mouse).</td>
+        </tr>
+        <tr>
+          <td align="middle">6</td>
+          <td>Item is glued into a socket.</td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">61</td>
+    <td align="middle">4</td>
+    <td>
+      <div>If the item is equipped, this field tells where it is. Possible
+      values are:</div>
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <td align="middle" width="20%">1</td>
+          <td width="60%">head (helmet)</td>
+        </tr>
+        <tr>
+          <td align="middle">2</td>
+          <td>neck (amulet)</td>
+        </tr>
+        <tr>
+          <td align="middle">3</td>
+          <td>torso (armor)</td>
+        </tr>
+        <tr>
+          <td align="middle">4</td>
+          <td>right hand (weapon)</td>
+        </tr>
+        <tr>
+          <td align="middle">5</td>
+          <td>left hand (shield)</td>
+        </tr>
+        <tr>
+          <td align="middle">6</td>
+          <td>right finger (ring)</td>
+        </tr>
+        <tr>
+          <td align="middle">7</td>
+          <td>left finger (ring)</td>
+        </tr>
+        <tr>
+          <td align="middle">8</td>
+          <td>waist (belt)</td>
+        </tr>
+        <tr>
+          <td align="middle">9</td>
+          <td>feet (boots)</td>
+        </tr>
+        <tr>
+          <td align="middle">10</td>
+          <td>hands (gloves)</td>
+        </tr>
+        <tr>
+          <td align="middle">11</td>
+          <td>alternate right hand (Expansion Set only)</td>
+        </tr>
+        <tr>
+          <td align="middle">12</td>
+          <td>alternate left hand (Expansion Set only)</td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="middle">65</td>
+    <td align="middle">4</td>
+    <td>
+      <p>Column number of the left corner of the item, counting from 0.
+      Your inventory has ten columns (numbered 0-9), your stash has six, and the
+      Horadric Cube has four.</p>
+      <p><strong>Note:</strong> Your belt is considered (for the purposes of the
+      item format) to have no rows, but either 4, 8, 12, or 16 columns. If
+      you prefer, you can divide this field and use the 2 bits at position 67-68
+      for the row (but only for belts).</p>
+      <p><strong>Note 2:</strong> If the item is equipped, glued to a socket, or
+      in transit, then this field appears to contain old data from the last time
+      the item was stored. I.e., it may be non-zero, but the value is
+      unused.</p></td>
+  </tr>
+  <tr>
+    <td align="middle">69</td>
+    <td align="middle">3</td>
+    <td>
+      <p>Row number of the top of the item, counting from 0. Your
+      inventory has four rows (numbered 0-3), your stash has four in normal
+      characters or eight in Expansion Set characters, and the Horadric Cube has
+      four. (In the belt, this field is always zero.)</p>
+      <p><strong>Note:</strong> If the item is equipped, tucked in your belt,
+      glued to a socket, or in transit, then this field appears to contain old
+      data from the last time the item was stored. I.e., it may be
+      non-zero, but the value is unused.</p></td>
+  </tr>
+  <tr>
+    <td align="middle">72</td>
+    <td align="middle">1</td>
+    <td><i>unknown</i></td>
+  </tr>
+  <tr>
+    <td align="middle">73</td>
+    <td align="middle">3</td>
+    <td>
+      <div><a name="73">Actually</a>, bit 74 seems to always be 0, but since bits
+      73 and 75 are related I just lump them all together. If the item is
+      neither equipped nor in your belt, this field tells where it is.
+      Possible values are:</div>
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <td align="middle" width="20%">0</td>
+          <td width="60%">not here <i>(check <a href="#58">bit field 58</a>)</i></td>
+        </tr>
+        <tr>
+          <td align="middle">1</td>
+          <td>inventory</td>
+        </tr>
+        <tr>
+          <td align="middle">4</td>
+          <td>Horadric Cube</td>
+        </tr>
+        <tr>
+          <td align="middle">5</td>
+          <td>stash</td>
+        </tr>
+      </tbody>
+      </table>
+      <div><u>If you find an item having any other value in this field, let me
+      know what the value is and the item's location!</u></div></td>
+  </tr>
+  <tr>
+    <td align="middle">76</td>
+    <td align="middle">4 <tt>char</tt>s<br />(8 bits ea.)</td>
+    <td><a name="76">Item's type.</a> The type is 3 lower-case letters or
+      numbers followed by a space; e.g., &quot;<tt>amu&#xA0;</tt>&quot; (Amulet) or &quot;<tt>2hs&#xA0;</tt>&quot;
+      (Two-Handed Sword). I have started a list of item identifiers (not
+      posted; sorry), but it is by no means complete; I'm sure I don't even have
+      half of what's out there!<br /><strong>Warning:</strong> This field is
+      <em>not</em> byte-aligned! It starts in the middle of byte 9 and
+      runs to the middle of byte 13.</td>
+  </tr>
+  <tr>
+    <td align="middle">108</td>
+    <td align="middle">3</td>
+    <td>The number of gems (or skulls or jewels) which have been glued to this
+      item (if <a href="#27">socketed</a>).
+      There will be this many additional item structures for the gems
+      immediately following this item, in the order that the gems were inserted.</td>
+  </tr>
+</tbody>
+</table>
+<h2><a name="ear">Item Variant: Player Ears</a></h2>
+<div><i>The following information was provided by Mike of Denmark.</i></div>
+<p>If the item is a Player Ear, its structure is slightly different than the
+Simple Items above. The last two fields in the Simple Item structure are
+replaced by the following:</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="10%">Bit Position</th>
+    <th width="10%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">76</td>
+    <td align="middle">3</td>
+    <td>Character class of the ear's former owner. The defined classes
+      are:<br />&#xA0;&#xA0;&#xA0;&#xA0; 0&#xA0;
+      Amazon<br />&#xA0;&#xA0;&#xA0;&#xA0; 1&#xA0;
+      Sorceress<br />&#xA0;&#xA0;&#xA0;&#xA0; 2&#xA0;
+      Necromancer<br />&#xA0;&#xA0;&#xA0;&#xA0; 3&#xA0;
+      Paladin<br />&#xA0;&#xA0;&#xA0;&#xA0; 4&#xA0;
+      Barbarian<br />&#xA0;&#xA0;&#xA0;&#xA0; 5&#xA0; Druid (Expansion character
+      only)<br />&#xA0;&#xA0;&#xA0;&#xA0; 6&#xA0; Assassin (Expansion character
+      only)</td>
+  </tr>
+  <tr>
+    <td align="middle">79</td>
+    <td align="middle">7</td>
+    <td>Character level of the ear's former owner.</td>
+  </tr>
+  <tr>
+    <td align="middle">86</td>
+    <td align="middle">7</td>
+    <td>First character of the former owner's name.</td>
+  </tr>
+  <tr>
+    <td align="middle">93</td>
+    <td align="middle">7 &#xD7; <i>N</i>-1</td>
+    <td>Second character of the former owner's name; Repeat until you get the
+      whole name (15 characters maximum).</td>
+  </tr>
+  <tr>
+    <td align="middle">86 + 7 &#xD7; <i>N</i></td>
+    <td align="middle">7</td>
+    <td>0&#xA0; (this indicates the end of the name)</td>
+  </tr>
+</tbody>
+</table>
+<p>Following the end of the name, the rest of the final byte will be padded with
+0's if necessary, and the Player Ear structure ends there.</p>
+<h2>Item Structure part 2: Extended Items</h2>
+<p>By &quot;extended items&quot; I mean any items which are not <a href="#37">simple.</a>
+Simple items are those which need no further information than that given
+above &#x2014; such as gems, potions, and small quest items &#x2014; and their structure length
+is fixed at 14 bytes. Everything else has an extended structure with a
+possibly variable length set of bit fields. First, I'll describe the part
+of the structure that appears to be the same for all extended items. From
+that point on, there will be no more &quot;bit positions&quot;; only &quot;this field follows
+that field, if it exists&quot;.</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="10%">Bit Position</th>
+    <th width="10%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">111</td>
+    <td align="middle">32</td>
+    <td>Unique identifier. Diablo II randomly generates a value for this
+      field in order to discourage cheaters from &quot;duping&quot; items.
+      Supposedly, if it detects more than one extended item with the same unique
+      Id, it will delete the duplicates. (It hasn't done that for me in
+      single player mode, though.)</td>
+  </tr>
+  <tr>
+    <td align="middle">143</td>
+    <td align="middle">7</td>
+    <td>
+      <div>This appears to be the item's level; i.e., the level with which the
+      item was created (or 'dropped'). The item level is based on the
+      level of the monster who dropped it, the level of the area you're in if
+      found in a chest, or, in rare cases, your characters level. The item
+      level determines what modifiers are allowed on the item.</div>
+      <div><i>Note: this is just a theory at this point, but it seems to hold
+      for the items I've examined.</i></div></td>
+  </tr>
+  <tr>
+    <td align="middle">150</td>
+    <td align="middle">4</td>
+    <td>
+      <div>Item quality. This field can be one of the following values,
+      which determines the quality-specific bit fields that follow:</div>
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <td align="middle" width="20%">1</td>
+          <td width="60%"><a href="#low_quality">low quality</a></td>
+        </tr>
+        <tr>
+          <td align="middle">2</td>
+          <td><a href="#normal_data">normal</a></td>
+        </tr>
+        <tr>
+          <td align="middle">3</td>
+          <td><a href="#high_quality">high quality</a></td>
+        </tr>
+        <tr>
+          <td align="middle">4</td>
+          <td><a href="#magic_data">magically enhanced</a></td>
+        </tr>
+        <tr>
+          <td align="middle">5</td>
+          <td><a href="#set_data">part of a set</a></td>
+        </tr>
+        <tr>
+          <td align="middle">6</td>
+          <td><a href="#rare_data">rare</a></td>
+        </tr>
+        <tr>
+          <td align="middle">7</td>
+          <td><a href="#unique_data">unique</a></td>
+        </tr>
+        <tr>
+          <td align="middle">8</td>
+          <td><a href="#crafted_data">crafted</a></td>
+        </tr>
+      </tbody>
+      </table>
+      <div><i>Thanks go to Guillaume Courtin of France for finding the value of
+      crafted items.</i></div></td>
+  </tr>
+</tbody>
+</table>
+<h2 align="center">WARNING: DATA BELOW THIS POINT MAY CONTAIN ERRORS</h2>
+<h3><a name="ring_data">Ring Data</a></h3>
+<p>After the above data, if the item is a ring, amulet, jewel, or charm, then it
+has a 1 bit followed by three more bits. All other items (that I've seen)
+have just a single 0 bit.</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th colspan="2">Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">1</td>
+    <td colspan="2">If this bit is set, the item has one of multiple pictures
+      associated with it; the next field determines which picture a particular
+      item uses. If this bit is 0, the next field is absent. The
+      picture field is used for rings, amulets, jewels, and charms.</td>
+  </tr>
+  <tr>
+    <td align="middle">3</td>
+    <td>Picture. <i>Optional; only present if the previous bit is 1.</i>
+      This field chooses the particular graphic used to display the ring.</td>
+    <td width="179"><img height="75" src="images/Ring_of_the_Leech.jpg" width="179" /></td>
+  </tr>
+</tbody>
+</table>
+<p>From this point on, my information is very iffy.</p>
+<h3><a name="unknown_11bit_data"><i>Unknown Field</i></a></h3>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">1</td>
+    <td>This bit apparently is set for certain class-specific Expansion Set
+      items. It indicates the presence of the next 11-bit field. If
+      this bit is 0, the next field is absent.</td>
+  </tr>
+  <tr>
+    <td align="middle">11</td>
+    <td>
+      <div><i>Credit for the discovery of this field's meaning goes entirely to
+      Guillaume Courtin of France. Thanks!</i></div>
+      <div>This field indicates magic properties which are inherent in certain
+      class-specific items. A given class-specific item will (almost)
+      always start with the same set of properties, even if its quality is
+      &quot;normal&quot;. Other quality ratings may add more properties to the
+      standard set. It appears that items which will have this field
+      are:</div>
+      <ul>
+        <li>Amazon-only bows, spears, and javelins</li>
+        <li>Voodoo heads (Necromancer-only shields)</li>
+        <li>Paladin-only shields</li>
+        <li>Orbs (Sorceress-Only wands)</li></ul></td>
+  </tr>
+</tbody>
+</table>
+<h3><a name="low_quality">Low Quality Item Data</a></h3>
+<p>If the item is one of low quality, it has 3 more bits that give the quality
+details:</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th colspan="2">Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">3</td>
+    <td>
+      <div>Quality:</div>
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <td align="middle" width="20%">0</td>
+          <td width="60%">Crude</td>
+        </tr>
+        <tr>
+          <td align="middle">1</td>
+          <td>Cracked</td>
+        </tr>
+        <tr>
+          <td align="middle">2</td>
+          <td>Damaged</td>
+        </tr>
+        <tr>
+          <td align="middle">3</td>
+          <td>Low Quality</td>
+        </tr>
+      </tbody>
+      </table>
+      <div><i>I haven't recorded any instances of other values, but that doesn't
+      mean there won't be any. Also, I'm certain the value has something
+      to do with mods on an item's inherent (non-recorded) properties, such as
+      weapon damage, but I haven't figured out yet what the correlation is.</i></div></td>
+    <td width="173"><img height="121" src="images/Crude_Heavy_Boots.jpg" width="173" /></td>
+  </tr>
+</tbody>
+</table>
+<h3><a name="normal_data">Normal Item Data</a></h3>
+<p>Normal items have no extra quality data.</p>
+<h3><a name="low_quality">High Quality ("Superior") Item Data</a></h3>
+<p>If the item is one of high quality, it has 3 additional bits.</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">3</td>
+    <td><i>unknown. I'm certain the value has something to do with mods
+      on an item's inherent (non-recorded) properties, such as weapon damage,
+      but I haven't figured out yet what the correlation is.</i></td>
+  </tr>
+</tbody>
+</table>
+<h3><a name="magic_data">Magically Enhanced Item Data</a></h3>
+<p><img src="images/Sturdy_Spiked_Shield_of_Spikes.jpg" align="right" />
+Magically enhanced items have two 11-bit fields representing the item's prefix
+and suffix. Either one (but not both) may be omitted. The prefix and
+suffix each are used in choosing the <a href="#enhancements">magical
+enhancements</a> for an item (although the enhancements are modifiable), and can
+also increase the minimum level required to use them item and affect the item's
+color.</p><img src="images/Mesh_Belt_of_the_Mammoth.jpg" align="left" />
+<br clear="both" />
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">11</td>
+    <td>Item prefix (i.e., &quot;Gold&quot; or &quot;Tangerine&quot;). I've started a <a href="Magic_Names.html#prefix">list
+      of prefix identifiers</a>, but it is very sparse at this time. If
+      this field is 0, the item has no prefix.</td>
+  </tr>
+  <tr>
+    <td align="middle">11</td>
+    <td>Item suffix (i.e., &quot;of Greed&quot; or &quot;of Life&quot;). I've started a <a href="Magic_Names.html#suffix">list
+      of suffix identifiers</a>, but it is very sparse at this time. If
+      this field is 0, the item has no suffix.</td>
+  </tr>
+</tbody>
+</table>
+<h3><a name="set_data">Set Item Data</a></h3>
+<p></p>Set items have a 12-bit field containing the ID of the set.
+<em>(Not the set member, but the whole set.)</em> The set member is
+identified by cross-referencing the <a href="#76">item
+type</a> with the set Id. Also note that set items have <a href="#set_extended_data">an
+extra field</a> following the <a href="#specific">item-specific data</a>.
+<p><!-- @ --></p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th colspan="2">Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">12</td>
+    <td>
+      <div>Set identifier; i.e., all items which are part of the set will have
+      the same value in this field. Since I've only identified a few set
+      items, I'll give their ID's here:</div>
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <td align="middle" width="20%">2</td>
+          <td width="60%"><span color="#004000">Cleglaw's Brace</span></td>
+        </tr>
+        <tr>
+          <td align="middle">3</td>
+          <td><span color="#004000">Iratha's Finery</span></td>
+        </tr>
+        <tr>
+          <td align="middle">4</td>
+          <td><span color="#004000">Isenhart's Armory</span></td>
+        </tr>
+        <tr>
+          <td align="middle">6</td>
+          <td><span color="#004000">Milabrega's Regalia</span></td>
+        </tr>
+        <tr>
+          <td align="middle">7</td>
+          <td><span color="#004000">Cathan's Traps</span></td>
+        </tr>
+        <tr>
+          <td align="middle">11</td>
+          <td><span color="#004000">Berserker's Arsenal</span></td>
+        </tr>
+        <tr>
+          <td align="middle">12</td>
+          <td><span color="#004000">Death's Disguise</span></td>
+        </tr>
+        <tr>
+          <td align="middle">13</td>
+          <td><span color="#004000">Angelic Raiment</span></td>
+        </tr>
+      </tbody>
+      </table></td>
+    <td width="245"><img height="250" src="images/Deaths_Hand_Leather_Gloves.jpg" width="245" /></td>
+  </tr>
+</tbody>
+</table>
+<h3><a name="rare_data">Rare Item Data</a></h3>
+<p><img height="294" src="images/Loath_Song_Battle_Axe.jpg" width="253" align="right" /> This is by far the worst beast to decode. Rare items have a
+variable number of bits before we get to the item contents, and this number can
+vary anywhere from 55 to 88!</p>
+<p><img height="156" src="images/Eagle_Mark_Amulet.jpg" width="331" align="left" /> <i>Update 3/14/2002:</i> <strong>EUREKA!!</strong> I've
+finally figured out the variable fields!; See the table below.<br clear="both" /></p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">8</td>
+    <td>This is the Id for the <a href="Magic_Names.html#rare_first_name">first
+      word of the item's name</a> (i.e., &quot;Stone&quot; or &quot;Doom&quot;).</td>
+    </tr>
+  <tr>
+    <td align="middle">8</td>
+    <td>This is the ID for the <a href="Magic_Names.html#rare_second_name">second
+      word of the item's name</a> (i.e., &quot;Finger&quot; or &quot;Shroud&quot;).</td>
+  </tr>
+  <tr>
+    <td align="middle">1</td>
+    <td>If this field is 1, the next 11-bit field is present. If 0, the
+      next field is absent.</td>
+  </tr>
+  <tr>
+    <td align="middle">11</td>
+    <td>First <a href="Magic_Names.html#prefix">magic
+      prefix</a> <i>(optional)</i>. Although this &quot;prefix&quot; isn't actually
+      shown in the item name, it is used in determining the magical properties,
+      required level, coloring, and other attributes of the rare item.</td>
+  </tr>
+  <tr>
+    <td align="middle">1</td>
+    <td>If this field is 1, the next 11-bit field is present. If 0, the
+      next field is absent.</td>
+  </tr>
+  <tr>
+    <td align="middle">11</td>
+    <td>First <a href="Magic_Names.html#suffix">magic
+      suffix</a> <i>(optional)</i>. Although this &quot;suffix&quot; isn't actually
+      shown in the item name, it is used in determining the magical properties,
+      required level, coloring, and other attributes of the rare item.</td>
+  </tr>
+  <tr>
+    <td align="middle">1</td>
+    <td>If this field is 1, the next 11-bit field is present. If 0, the
+      next field is absent.</td>
+  </tr>
+  <tr>
+    <td align="middle">11</td>
+    <td>Second magic prefix <i>(optional)</i></td>
+  </tr>
+  <tr>
+    <td align="middle">1</td>
+    <td>If this field is 1, the next 11-bit field is present. If 0, the
+      next field is absent.</td>
+  </tr>
+  <tr>
+    <td align="middle">11</td>
+    <td>Second magic suffix <i>(optional)</i></td>
+  </tr>
+  <tr>
+    <td align="middle">1</td>
+    <td>If this field is 1, the next 11-bit field is present. If 0, the
+      next field is absent.</td>
+  </tr>
+  <tr>
+    <td align="middle">11</td>
+    <td>Third magic prefix <i>(optional)</i></td>
+  </tr>
+  <tr>
+    <td align="middle">1</td>
+    <td>If this field is 1, the next 11-bit field is present. If 0, the next field is absent.</td>
+  </tr>
+  <tr>
+    <td align="middle">11</td>
+    <td>Third magic suffix <i>(optional)</i></td>
+  </tr>
+</tbody>
+</table>
+<h3><a name="unique_data">Unique Item Data</a></h3>
+<p>Unique items have an additional 12 bit field, which in <EM>most</EM> cases is
+the unique item ID. The few exceptions are certain quest items (e.g., the
+Horadric Malus).</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th colspan="2">Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">12</td>
+    <td>
+      <div>Item identifier. Since I've only identified a few unique items,
+      I'll give their ID's here:</div>
+      <table cellspacing="0" width="80%" align="center" border="1">
+      <tbody>
+        <tr>
+          <td align="middle" width="20%">13</td>
+          <td width="60%"><span color="#8b6914">Ume's Lament</span> Grim Wand</td>
+        </tr>
+        <tr>
+          <td align="middle">31</td>
+          <td><span color="#8b6914">Hellplague</span> Long Sword</td>
+        </tr>
+        <tr>
+          <td align="middle">75</td>
+          <td><span color="#8b6914">Wormskull</span> Bone Helm</td>
+        </tr>
+        <tr>
+          <td align="middle">77</td>
+          <td><span color="#8b6914">Undead Crown</span> Crown <i>(no, that is not a typo!)</i></td>
+        </tr>
+        <tr>
+          <td align="middle">91</td>
+          <td><span color="#8b6914">Goldskin</span> Full Plate Mail</td>
+        </tr>
+        <tr>
+          <td align="middle">120</td>
+          <td><span color="#8b6914">Nagelring</span> Ring <i>(not a typo either; I checked)</i></td>
+        </tr>
+        <tr>
+          <td align="middle">123</td>
+          <td>Amulet <span color="#8b6914">of the Viper</span></td>
+        </tr>
+        <tr>
+          <td align="middle">125</td>
+          <td><span color="#8b6914">Horadric</span> Staff</td>
+        </tr>
+        <tr>
+          <td align="middle">126</td>
+          <td><span color="#8b6914">Hell Forge</span> Hammer</td>
+        </tr>
+        <tr>
+          <td align="middle">4095<br />(0xFFF)</td>
+          <td><span color="#8b6914"><i>(other; probably a quest
+          item)</i></span></td>
+        </tr>
+      </tbody>
+      </table>
+    </td>
+    <td width="332"><img height="310" src="images/Hellplague.jpg" width="332" /></td>
+  </tr>
+</tbody>
+</table>
+<h3><a name="crafted_data">Crafted Item Data</a></h3>
+<p>Crafted items appear to be coded exactly like rare items, having a rare name
+(two parts) and six optional prefixes / suffixes.</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">8</td>
+    <td>This is the Id for the <a href="Magic_Names.html#rare_first_name">first
+      word of the item's name</a> (i.e., &quot;Stone&quot; or &quot;Doom&quot;).</td>
+  </tr>
+  <tr>
+    <td align="middle">8</td>
+    <td>This is the Id for the <a href="Magic_Names.html#rare_second_name">second
+      word of the item's name</a> (i.e., &quot;Finger&quot; or &quot;Shroud&quot;).</td>
+  </tr>
+  <tr>
+    <td align="middle">1</td>
+    <td>If this field is 1, the next 11-bit field is present. If 0, the
+      next field is absent.</td>
+  </tr>
+  <tr>
+    <td align="middle">11</td>
+    <td>First <a href="Magic_Names.html#prefix">magic
+      prefix</a> <i>(optional)</i>. Although this &quot;prefix&quot; isn't actually
+      shown in the item name, it is used in determining the magical properties,
+      required level, coloring, and other attributes of the crafted item.</td>
+  </tr>
+  <tr>
+    <td align="middle">1</td>
+    <td>If this field is 1, the next 11-bit field is present. If 0, the
+      next field is absent.</td>
+  </tr>
+  <tr>
+    <td align="middle">11</td>
+    <td>First <a href="Magic_Names.html#suffix">magic
+      suffix</a> <i>(optional)</i>. Although this &quot;suffix&quot; isn't actually
+      shown in the item name, it is used in determining the magical properties,
+      required level, coloring, and other attributes of the crafted item.</td>
+  </tr>
+  <tr>
+    <td align="middle">1</td>
+    <td>If this field is 1, the next 11-bit field is present. If 0, the
+      next field is absent.</td>
+  </tr>
+  <tr>
+    <td align="middle">11</td>
+    <td>Second magic prefix <i>(optional)</i></td>
+  </tr>
+  <tr>
+    <td align="middle">1</td>
+    <td>If this field is 1, the next 11-bit field is present. If 0, the
+      next field is absent.</td>
+  </tr>
+  <tr>
+    <td align="middle">11</td>
+    <td>Second magic suffix <i>(optional)</i></td>
+  </tr>
+  <tr>
+    <td align="middle">1</td>
+    <td>If this field is 1, the next 11-bit field is present. If 0, the
+      next field is absent.</td>
+  </tr>
+  <tr>
+    <td align="middle">11</td>
+    <td>Third magic prefix <i>(optional)</i></td>
+  </tr>
+  <tr>
+    <td align="middle">1</td>
+    <td>If this field is 1, the next 11-bit field is present. If 0, the
+      next field is absent.</td>
+  </tr>
+  <tr>
+    <td align="middle">11</td>
+    <td>Third magic suffix <i>(optional)</i></td>
+  </tr>
+</tbody>
+</table>
+<h3><a name="runeword">Rune Word</a></h3>
+<p>If the item has a rune word (indicated by <a href="#42">bit
+42</a> being set), there is an additional field at this point.</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">12</td>
+    <td>This <EM>appears</EM> to be an index to the rune word, although I
+      can't say what the index is based on. The first rune word,
+      &quot;Ancient's Pledge&quot;, has a value of 27. The next rune word, &quot;Black&quot;,
+      has a value of 32. etc.</td>
+  </tr>
+  <tr>
+    <td align="middle">4</td>
+    <td><i>Unknown; the value is 5 on all items I've looked at.</i></td>
+  </tr>
+</tbody>
+</table>
+<h3><a name="personalized">Personalization</a></h3>
+<p>The following segment is present if and only if the item is personalized
+(i.e., <a href="#40">bit
+40</a> is set). Only armor and weapons (except for quest items) can be
+personalized.</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">7</td>
+    <td>First character of the owner's name (just plain ASCII!)</td>
+  </tr>
+  <tr>
+    <td align="middle">7</td>
+    <td>Second character of the owner's name</td>
+  </tr>
+  <tr>
+    <td align="middle">7 &#xD7; <i>N</i>-2</td>
+    <td>Repeat until you get the whole name (15 characters maximum)</td>
+  </tr>
+  <tr>
+    <td align="middle">7</td>
+    <td>0&#xA0; (this indicates the end of the name)</td>
+  </tr>
+</tbody>
+</table>
+<h3><a name="unknown_11bit_data"><i>Unknown Field</i></a></h3>
+<p>All items have this field between the personalization (if it exists) and the
+item-specific data:</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">1</td>
+    <td><i>unknown; this usually is 0, but is 1 on a Tome of Identify.
+      (It's still 0 on a Tome of Townportal.)</i></td>
+  </tr>
+</tbody>
+</table>
+<h2><a name="specific">Item Structure part 3: Item-Specific Data</a></h2>
+<p>The presence of the following fields depends on the item type. Fields
+which are present will be stored in the order shown. Unfortunately there
+is no means of telling which fields are present from the item data itself; you
+need to look up the <a href="#76">item
+type</a> in a table to figure out whether it is a weapon, armor, or stack, and
+read the fields accordingly.</p>
+<h3>Armor: Defense Rating</h3>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">10</td>
+    <td>Defense value +10. i.e., a defense rating of 23 would be
+      stored in this field as 33; thus the maximum defense value you can store
+      is 1013 (although I haven't tried it). Note that this is the base
+      defense rating, before applying any magical enhancements (i.e., the number
+      shown in white).</td>
+  </tr>
+</tbody>
+</table>
+<h3>Armor and Weapons: Durability</h3>
+<p>Even though stacked weapons don't show any durability rating in the game,
+they still have two 8-bit fields in the same spot. This includes bombs
+(exploding and gas potions). The values in such cases are very small, so
+I'm not sure what they mean.</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">8</td>
+    <td>Maximum Durability. Note that this is the base durability,
+      before applying any magical enhancements (i.e., the number shown in
+      white).<br /><i>Note: </i>I've found an indestructable item, and it appears
+      that in such a case the maximum durability field is zero!</td>
+  </tr>
+  <tr>
+    <td align="middle">8</td>
+    <td>Current Durability. This may be greater than the maximum
+      durability if the item is magically enhanced.<br /><i>Note: </i>I've found
+      an indestructable item, and it appears that in such a case the current
+      durability field is missing!</td>
+  </tr>
+</tbody>
+</table>
+<h3><a name="sockets">Armor and (non-stacked) Weapons: Sockets</a></h3>
+<p>The following field is present if and only if the item is socketed (i.e., <a href="#27">bit
+27</a> is set).</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th colspan="2">Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">4</td>
+    <td>Number of sockets<br /><i>Note that even though this field is 4 bits
+      wide, each item type has a built-in upper limit to the total number of
+      sockets. This limit is built into the game. The most I've ever
+      seen is 6 for, e.g., a gothic axe.</i></td>
+    <td width="179"><img height="137" src="images/Socketed_Mask.jpg" width="179" /></td>
+  </tr>
+</tbody>
+</table>
+<h3>Tomes:</h3>
+<p>Tomes have an extra 5 bits inserted at this point. I have no idea what
+purpose they serve. It looks like the value is 0 on all of my tomes.</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">5</td>
+    <td><i>unknown</i></td>
+  </tr>
+</tbody>
+</table>
+<h3>Stacked Weapons, Quivers, Keys, and Tomes: Quantity</h3>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">9</td>
+    <td>Quantity</td>
+  </tr>
+</tbody>
+</table>
+<h2><a name="enhancements">Item Structure part 3: Magical Enhancements</a></h2>
+<h3>Item Structure part 2<sup>bis</sup>: <a name="set_extended_data">Set Item Data
+Revisited</a></h3>
+<p>Items which are part of a set have an additional 5 bits following the
+item-specific data.</p>
+<table width="100%" border="1">
+<tbody>
+  <tr>
+    <th width="20%">Size</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td align="middle">5</td>
+    <td>This appears to be an indicator of how many lists of magic properties
+      follows. The first list are the properties the item has if you do
+      not have any other members of the set. Following lists are applied
+      once you equip other items in the set. The value is 1 if there are
+      two (total) property lists, or 3 if there are three property lists.</td>
+  </tr>
+</tbody>
+</table>
+<p>Following the item-specific data are a variable number of variable length bit
+fields describing any magical enhancements placed on the item. Each
+property begins with a 9-bit identifier. An identifier of <tt>0x1FF</tt>
+(all 1's) indicates the end of the property list ... except in the event the
+item belongs to a set, in which case there will be another one or two groups of
+magical properties following, depending on whether the set item data (above) is
+1 or 3, respectively. Also, if an item has been given a <a href="#42">Rune
+Word</a>, it appears that the Rune Word's properties begin with a <tt>0x1FF</tt>
+identifier (presumably to set them apart from the item's normal properties...
+but I need to examine more items to be certain.)</p>
+<p>Because the number of bits (and fields) after the 9-bit identifier varies, I
+do not give a field width here. Instead, check my <a href="Magic_Properties.html">table
+of magic properties</a> for field sizes. I'm sure it's not complete, but
+it does have most of the common properties.</p>
+<p>Following the last 9-bit value of 0x1FF, the rest of the final byte will be
+padded with 0's if necessary, and the item structure ends there. For
+example, if the item had 341 bits of data, the last (43<sup>rd</sup>) byte will
+be 0x1F. If the item had 248 bits of data, the last (31<sup>st</sup>) byte
+will be 0xFF.</p>
+</body>
+</html>
